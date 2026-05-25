@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <title id="page-title">Sector Hub</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,400;0,600;0,800;1,400;1,600&family=Playfair+Display:wght@900&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="/static/css/main.css"/>
+  <!-- Tailwind CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Highcharts Stock (includes all modules) -->
+  <script src="https://code.highcharts.com/stock/highstock.js"></script>
+  <script src="https://code.highcharts.com/stock/modules/heatmap.js"></script>
+  <script src="https://code.highcharts.com/modules/exporting.js"></script>
+</head>
+<body>
+  <!-- HEADER -->
+  <header class="sh-header">
+    <div class="sh-header-inner">
+      <a href="/" class="sh-brand">Sector Hub</a>
+      <div class="sh-header-meta">
+        <span class="sh-sector-name" id="sector-name">—</span>
+        <span class="sh-updated" id="last-updated">—</span>
+      </div>
+    </div>
+  </header>
+
+  <main class="sh-main">
+    <!-- Khối A | B (2 cột) -->
+    <div class="sector-grid-2" id="block-ab">
+      <!-- [A] Giá đầu vào -->
+      <section class="block-section" id="block-a">
+        <div class="block-title">A — Giá đầu vào</div>
+        <div id="block-a-charts"></div>
+      </section>
+      <!-- [B] Thị trường ngành -->
+      <section class="block-section" id="block-b">
+        <div class="block-title">B — Thị trường ngành</div>
+        <div id="block-b-charts"></div>
+      </section>
+    </div>
+
+    <!-- Khối C | D (2 cột) -->
+    <div class="sector-grid-2" id="block-cd">
+      <!-- [C] Giá bán / ASP -->
+      <section class="block-section" id="block-c">
+        <div class="block-title">C — Giá bán / ASP</div>
+        <div id="block-c-charts"></div>
+      </section>
+      <!-- [D] Spread / Margin tracker -->
+      <section class="block-section" id="block-d">
+        <div class="block-title">D — Spread / Margin</div>
+        <div id="block-d-charts"></div>
+      </section>
+    </div>
+
+    <!-- Khối E — Bảng cổ phiếu (full width) -->
+    <section class="block-section" id="block-e">
+      <div class="block-title">E — Cổ phiếu ngành</div>
+      <div id="block-e-table"></div>
+    </section>
+
+    <!-- Khối F — BCTC 8 quý (full width) -->
+    <section class="block-section" id="block-f">
+      <div class="block-title">F — BCTC so sánh 8 quý</div>
+      <div id="block-f-charts"></div>
+    </section>
+  </main>
+
+  <script src="/static/js/charts.js"></script>
+  <!-- Sector-specific script được load động -->
+  <script>
+    (function() {
+      const code = location.pathname.split('/').pop();
+      const s = document.createElement('script');
+      s.src = `/static/js/sector-${code}.js`;
+      document.body.appendChild(s);
+    })();
+  </script>
+</body>
+</html>

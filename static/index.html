@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <title>Sector Hub</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,400;0,600;0,800;1,400;1,600&family=Playfair+Display:wght@900&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="/static/css/main.css"/>
+</head>
+<body>
+  <header class="sh-header">
+    <div class="sh-header-inner">
+      <a href="/" class="sh-brand">Sector Hub</a>
+      <div class="sh-header-meta">
+        <span class="sh-sector-name">Phân tích ngành chứng khoán Việt Nam</span>
+      </div>
+    </div>
+  </header>
+
+  <main class="sh-main">
+    <section class="block-section">
+      <div class="block-title">Danh sách ngành</div>
+      <div class="sector-grid-index" id="sector-list">
+        <a href="/sector/steel" class="sector-card-index">
+          <div class="sector-code">STEEL</div>
+          <div class="sector-label">Thép</div>
+        </a>
+        <a href="/sector/bank" class="sector-card-index">
+          <div class="sector-code">BANK</div>
+          <div class="sector-label">Ngân hàng</div>
+        </a>
+        <a href="/sector/cement" class="sector-card-index">
+          <div class="sector-code">CEMENT</div>
+          <div class="sector-label">Xi măng</div>
+        </a>
+        <a href="/sector/pangasius" class="sector-card-index">
+          <div class="sector-code">PANGASIUS</div>
+          <div class="sector-label">Cá tra</div>
+        </a>
+        <a href="/sector/shrimp" class="sector-card-index">
+          <div class="sector-code">SHRIMP</div>
+          <div class="sector-label">Tôm</div>
+        </a>
+        <a href="/sector/aviation" class="sector-card-index">
+          <div class="sector-code">AVIATION</div>
+          <div class="sector-label">Hàng không</div>
+        </a>
+        <a href="/sector/rubber" class="sector-card-index">
+          <div class="sector-code">RUBBER</div>
+          <div class="sector-label">Cao su</div>
+        </a>
+        <a href="/sector/pig" class="sector-card-index">
+          <div class="sector-code">PIG</div>
+          <div class="sector-label">Chăn nuôi</div>
+        </a>
+        <a href="/sector/chemistry" class="sector-card-index">
+          <div class="sector-code">CHEMISTRY</div>
+          <div class="sector-label">Phân bón / Hóa chất</div>
+        </a>
+        <a href="/sector/textile" class="sector-card-index">
+          <div class="sector-code">TEXTILE</div>
+          <div class="sector-label">Dệt may</div>
+        </a>
+        <a href="/sector/industry" class="sector-card-index">
+          <div class="sector-code">INDUSTRY</div>
+          <div class="sector-label">Khu công nghiệp</div>
+        </a>
+        <a href="/sector/realestate" class="sector-card-index">
+          <div class="sector-code">REALESTATE</div>
+          <div class="sector-label">Bất động sản</div>
+        </a>
+        <a href="/sector/transport" class="sector-card-index">
+          <div class="sector-code">TRANSPORT</div>
+          <div class="sector-label">Vận tải biển</div>
+        </a>
+        <a href="/sector/securities" class="sector-card-index">
+          <div class="sector-code">SECURITIES</div>
+          <div class="sector-label">Chứng khoán</div>
+        </a>
+        <a href="/sector/food-beverage" class="sector-card-index">
+          <div class="sector-code">FOOD</div>
+          <div class="sector-label">Thực phẩm đồ uống</div>
+        </a>
+        <a href="/sector/electricity" class="sector-card-index">
+          <div class="sector-code">ELECTRICITY</div>
+          <div class="sector-label">Điện</div>
+        </a>
+        <a href="/sector/plastics" class="sector-card-index">
+          <div class="sector-code">PLASTICS</div>
+          <div class="sector-label">Nhựa tổng hợp</div>
+        </a>
+        <a href="/sector/insurance" class="sector-card-index">
+          <div class="sector-code">INSURANCE</div>
+          <div class="sector-label">Bảo hiểm</div>
+        </a>
+        <a href="/sector/oilgas" class="sector-card-index">
+          <div class="sector-code">OILGAS</div>
+          <div class="sector-label">Dầu khí</div>
+        </a>
+        <a href="/sector/gold" class="sector-card-index">
+          <div class="sector-code">GOLD</div>
+          <div class="sector-label">Vàng</div>
+        </a>
+        <a href="/sector/coffee" class="sector-card-index">
+          <div class="sector-code">COFFEE</div>
+          <div class="sector-label">Cà phê</div>
+        </a>
+        <a href="/sector/wood" class="sector-card-index">
+          <div class="sector-code">WOOD</div>
+          <div class="sector-label">Gỗ & Lâm sản</div>
+        </a>
+        <a href="/sector/pharma" class="sector-card-index">
+          <div class="sector-code">PHARMA</div>
+          <div class="sector-label">Dược phẩm</div>
+        </a>
+        <a href="/sector/logistics" class="sector-card-index">
+          <div class="sector-code">LOGISTICS</div>
+          <div class="sector-label">Logistics & Cảng</div>
+        </a>
+        <a href="/sector/rice" class="sector-card-index">
+          <div class="sector-code">RICE</div>
+          <div class="sector-label">Lúa gạo</div>
+        </a>
+        <a href="/sector/pepper" class="sector-card-index">
+          <div class="sector-code">PEPPER</div>
+          <div class="sector-label">Hồ tiêu</div>
+        </a>
+        <a href="/sector/technology" class="sector-card-index">
+          <div class="sector-code">TECHNOLOGY</div>
+          <div class="sector-label">Công nghệ</div>
+        </a>
+        <a href="/macro" class="sector-card-index" style="border-color: var(--gold)">
+          <div class="sector-code">MACRO</div>
+          <div class="sector-label">Vĩ mô Dashboard</div>
+        </a>
+      </div>
+    </section>
+  </main>
+</body>
+</html>

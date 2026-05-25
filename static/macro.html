@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <title>Macro Dashboard — Sector Hub</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,400;0,600;0,800;1,400;1,600&family=Playfair+Display:wght@900&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="/static/css/main.css"/>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://code.highcharts.com/stock/highstock.js"></script>
+  <script src="https://code.highcharts.com/modules/exporting.js"></script>
+</head>
+<body>
+  <header class="sh-header">
+    <div class="sh-header-inner">
+      <a href="/" class="sh-brand">Sector Hub</a>
+      <div class="sh-header-meta">
+        <span class="sh-sector-name">Macro Dashboard</span>
+        <span class="sh-updated" id="last-updated">—</span>
+      </div>
+    </div>
+  </header>
+
+  <main class="sh-main">
+    <!-- [I] TTCK VN | [II] Vĩ mô VN -->
+    <div class="sector-grid-2">
+      <section class="block-section" id="block-market">
+        <div class="block-title">I — Thị trường chứng khoán VN</div>
+        <div id="market-charts"></div>
+      </section>
+      <section class="block-section" id="block-macro-vn">
+        <div class="block-title">II — Vĩ mô trong nước</div>
+        <div id="macro-vn-charts"></div>
+      </section>
+    </div>
+
+    <!-- [III] Lãi suất | [IV] Hàng hoá -->
+    <div class="sector-grid-2">
+      <section class="block-section" id="block-rates">
+        <div class="block-title">III — Lãi suất & tỷ giá</div>
+        <div id="rates-charts"></div>
+      </section>
+      <section class="block-section" id="block-commodities">
+        <div class="block-title">IV — Hàng hoá key</div>
+        <div id="commodities-charts"></div>
+      </section>
+    </div>
+
+    <!-- [V] Vĩ mô TQ -->
+    <section class="block-section" id="block-china">
+      <div class="block-title">V — Vĩ mô Trung Quốc</div>
+      <div class="sector-grid-2" id="china-charts"></div>
+    </section>
+
+    <!-- [VI] Vĩ mô Mỹ + Global PMI -->
+    <section class="block-section" id="block-global">
+      <div class="block-title">VI — Mỹ & PMI toàn cầu</div>
+      <div class="sector-grid-2" id="global-charts"></div>
+    </section>
+  </main>
+
+  <script src="/static/js/charts.js"></script>
+  <script src="/static/js/macro.js"></script>
+</body>
+</html>

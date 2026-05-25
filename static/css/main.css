@@ -1,0 +1,257 @@
+/* === DESIGN TOKENS (từ ocbs_style_guide.md + điều chỉnh cho dashboard) === */
+:root {
+  /* Brand */
+  --green:       #008C44;
+  --green-900:   #004B2C;
+  --green-800:   #006633;
+  --green-100:   #E8F5EE;
+  --gold:        #E4A025;
+  --gold-100:    #FFF4DA;
+
+  /* Surfaces */
+  --paper:       #FAFAF7;
+  --paper-2:     #F2F4EF;
+  --white:       #FFFFFF;
+
+  /* Ink */
+  --ink:         #161616;
+  --muted:       #5F6460;
+
+  /* Semantic */
+  --red:         #B84B43;
+  --red-100:     #FCEDEC;
+
+  /* Borders */
+  --line:        rgba(22,22,22,.10);
+  --line-strong: rgba(22,22,22,.18);
+  --shadow:      0 14px 42px rgba(0,0,0,.07);
+  --shadow-soft: 0 8px 24px rgba(0,0,0,.05);
+
+  /* Highcharts series colors — đồng bộ với charts.js HC_COLORS */
+  --hc-0: #1d4ed8;   /* giá chính / price */
+  --hc-1: #b91c1c;   /* chi phí / cost */
+  --hc-2: #15803d;   /* spread / margin */
+  --hc-3: #b45309;   /* volume / thị phần */
+  --hc-4: #6d28d9;   /* tỷ giá / macro */
+  --hc-5: #0369a1;   /* lãi suất / rate */
+  --hc-6: #be185d;   /* phụ */
+  --hc-7: #047857;   /* phụ */
+
+  /* Layout */
+  --grid-gap:     1rem;
+  --card-radius:  6px;
+  --section-gap:  1.5rem;
+  --max-width:    1400px;
+  --header-h:     56px;
+}
+
+/* === RESET & BASE === */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  font-family: 'Inter', system-ui, sans-serif;
+  background: var(--paper);
+  color: var(--ink);
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+/* === HEADER === */
+.sh-header {
+  position: sticky; top: 0; z-index: 100;
+  background: var(--white);
+  border-bottom: 1px solid var(--line);
+  height: var(--header-h);
+  box-shadow: var(--shadow-soft);
+}
+.sh-header-inner {
+  max-width: var(--max-width);
+  margin: 0 auto;
+  padding: 0 1.5rem;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+.sh-brand {
+  font-weight: 800;
+  color: var(--green);
+  text-decoration: none;
+  font-size: 1rem;
+  letter-spacing: -0.02em;
+}
+.sh-header-meta { display: flex; flex-direction: column; gap: 0; margin-left: 1.5rem; }
+.sh-sector-name { font-weight: 600; font-size: 0.9rem; color: var(--ink); }
+.sh-updated { font-size: 0.75rem; color: var(--muted); }
+
+/* === MAIN LAYOUT === */
+.sh-main {
+  max-width: var(--max-width);
+  margin: 0 auto;
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: var(--section-gap);
+}
+
+/* === GRID === */
+.sector-grid-2 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--grid-gap);
+}
+.sector-grid-1 {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--grid-gap);
+}
+@media (max-width: 1024px) {
+  .sector-grid-2 { grid-template-columns: 1fr; }
+}
+
+/* === BLOCK SECTION === */
+.block-section {
+  background: var(--white);
+  border: 1px solid var(--line);
+  border-radius: var(--card-radius);
+  padding: 1rem 1.25rem 1.25rem;
+  box-shadow: var(--shadow-soft);
+}
+.block-title {
+  font-size: 0.7rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--green);
+  margin-bottom: 1rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 2px solid var(--green-100);
+}
+
+/* === CHART CARD (bọc từng biểu đồ) === */
+.chart-card {
+  background: var(--paper);
+  border: 1px solid var(--line);
+  border-radius: var(--card-radius);
+  padding: 0.75rem 1rem;
+  margin-bottom: 0.75rem;
+}
+.chart-card:last-child { margin-bottom: 0; }
+.chart-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.5rem;
+  gap: 0.5rem;
+}
+.chart-title {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.chart-container { min-height: 260px; }
+.chart-container.chart-sm { min-height: 200px; }
+.chart-container.chart-lg { min-height: 340px; }
+
+/* === YEAR BUTTONS === */
+.year-btns { display: flex; gap: 3px; flex-shrink: 0; }
+.year-btns button {
+  padding: 2px 7px;
+  font-size: 0.7rem;
+  font-weight: 600;
+  border-radius: 3px;
+  background: transparent;
+  color: var(--muted);
+  border: 1px solid var(--line-strong);
+  cursor: pointer;
+  transition: all 0.15s;
+  font-family: 'Inter', sans-serif;
+}
+.year-btns button:hover { color: var(--green); border-color: var(--green); }
+.year-btns button.active {
+  background: var(--green);
+  color: white;
+  border-color: var(--green);
+}
+
+/* === STALE BADGES === */
+.stale-badge {
+  font-size: 0.65rem;
+  font-weight: 600;
+  padding: 2px 7px;
+  border-radius: 9999px;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+.stale-badge.warn  { background: var(--gold-100); color: #92400e; border: 1px solid #fcd34d; }
+.stale-badge.info  { background: #e0f2fe; color: #0369a1; border: 1px solid #bae6fd; }
+.stale-badge.error { background: var(--red-100); color: var(--red); border: 1px solid #fca5a5; }
+
+/* === LOADING SKELETON === */
+@keyframes shimmer {
+  0%   { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+.skeleton {
+  background: linear-gradient(90deg, var(--line) 25%, var(--line-strong) 50%, var(--line) 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+  border-radius: 4px;
+  height: 100%;
+  min-height: 260px;
+}
+
+/* === BLOCK E — BẢNG CỔ PHIẾU === */
+.stock-table { width: 100%; border-collapse: collapse; font-size: 0.8rem; }
+.stock-table th {
+  text-align: right;
+  font-size: 0.65rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--muted);
+  padding: 0.4rem 0.75rem;
+  border-bottom: 2px solid var(--line-strong);
+}
+.stock-table th:first-child { text-align: left; }
+.stock-table td {
+  padding: 0.5rem 0.75rem;
+  text-align: right;
+  border-bottom: 1px solid var(--line);
+  color: var(--ink);
+}
+.stock-table td:first-child { text-align: left; font-weight: 600; color: var(--green); }
+.stock-table tr:hover td { background: var(--paper-2); }
+.num-up   { color: #15803d; font-weight: 600; }
+.num-down { color: var(--red); font-weight: 600; }
+.num-neu  { color: var(--muted); }
+.tag-buy  { background: var(--green-100); color: var(--green-800); font-size: 0.65rem; font-weight: 700; padding: 1px 6px; border-radius: 3px; }
+.tag-hold { background: var(--gold-100); color: #92400e; font-size: 0.65rem; font-weight: 700; padding: 1px 6px; border-radius: 3px; }
+.tag-sell { background: var(--red-100); color: var(--red); font-size: 0.65rem; font-weight: 700; padding: 1px 6px; border-radius: 3px; }
+
+/* === INDEX PAGE === */
+.sector-grid-index {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 1rem;
+}
+.sector-card-index {
+  background: var(--white);
+  border: 1px solid var(--line);
+  border-radius: var(--card-radius);
+  padding: 1rem 1.25rem;
+  text-decoration: none;
+  color: var(--ink);
+  transition: box-shadow 0.2s, border-color 0.2s;
+  display: block;
+}
+.sector-card-index:hover {
+  box-shadow: var(--shadow);
+  border-color: var(--green);
+}
+.sector-card-index .sector-code { font-size: 0.65rem; color: var(--muted); font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; }
+.sector-card-index .sector-label { font-size: 0.95rem; font-weight: 600; margin-top: 0.25rem; }
