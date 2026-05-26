@@ -1,0 +1,107 @@
+{
+  "total_unique_endpoints": 41,
+  "total_errors": 1,
+  "total_empty_responses": 10,
+  "endpoints": {
+    "/g/collect": 8,
+    "/_next/static/css/b3aea231f0c485f2.css": 4,
+    "/_next/static/css/22f0e06479a41c76.css": 3,
+    "/_next/static/css/a348cc55cfb711e4.css": 3,
+    "auth": 11,
+    "/_next/data/r4lfhstaz3GUprJKt3o9s/login.json": 1,
+    "/_next/static/css/8f06302209e0b449.css": 2,
+    "/_next/static/css/f41ba4351e37880c.css": 2,
+    "auth/device/check": 1,
+    "/_next/data/r4lfhstaz3GUprJKt3o9s/index.json": 1,
+    "/_next/data/r4lfhstaz3GUprJKt3o9s/about-us.json": 1,
+    "/_next/static/css/bf5452bb9aa4e344.css": 2,
+    "enterprise/corp-search": 5,
+    "/_next/data/r4lfhstaz3GUprJKt3o9s/steel.json": 1,
+    "/_next/static/css/f9eae8e35bd362b3.css": 1,
+    "steel/legend": 1,
+    "/steel": 1,
+    "/_next/data/r4lfhstaz3GUprJKt3o9s/electricity.json": 1,
+    "/electricity": 7,
+    "electricity/enso-nearest-date": 2,
+    "electricity/enso-history": 2,
+    "electricity/enso-forecast": 4,
+    "electricity/lake-name": 1,
+    "electricity/latest-input-price": 4,
+    "electricity/input-price-trend": 1,
+    "electricity/output-price": 1,
+    "electricity/output-resource-name": 1,
+    "electricity/electric-output-plant": 2,
+    "electricity/lake-level": 7,
+    "electricity/output-resource-by-value": 4,
+    "electricity/policy-resource": 1,
+    "electricity/policy-renewable": 1,
+    "enterprise/corp-list": 1,
+    "enterprise/v2/finance-data-range": 9,
+    "enterprise/finance-label": 5,
+    "enterprise/v2/finance-ticket-data": 9,
+    "enterprise/corp-profile": 9,
+    "enterprise/manufactoring-revenue": 9,
+    "enterprise/manufactoring-profit-after-tax": 9,
+    "enterprise/overview-dividend": 9,
+    "electricity/output-resource-by-proportion": 3
+  },
+  "errors": [
+    {
+      "endpoint": "auth",
+      "status": 401,
+      "url": "https://api.findicator.vn/api/auth?deviceId=9c8756f3-6919-52d0-a25d-0d17fe94ca20"
+    }
+  ],
+  "empty_responses": [
+    {
+      "endpoint": "enterprise/v2/finance-data-range",
+      "size": 74,
+      "url": "https://api.findicator.vn/api/enterprise/v2/finance-data-range?period=quarter&ticket=REE&tableName=TRAILING"
+    },
+    {
+      "endpoint": "enterprise/v2/finance-data-range",
+      "size": 74,
+      "url": "https://api.findicator.vn/api/enterprise/v2/finance-data-range?period=quarter&ticket=PC1&tableName=TRAILING"
+    },
+    {
+      "endpoint": "enterprise/v2/finance-data-range",
+      "size": 74,
+      "url": "https://api.findicator.vn/api/enterprise/v2/finance-data-range?period=quarter&ticket=GEG&tableName=TRAILING"
+    },
+    {
+      "endpoint": "enterprise/v2/finance-data-range",
+      "size": 74,
+      "url": "https://api.findicator.vn/api/enterprise/v2/finance-data-range?period=quarter&ticket=HDG&tableName=TRAILING"
+    },
+    {
+      "endpoint": "enterprise/v2/finance-data-range",
+      "size": 74,
+      "url": "https://api.findicator.vn/api/enterprise/v2/finance-data-range?period=quarter&ticket=ASM&tableName=TRAILING"
+    },
+    {
+      "endpoint": "enterprise/v2/finance-data-range",
+      "size": 74,
+      "url": "https://api.findicator.vn/api/enterprise/v2/finance-data-range?period=quarter&ticket=NT2&tableName=TRAILING"
+    },
+    {
+      "endpoint": "enterprise/v2/finance-data-range",
+      "size": 74,
+      "url": "https://api.findicator.vn/api/enterprise/v2/finance-data-range?period=quarter&ticket=POW&tableName=TRAILING"
+    },
+    {
+      "endpoint": "enterprise/v2/finance-data-range",
+      "size": 74,
+      "url": "https://api.findicator.vn/api/enterprise/v2/finance-data-range?period=quarter&ticket=QTP&tableName=TRAILING"
+    },
+    {
+      "endpoint": "enterprise/v2/finance-data-range",
+      "size": 74,
+      "url": "https://api.findicator.vn/api/enterprise/v2/finance-data-range?period=quarter&ticket=HND&tableName=TRAILING"
+    },
+    {
+      "endpoint": "enterprise/v2/finance-ticket-data",
+      "size": 15,
+      "url": "https://api.findicator.vn/api/enterprise/v2/finance-ticket-data?period=quarter&ticket=[%22PC1%22]&date=01%2F01%2F2026&tableName=TRAILING"
+    }
+  ]
+}
