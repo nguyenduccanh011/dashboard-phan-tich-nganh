@@ -500,3 +500,10 @@ function renderBlockF(blockF) {
     renderBctcChart(`chart-bctc-${ticker}`, ticker, blockF);
   });
 }
+
+function renderBlockG(blockG, tickers, opts = {}) {
+  // Call the shared Block G renderer (from block-g-renderer.js)
+  if (typeof window.renderBlockG === 'function') {
+    window.renderBlockG(blockG, 'steel', tickers);
+  }
+}

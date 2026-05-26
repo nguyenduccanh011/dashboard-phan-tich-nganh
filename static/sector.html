@@ -66,24 +66,39 @@
       <div id="block-f-charts"></div>
     </section>
 
-    <!-- Khối G — Enterprise APIs mở rộng (full width) -->
+    <!-- Khối G — Sector-specific data (lake levels, exports, market share, etc.) -->
     <section class="block-section" id="block-g">
-      <div class="block-title">G — Vị thế doanh nghiệp</div>
-      <div id="block-g-content">
-        <div class="enterprise-loading">Đang tải dữ liệu enterprise...</div>
-      </div>
+      <div class="block-title">G — Dữ liệu ngành chuyên biệt</div>
+      <div id="block-g-charts"></div>
     </section>
+
+    <!-- Khối Enterprise Snapshot (live per-company data) -->
+    <section class="block-section" id="block-enterprise">
+      <div class="block-title">Snapshot Doanh Nghiệp (Real-time)</div>
+      <div id="block-enterprise-content">
+        <div class="enterprise-loading">Đang tải dữ liệu doanh nghiệp...</div>
+      </div>
     </section>
   </main>
 
   <script src="/static/js/charts.js"></script>
   <script src="/static/js/sector-utils.js"></script>
+  <script src="/static/js/block-g-renderer.js"></script>
+  <script src="/static/js/block-enterprise-snapshot.js"></script>
   <!-- Sector-specific script được load động -->
   <script>
     (function() {
       const code = location.pathname.split('/').pop();
+
+      // Load sector-specific script
       const s = document.createElement('script');
       s.src = `/static/js/sector-${code}.js`;
+      s.onload = function() {
+        // Sau khi sector-specific load xong, load enterprise snapshot
+        setTimeout(() => {
+          loadAndRenderEnterpriseSnapshot(code);
+        }, 1000);
+      };
       document.body.appendChild(s);
     })();
   </script>

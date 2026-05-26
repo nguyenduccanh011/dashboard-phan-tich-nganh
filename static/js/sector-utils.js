@@ -1,5 +1,14 @@
 // Shared helpers cho tất cả sector-*.js — load trước charts.js
 
+// Default Block G renderer nếu sector-specific không override
+function renderBlockG(blockG, sectorCode, tickers) {
+  // Call the shared Block G renderer (from block-g-renderer.js)
+  if (typeof window.renderBlockG === 'function' && window.renderBlockG !== renderBlockG) {
+    // Avoid infinite recursion - if there's a different renderBlockG, call it
+    window.renderBlockG(blockG, sectorCode, tickers);
+  }
+}
+
 function showEmpty(containerId, message = 'Không có dữ liệu') {
   const el = document.getElementById(containerId);
   if (!el) return;
