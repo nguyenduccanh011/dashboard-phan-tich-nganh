@@ -1,148 +1,258 @@
-#!/usr/bin/env python3
-"""
-Analyze findicator.vn5.har để:
-1. Tìm tất cả endpoint API được gọi
-2. Kiểm tra status code, dữ liệu trống
-3. Tìm API tiêm năng chưa được sử dụng
-4. Kiểm tra lỗi key/data
-"""
+﻿#!/usr/bin/env python3
+"""Analyze HAR file for API issues, empty data, and missing opportunities"""
+
 import json
 import re
-import sys
-from pathlib import Path
 from collections import defaultdict
-from urllib.parse import urlparse, parse_qs
+from pathlib import Path
+from typing import Dict, List, Any, Set, Tuple
 
-# Set output encoding
-if sys.stdout.encoding != 'utf-8':
-    import io
-    sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding='utf-8')
+class HARAnalyzer:
+    def __init__(self, har_path: str):
+        self.har_path = Path(har_path)
+        self.data = self._load_har()
+        self.entries = self.data.get('log', {}).get('entries', [])
 
-HAR_FILE = Path(r"C:\Users\DUC CANH PC\Downloads\findicator.vn5.har")
+        # Track findings
+        self.sectors = defaultdict(lambda: {
+            'apis': defaultdict(dict),
+            'errors': [],
+            'empty_data': [],
+            'potential_apis': set(),
+            'issues': []
+        })
 
-def analyze_har():
-    print("[ANALYZING] Dang phan tich HAR file...")
-    with open(HAR_FILE, 'r', encoding='utf-8') as f:
-        data = json.load(f)
+    def _load_har(self) -> Dict:
+        """Load HAR file"""
+        print(f"Loading HAR file: {self.har_path}")
+        with open(self.har_path, 'r', encoding='utf-8') as f:
+            return json.load(f)
 
-    entries = data['log']['entries']
-    print(f"[STATS] Tong requests: {len(entries)}\n")
+    def _extract_sector(self, url: str) -> str:
+        """Extract sector from URL"""
+        patterns = [
+            r'/(?:stock|sector)/([a-zA-Z0-9_]+)',
+            r'\.([a-zA-Z0-9_]+)\.',
+            r'/(?:api|data)/([a-zA-Z0-9_]+)',
+        ]
 
-    api_calls = defaultdict(list)
-    errors = []
-    empty_data = []
+        for pattern in patterns:
+            match = re.search(pattern, url, re.IGNORECASE)
+            if match:
+                return match.group(1).lower()
 
-    for idx, entry in enumerate(entries):
+        if 'findicator' in url.lower():
+            return 'findicator'
+        elif 'cafef' in url.lower():
+            return 'cafef'
+        elif 'vdsc' in url.lower():
+            return 'vdsc'
+        elif 'sstock' in url.lower():
+            return 'sstock'
+        elif 'vavs' in url.lower():
+            return 'vavs'
+        elif 'simplize' in url.lower():
+            return 'simplize'
+
+        return 'other'
+
+    def _get_api_endpoint(self, url: str) -> str:
+        """Extract API endpoint from full URL"""
+        if '?' in url:
+            url = url.split('?')[0]
+
+        match = re.search(r'https?://[^/]+(/[^?#]*)', url)
+        if match:
+            return match.group(1)
+        return url
+
+    def _check_response_status(self, entry: Dict) -> Tuple[int, bool, str]:
+        """Check response status"""
         try:
-            req = entry.get('request', {})
-            resp = entry.get('response', {})
+            status = entry.get('response', {}).get('status', 0)
+            reason = entry.get('response', {}).get('statusText', '')
+            is_error = status >= 400 or status == 0
+            return status, is_error, reason
+        except:
+            return 0, True, 'Unknown error'
 
-            url = req.get('url', '')
-            method = req.get('method', '')
-            status = resp.get('status', 0)
+    def _check_response_content(self, entry: Dict) -> Tuple[bool, str, int]:
+        """Check if response has content"""
+        try:
+            content = entry.get('response', {}).get('content', {})
+            text = content.get('text', '')
+            mime_type = content.get('mimeType', '')
+            size = content.get('size', 0)
 
-            # Chỉ quan tâm API findicator
-            if 'api.findicator' not in url and 'findicator.vn' not in url:
-                continue
+            is_empty = not text or len(text.strip()) == 0
+            return is_empty, mime_type, size
+        except:
+            return True, '', 0
 
-            # Parse URL
-            parsed = urlparse(url)
-            path = parsed.path
-            params = parse_qs(parsed.query)
+    def _extract_response_data(self, entry: Dict) -> Dict[str, Any]:
+        """Try to parse response as JSON"""
+        try:
+            content = entry.get('response', {}).get('content', {})
+            text = content.get('text', '')
+            if text:
+                return json.loads(text)
+        except:
+            pass
+        return {}
 
-            # Extract endpoint
-            if '/api/' in path:
-                endpoint = path.split('/api/')[-1] if '/api/' in path else path
-            else:
-                endpoint = path
+    def _analyze_request_params(self, entry: Dict) -> Dict[str, str]:
+        """Extract query parameters and body"""
+        params = {}
+        url = entry.get('request', {}).get('url', '')
 
-            # Kiểm tra response
-            resp_content = resp.get('content', {})
-            resp_size = resp_content.get('size', 0)
+        if '?' in url:
+            query_string = url.split('?')[1]
+            for param in query_string.split('&'):
+                if '=' in param:
+                    key, value = param.split('=', 1)
+                    params[key] = value
 
-            api_calls[endpoint].append({
-                'status': status,
-                'method': method,
-                'params': dict(params),
-                'size': resp_size,
-                'url': url[:200]
-            })
+        return params
 
-            # Tìm lỗi
-            if status >= 400:
-                errors.append({
+    def analyze(self):
+        """Analyze all entries"""
+        print(f"\nAnalyzing {len(self.entries)} requests...")
+
+        for i, entry in enumerate(self.entries):
+            if (i + 1) % 100 == 0:
+                print(f"  Processed {i + 1}/{len(self.entries)}")
+
+            url = entry.get('request', {}).get('url', '')
+            method = entry.get('request', {}).get('method', 'GET')
+
+            sector = self._extract_sector(url)
+            endpoint = self._get_api_endpoint(url)
+            status, is_error, reason = self._check_response_status(entry)
+            is_empty, mime_type, size = self._check_response_content(entry)
+
+            api_key = f"{method} {endpoint}"
+
+            if api_key not in self.sectors[sector]['apis']:
+                self.sectors[sector]['apis'][api_key] = {
+                    'url': url,
+                    'method': method,
                     'endpoint': endpoint,
+                    'calls': 0,
+                    'errors': 0,
+                    'empty_responses': 0,
+                    'status_codes': set(),
+                    'mime_types': set(),
+                    'params': set(),
+                }
+
+            api_info = self.sectors[sector]['apis'][api_key]
+            api_info['calls'] += 1
+            api_info['status_codes'].add(status)
+            api_info['mime_types'].add(mime_type)
+
+            if is_error:
+                api_info['errors'] += 1
+                self.sectors[sector]['errors'].append({
+                    'api': api_key,
                     'status': status,
-                    'url': url[:150]
+                    'reason': reason,
+                    'url': url
                 })
 
-            # Tìm response trống
-            if status == 200 and resp_size < 100:
-                empty_data.append({
-                    'endpoint': endpoint,
-                    'size': resp_size,
-                    'url': url[:150]
+            if is_empty and status == 200:
+                api_info['empty_responses'] += 1
+                self.sectors[sector]['empty_data'].append({
+                    'api': api_key,
+                    'url': url,
+                    'size': size
                 })
 
-        except Exception as e:
-            print(f"[WARNING] Loi parsing entry {idx}: {e}")
+            params = self._analyze_request_params(entry)
+            for param_key in params.keys():
+                api_info['params'].add(param_key)
 
-    # In ket qua
-    print("=" * 80)
-    print("[ENDPOINTS] API DA GOI (tu HAR)")
-    print("=" * 80)
+    def generate_report(self) -> str:
+        """Generate analysis report"""
+        report = []
+        report.append("=" * 100)
+        report.append("HAR FILE ANALYSIS REPORT")
+        report.append("=" * 100)
+        report.append(f"Total Requests: {len(self.entries)}")
+        report.append(f"Sectors Found: {len(self.sectors)}")
+        report.append("")
 
-    sorted_endpoints = sorted(api_calls.items(), key=lambda x: len(x[1]), reverse=True)
-    for endpoint, calls in sorted_endpoints[:30]:
-        statuses = set(c['status'] for c in calls)
-        print(f"\n[OK] {endpoint}")
-        print(f"  Calls: {len(calls)} | Status: {statuses}")
-        if calls:
-            print(f"  Sample: {calls[0]['url'][:100]}...")
+        for sector in sorted(self.sectors.keys()):
+            sector_data = self.sectors[sector]
+            apis = sector_data['apis']
 
-    print("\n" + "=" * 80)
-    print("[ERRORS] LOI (HTTP 400+)")
-    print("=" * 80)
-    if errors:
-        for err in errors[:10]:
-            print(f"  [{err['status']}] {err['endpoint']}")
-            print(f"       {err['url']}")
-    else:
-        print("  [OK] Khong co loi HTTP")
+            report.append("\n" + "=" * 100)
+            report.append(f"SECTOR: {sector.upper()}")
+            report.append("=" * 100)
 
-    print("\n" + "=" * 80)
-    print("[EMPTY] DU LIEU TRONG (size < 100 bytes, 200 OK)")
-    print("=" * 80)
-    if empty_data:
-        for item in empty_data[:10]:
-            print(f"  [{item['size']} bytes] {item['endpoint']}")
-            print(f"       {item['url']}")
-    else:
-        print("  [OK] Khong co response trong")
+            total_apis = len(apis)
+            total_calls = sum(api['calls'] for api in apis.values())
+            total_errors = sum(api['errors'] for api in apis.values())
+            total_empty = sum(api['empty_responses'] for api in apis.values())
 
-    print("\n" + "=" * 80)
-    print("[SUMMARY] THONG KE")
-    print("=" * 80)
-    print(f"Total unique endpoints: {len(api_calls)}")
-    print(f"Total errors: {len(errors)}")
-    print(f"Total empty responses: {len(empty_data)}")
+            report.append(f"Total Unique APIs: {total_apis}")
+            report.append(f"Total API Calls: {total_calls}")
+            report.append(f"Failed Calls (4xx, 5xx): {total_errors}")
+            report.append(f"Empty Responses (200 but no data): {total_empty}")
+            report.append("")
 
-    return api_calls, errors, empty_data
+            if sector_data['errors']:
+                report.append("ERRORS:")
+                report.append("-" * 100)
+                error_apis = defaultdict(list)
+                for error in sector_data['errors']:
+                    error_apis[error['api']].append(error['status'])
+
+                for api, statuses in sorted(error_apis.items()):
+                    status_summary = ", ".join(str(s) for s in sorted(set(statuses)))
+                    count = len(statuses)
+                    report.append(f"  {api}")
+                    report.append(f"    Status Codes: {status_summary} ({count} times)")
+                report.append("")
+
+            if sector_data['empty_data']:
+                report.append("EMPTY RESPONSES:")
+                report.append("-" * 100)
+                for empty in sector_data['empty_data'][:10]:
+                    report.append(f"  {empty['api']}")
+                report.append("")
+
+            report.append("ALL APIs:")
+            report.append("-" * 100)
+            for api_key in sorted(apis.keys(), key=lambda x: -apis[x]['calls']):
+                api = apis[api_key]
+                status_str = ", ".join(str(s) for s in sorted(api['status_codes']))
+                report.append(f"{api['endpoint']} | Calls: {api['calls']} | Errors: {api['errors']} | Status: {status_str}")
+            report.append("")
+
+        return "\n".join(report)
+
+    def save_report(self, output_path: str = None):
+        """Save report to file"""
+        if output_path is None:
+            output_path = str(self.har_path).replace('.har', '_analysis.txt')
+
+        report = self.generate_report()
+        with open(output_path, 'w', encoding='utf-8') as f:
+            f.write(report)
+
+        print(f"Report saved to: {output_path}")
+        return output_path
+
 
 if __name__ == '__main__':
-    api_calls, errors, empty_data = analyze_har()
+    import sys
 
-    # Save to file
-    report = {
-        'total_unique_endpoints': len(api_calls),
-        'total_errors': len(errors),
-        'total_empty_responses': len(empty_data),
-        'endpoints': {k: len(v) for k, v in api_calls.items()},
-        'errors': errors[:20],
-        'empty_responses': empty_data[:20]
-    }
+    har_path = r"C:\Users\DUC CANH PC\Downloads\findicator.vn5.har"
+    if len(sys.argv) > 1:
+        har_path = sys.argv[1]
 
-    with open('har_analysis_report.json', 'w', encoding='utf-8') as f:
-        json.dump(report, f, ensure_ascii=False, indent=2)
+    analyzer = HARAnalyzer(har_path)
+    analyzer.analyze()
+    analyzer.save_report()
 
-    print("\n[SUCCESS] Report saved to har_analysis_report.json")
+    print(analyzer.generate_report())

@@ -7,7 +7,7 @@ import asyncio
 import json
 from pathlib import Path
 from datetime import datetime, date
-from collectors.base import findicator
+from collectors.base import findicator, transform_keys
 
 def _quarters(n=8):
     today = date.today()
@@ -101,6 +101,7 @@ async def _collect_block_b():
     steel_production = await _try(findicator.get(
         "macro-data/macro-item-detail", params={"macroItemId": 8, "year": "5Y"}
     ))
+    legend = await _try(findicator.get("cement/legend"), default={})
     return {
         "iip_yoy": iip_yoy,
         "clinker_value": clinker_value,
@@ -110,6 +111,7 @@ async def _collect_block_b():
         "inventory_index": inventory_index,
         "capex_public": capex_public,
         "steel_production": steel_production,
+        "legend": legend,
     }
 
 

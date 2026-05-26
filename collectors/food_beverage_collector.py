@@ -7,7 +7,7 @@ import asyncio
 import json
 from pathlib import Path
 from datetime import datetime
-from collectors.base import findicator, wichart
+from collectors.base import findicator, wichart, transform_keys
 
 CACHE_FILE = Path("cache/sector_food_beverage.json")
 TICKERS = ["VNM", "SAB", "BHN", "MCM", "QNS", "KDC"]

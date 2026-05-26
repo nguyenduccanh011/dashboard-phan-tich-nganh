@@ -9,7 +9,7 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
-from routers import sector, macro, stock
+from routers import sector, macro, stock, enterprise, admin
 from collectors import (
     steel_collector, bank_collector, cement_collector, pangasius_collector,
     shrimp_collector, aviation_collector, rubber_collector, pig_collector,
@@ -18,7 +18,7 @@ from collectors import (
     plastics_collector, insurance_collector, oilgas_collector, gold_collector,
     coffee_collector, wood_collector, pharma_collector, logistics_collector,
     rice_collector, pepper_collector, technology_collector,
-    macro_collector,
+    macro_collector, enterprise_collector, overview_collector,
 )
 
 logger = logging.getLogger(__name__)
@@ -27,6 +27,8 @@ app = FastAPI(title="Sector Hub")
 app.include_router(sector.router, prefix="/api/sector")
 app.include_router(macro.router, prefix="/api/macro")
 app.include_router(stock.router, prefix="/api/stock")
+app.include_router(enterprise.router, prefix="/api/enterprise")
+app.include_router(admin.router, prefix="/api/admin")
 app.mount("/static", StaticFiles(directory="static"), name="static")
 
 scheduler = AsyncIOScheduler(timezone="Asia/Ho_Chi_Minh")
@@ -41,6 +43,8 @@ async def refresh_all_caches():
     """Chạy tất cả collectors song song, log lỗi từng collector riêng."""
     collectors = [
         ("macro",        macro_collector.collect),
+        ("enterprise",   enterprise_collector.collect),
+        ("overview",     overview_collector.collect),
         ("steel",        steel_collector.collect),
         ("bank",         bank_collector.collect),
         ("cement",       cement_collector.collect),

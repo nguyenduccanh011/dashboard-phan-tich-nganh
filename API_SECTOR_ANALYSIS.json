@@ -1,0 +1,435 @@
+{
+  "report_meta": {
+    "generated": "2026-05-26",
+    "har_file": "findicator.vn5.har",
+    "total_requests": 153,
+    "unique_endpoints": 35,
+    "sectors_found": 4
+  },
+  "critical_issues": [
+    {
+      "id": "auth_401",
+      "severity": "high",
+      "type": "authentication",
+      "endpoint": "/api/auth",
+      "status_code": 401,
+      "description": "Initial authentication attempt returns 401 Unauthorized",
+      "impact": "API access blocked until credentials are valid",
+      "fix": "Verify API key in findicator_token.txt or findicator_creds.json"
+    },
+    {
+      "id": "empty_corp_search",
+      "severity": "medium",
+      "type": "data_quality",
+      "endpoint": "/api/enterprise/corp-search",
+      "parameter": "corpText",
+      "description": "API called with empty corpText parameter",
+      "occurrences": 3,
+      "impact": "Wasted API calls, potential performance issue",
+      "fix": "Add input validation to prevent empty searches"
+    }
+  ],
+  "sectors": {
+    "enterprise_finance": {
+      "category": "Enterprise Finance Data",
+      "active_apis": [
+        {
+          "endpoint": "/api/enterprise/corp-list",
+          "method": "GET",
+          "calls": 1,
+          "status": 200,
+          "data_type": "encrypted",
+          "status_healthy": true,
+          "parameters": {}
+        },
+        {
+          "endpoint": "/api/enterprise/corp-profile",
+          "method": "GET",
+          "calls": 9,
+          "status": 200,
+          "data_type": "encrypted",
+          "status_healthy": true,
+          "parameters": {
+            "corpId": "numeric corporate ID"
+          }
+        },
+        {
+          "endpoint": "/api/enterprise/corp-search",
+          "method": "GET",
+          "calls": 5,
+          "status": 200,
+          "data_type": "encrypted",
+          "status_healthy": true,
+          "parameters": {
+            "corpText": "search query (often empty)"
+          },
+          "issues": [
+            {
+              "type": "empty_parameter",
+              "parameter": "corpText",
+              "occurrences": 3,
+              "recommendation": "Add validation"
+            }
+          ]
+        },
+        {
+          "endpoint": "/api/enterprise/finance-label",
+          "method": "GET",
+          "calls": 5,
+          "status": 200,
+          "data_type": "encrypted",
+          "status_healthy": true,
+          "parameters": {
+            "corpType": "4",
+            "tableName": [
+              "INCOME_STATEMENT",
+              "BALANCE_SHEET",
+              "CASH_FLOW_INDIRECT"
+            ]
+          }
+        },
+        {
+          "endpoint": "/api/enterprise/finance-ticket-data",
+          "method": "GET",
+          "calls": 9,
+          "status": 200,
+          "data_type": "encrypted",
+          "status_healthy": true,
+          "parameters": {
+            "ticket": "stock ticker code"
+          }
+        },
+        {
+          "endpoint": "/api/enterprise/finance-data-range",
+          "method": "GET",
+          "calls": 9,
+          "status": 200,
+          "data_type": "encrypted",
+          "status_healthy": true,
+          "parameters": {}
+        },
+        {
+          "endpoint": "/api/enterprise/manufactoring-revenue",
+          "method": "GET",
+          "calls": 9,
+          "status": 200,
+          "data_type": "encrypted",
+          "status_healthy": true,
+          "parameters": {
+            "year": "All|year number",
+            "ticket": "stock ticker",
+            "period": "quarter|year"
+          },
+          "notes": "Typo in endpoint name: 'manufactoring' should be 'manufacturing'"
+        },
+        {
+          "endpoint": "/api/enterprise/manufactoring-profit-after-tax",
+          "method": "GET",
+          "calls": 9,
+          "status": 200,
+          "data_type": "encrypted",
+          "status_healthy": true,
+          "parameters": {
+            "year": "All|year number",
+            "ticket": "stock ticker",
+            "period": "quarter|year"
+          },
+          "notes": "Typo in endpoint name"
+        },
+        {
+          "endpoint": "/api/enterprise/overview-dividend",
+          "method": "GET",
+          "calls": 9,
+          "status": 200,
+          "data_type": "encrypted",
+          "status_healthy": true,
+          "parameters": {}
+        }
+      ],
+      "missing_apis": [
+        {
+          "endpoint": "/api/enterprise/compare-revenue",
+          "purpose": "Compare revenue across companies",
+          "data_needed": ["revenue_by_company", "revenue_by_year"],
+          "priority": "high",
+          "use_case": "Competitive analysis"
+        },
+        {
+          "endpoint": "/api/enterprise/financial-ratios",
+          "purpose": "Calculate and compare financial ratios",
+          "data_needed": ["pe_ratio", "roa", "roe", "profit_margin"],
+          "priority": "high",
+          "use_case": "Company valuation"
+        },
+        {
+          "endpoint": "/api/enterprise/sector-ranking",
+          "purpose": "Rank companies by metrics within sector",
+          "data_needed": ["rank_by_revenue", "rank_by_profit", "rank_by_market_cap"],
+          "priority": "high",
+          "use_case": "Market position analysis"
+        },
+        {
+          "endpoint": "/api/enterprise/peer-analysis",
+          "purpose": "Compare metrics with peer companies",
+          "data_needed": ["peer_group", "peer_metrics", "peer_averages"],
+          "priority": "high",
+          "use_case": "Comparative analysis"
+        },
+        {
+          "endpoint": "/api/enterprise/market-share",
+          "purpose": "Show market share by company in sector",
+          "data_needed": ["total_market_size", "company_market_share"],
+          "priority": "medium",
+          "use_case": "Market dominance analysis"
+        },
+        {
+          "endpoint": "/api/enterprise/growth-metrics",
+          "purpose": "YoY and QoQ growth comparison",
+          "data_needed": ["yoy_growth", "qoq_growth", "growth_rate_by_metric"],
+          "priority": "medium",
+          "use_case": "Growth trajectory analysis"
+        }
+      ],
+      "recommendations": [
+        "Fix empty search parameter handling",
+        "Implement financial comparison features",
+        "Add ranking/benchmarking capabilities",
+        "Extend financial metrics calculation"
+      ]
+    },
+    "electricity_energy": {
+      "category": "Electricity & Energy Data",
+      "active_apis": [
+        {
+          "endpoint": "/api/electricity/lake-level",
+          "method": "GET",
+          "calls": 7,
+          "status": 200,
+          "data_type": "encrypted",
+          "status_healthy": true,
+          "parameters": {
+            "lakeId": "numeric lake identifier"
+          }
+        },
+        {
+          "endpoint": "/api/electricity/enso-forecast",
+          "method": "GET",
+          "calls": 4,
+          "status": 200,
+          "data_type": "encrypted",
+          "status_healthy": true,
+          "parameters": {
+            "date": "YYYY-MM-DD format"
+          }
+        },
+        {
+          "endpoint": "/api/electricity/latest-input-price",
+          "method": "GET",
+          "calls": 4,
+          "status": 200,
+          "data_type": "encrypted",
+          "status_healthy": true,
+          "parameters": {}
+        },
+        {
+          "endpoint": "/api/electricity/output-resource-by-value",
+          "method": "GET",
+          "calls": 4,
+          "status": 200,
+          "data_type": "encrypted",
+          "status_healthy": true,
+          "parameters": {
+            "year": "All|5Y|10Y|year_number"
+          }
+        },
+        {
+          "endpoint": "/api/electricity/output-resource-by-proportion",
+          "method": "GET",
+          "calls": 3,
+          "status": 200,
+          "data_type": "encrypted",
+          "status_healthy": true,
+          "parameters": {
+            "year": "All|5Y|10Y|year_number"
+          },
+          "use_case": "Energy source mix visualization"
+        },
+        {
+          "endpoint": "/api/electricity/enso-history",
+          "method": "GET",
+          "calls": 2,
+          "status": 200,
+          "data_type": "encrypted",
+          "status_healthy": true,
+          "parameters": {
+            "year": "All"
+          }
+        },
+        {
+          "endpoint": "/api/electricity/electric-output-plant",
+          "method": "GET",
+          "calls": 2,
+          "status": 200,
+          "data_type": "encrypted",
+          "status_healthy": true,
+          "parameters": {}
+        }
+      ],
+      "missing_apis": [
+        {
+          "endpoint": "/api/electricity/provider-comparison",
+          "purpose": "Compare electricity providers",
+          "data_needed": ["provider_pricing", "provider_capacity", "regional_coverage"],
+          "priority": "medium"
+        },
+        {
+          "endpoint": "/api/electricity/regional-consumption",
+          "purpose": "Consumption metrics by region",
+          "data_needed": ["region_id", "consumption_data", "peak_hours"],
+          "priority": "medium"
+        },
+        {
+          "endpoint": "/api/electricity/price-forecast",
+          "purpose": "Forecasted electricity prices",
+          "data_needed": ["forecast_date", "price_prediction"],
+          "priority": "medium"
+        },
+        {
+          "endpoint": "/api/electricity/capacity-utilization",
+          "purpose": "Actual vs maximum capacity",
+          "data_needed": ["capacity", "current_output", "utilization_rate"],
+          "priority": "low"
+        },
+        {
+          "endpoint": "/api/electricity/supply-demand",
+          "purpose": "Supply/demand balance metrics",
+          "data_needed": ["supply", "demand", "balance_status"],
+          "priority": "low"
+        }
+      ],
+      "recommendations": [
+        "Enhance renewable energy tracking with time-series",
+        "Add regional consumption data",
+        "Implement provider comparison features",
+        "Extend price forecast capabilities"
+      ]
+    },
+    "steel_commodities": {
+      "category": "Steel & Commodities Data",
+      "active_apis": [
+        {
+          "endpoint": "/api/steel/legend",
+          "method": "GET",
+          "calls": 1,
+          "status": 200,
+          "data_type": "encrypted",
+          "status_healthy": true,
+          "parameters": {}
+        }
+      ],
+      "missing_apis": [
+        {
+          "endpoint": "/api/steel/price",
+          "purpose": "Steel price trends",
+          "priority": "critical",
+          "status": "MISSING"
+        },
+        {
+          "endpoint": "/api/steel/production",
+          "purpose": "Production volume by type",
+          "priority": "critical",
+          "status": "MISSING"
+        },
+        {
+          "endpoint": "/api/steel/market-share",
+          "purpose": "Market leaders by type",
+          "priority": "high",
+          "status": "MISSING"
+        },
+        {
+          "endpoint": "/api/steel/global-vs-domestic",
+          "purpose": "Global vs domestic market comparison",
+          "priority": "high",
+          "status": "MISSING"
+        },
+        {
+          "endpoint": "/api/steel/price-forecast",
+          "purpose": "Future price predictions",
+          "priority": "medium",
+          "status": "MISSING"
+        },
+        {
+          "endpoint": "/api/steel/quality-grades",
+          "purpose": "Pricing by quality grade",
+          "priority": "medium",
+          "status": "MISSING"
+        }
+      ],
+      "coverage": "INCOMPLETE - Only reference data available",
+      "recommendations": [
+        "Implement core steel APIs (HIGH PRIORITY)",
+        "Add market comparison features",
+        "Support type-based analysis",
+        "Create historical price data"
+      ]
+    }
+  },
+  "api_usage_stats": {
+    "total_calls": 153,
+    "by_sector": {
+      "enterprise": 45,
+      "electricity": 37,
+      "authentication": 11,
+      "static_pages": 60
+    },
+    "top_endpoints": [
+      {
+        "endpoint": "/api/enterprise/finance-ticket-data",
+        "calls": 9
+      },
+      {
+        "endpoint": "/api/enterprise/corp-profile",
+        "calls": 9
+      },
+      {
+        "endpoint": "/api/enterprise/finance-data-range",
+        "calls": 9
+      },
+      {
+        "endpoint": "/api/electricity/lake-level",
+        "calls": 7
+      }
+    ]
+  },
+  "action_items": {
+    "immediate": [
+      {
+        "priority": "critical",
+        "task": "Fix 401 auth error",
+        "description": "Verify API credentials in config files"
+      },
+      {
+        "priority": "high",
+        "task": "Fix empty corpText parameter",
+        "description": "Add validation to prevent empty searches"
+      },
+      {
+        "priority": "high",
+        "task": "Document API response structures",
+        "description": "All responses encrypted with hashCode - document decryption"
+      }
+    ],
+    "short_term": [
+      "Implement financial comparison APIs",
+      "Add sector ranking and benchmarking",
+      "Create steel market data endpoints",
+      "Support time-series/historical data"
+    ],
+    "medium_term": [
+      "Enhance electricity APIs with regional data",
+      "Add growth metrics and analysis",
+      "Implement predictive forecasting",
+      "Create comprehensive documentation"
+    ]
+  }
+}

@@ -115,6 +115,12 @@ async def _collect_block_b():
         "steel/time-series",
         params={"year": "5Y", "macroIds": "1,2,3,4,5,6,7", "period": "month_value", "repo": "SteelCNOverall"}
     ), default=[])
+
+    legend = await _try(findicator.get("steel/legend"), default={})
+    corp_name = await _try(findicator.get("steel/enterprise-corp-name"), default=[])
+    enterprise_market_share = await _try(findicator.get("steel/enterprise-domestic-market-share", params={"year": "5Y"}), default=[])
+    quantity_structure = await _try(findicator.get("steel/enterprise-quantity-structure", params={"year": "5Y"}), default=[])
+
     return {
         "market_share": market_share,
         "inventory": inventory,
@@ -122,6 +128,10 @@ async def _collect_block_b():
         "export_status": export_status,
         "overview": overview,
         "cn_series": cn_series,
+        "legend": legend,
+        "corp_name": corp_name,
+        "enterprise_market_share": enterprise_market_share,
+        "quantity_structure": quantity_structure,
     }
 
 

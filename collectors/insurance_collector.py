@@ -10,7 +10,7 @@ import asyncio
 import json
 from pathlib import Path
 from datetime import datetime
-from collectors.base import findicator
+from collectors.base import findicator, transform_keys
 
 CACHE_FILE = Path("cache/sector_insurance.json")
 TICKERS = ["BVH", "BMI", "BIC", "MIG", "PTI"]

@@ -162,23 +162,79 @@ async def _collect_vn():
         params={"macroItemId": 134, "year": "5Y"}
     )
 
+    # GDP nominal (macroItemId=2)
+    gdp_nominal = await findicator.get(
+        "macro-data/macro-item-detail",
+        params={"macroItemId": 2, "year": "5Y", "period": "quarter"}
+    )
+
+    # GDP thực tế (macroItemId=3)
+    gdp_real = await findicator.get(
+        "macro-data/macro-item-detail",
+        params={"macroItemId": 3, "year": "5Y", "period": "quarter"}
+    )
+
+    # Sản phẩm công nghiệp (macroItemId=8)
+    industrial_prod = await findicator.get(
+        "macro-data/macro-item-detail",
+        params={"macroItemId": 8, "year": "5Y", "period": "month"}
+    )
+
+    # PPI (macroItemId=10)
+    ppi_vn = await findicator.get(
+        "macro-data/macro-item-detail",
+        params={"macroItemId": 10, "year": "5Y", "period": "quarter"}
+    )
+
+    # FDI theo ngành (macroItemId=15)
+    fdi_sector = await findicator.get(
+        "macro-data/macro-item-detail",
+        params={"macroItemId": 15, "year": "5Y", "period": "month"}
+    )
+
+    # Vận chuyển hành khách (macroItemId=29)
+    transport_passenger = await findicator.get(
+        "macro-data/macro-item-detail",
+        params={"macroItemId": 29, "year": "5Y", "period": "month"}
+    )
+
+    # Vận chuyển hàng hoá (macroItemId=30)
+    transport_freight = await findicator.get(
+        "macro-data/macro-item-detail",
+        params={"macroItemId": 30, "year": "5Y", "period": "month"}
+    )
+
+    # Tỷ giá khác (macroItemId=53)
+    exchange_rate_other = await findicator.get(
+        "macro-data/macro-item-detail",
+        params={"macroItemId": 53, "year": "5Y"}
+    )
+
     return {
         "gdp": gdp,
+        "gdp_nominal": gdp_nominal,
+        "gdp_real": gdp_real,
         "cpi_vn": cpi_vn,
         "pmi_vn": pmi_vn,
         "iip_total": iip_total,
+        "industrial_prod": industrial_prod,
+        "ppi_vn": ppi_vn,
         "consumption_idx": consumption_idx,
         "inventory_idx": inventory_idx,
         "fdi": fdi,
+        "fdi_sector": fdi_sector,
         "gov_invest": gov_invest,
         "retail_vn": retail_vn,
         "export_vn": export_vn,
         "import_vn": import_vn,
+        "transport_passenger": transport_passenger,
+        "transport_freight": transport_freight,
         "credit": credit,
         "deposit_rate": deposit_rate,
         "lslnh": lslnh,
         "m2": m2,
         "usd_vnd": usd_vnd,
+        "exchange_rate_other": exchange_rate_other,
         "tpcp_vn": tpcp_vn,
         "omo": omo_meta,
         "forex_reserve": forex_reserve,

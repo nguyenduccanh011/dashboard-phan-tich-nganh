@@ -7,7 +7,7 @@ import asyncio
 import json
 from pathlib import Path
 from datetime import datetime, date
-from collectors.base import findicator
+from collectors.base import findicator, transform_keys
 
 def _quarters(n=8):
     today = date.today()
