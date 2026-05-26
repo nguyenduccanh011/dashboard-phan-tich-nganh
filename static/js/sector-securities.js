@@ -24,7 +24,7 @@
   renderBlockD(data.block_d);
   renderBlockE(data.block_e);
   renderBlockF(data.block_f);
-  renderBlockG(data.block_g, data.tickers, { pe_id: 152, pb_id: 153 });
+  window.window.renderBlockG(data.block_g, data.tickers, { pe_id: 152, pb_id: 153 });
 })();
 
 

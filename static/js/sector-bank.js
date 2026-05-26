@@ -24,7 +24,7 @@
   renderBlockD(data.block_c);
   renderBlockE(data.block_e);
   renderBlockF(data.block_f);
-  renderBlockG(data.block_g, data.tickers, { pe_id: 89, pb_id: 90 });
+  window.window.window.renderBlockG(data.block_g, data.tickers, { pe_id: 89, pb_id: 90 });
   renderBankCharts(data.bank_charts);
 })();
 

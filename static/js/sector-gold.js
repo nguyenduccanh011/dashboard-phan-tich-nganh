@@ -23,7 +23,7 @@
   renderBlockD(data.block_a);
   renderBlockE(data.block_e);
   renderBlockF(data.block_f);
-  renderBlockG(data.block_g, data.tickers, {});
+  window.renderBlockG(data.block_g, 'gold', data.tickers);
 })();
 
 

@@ -23,7 +23,7 @@
   renderBlockC(data.block_c);
   renderBlockE(data.block_e);
   renderBlockF(data.block_f);
-  renderBlockG(data.block_g, data.tickers, {});
+  window.window.renderBlockG(data.block_g, data.tickers, {});
 })();
 
 
