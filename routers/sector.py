@@ -180,4 +180,3 @@ def _attach_peer_shares(rows: list[dict]) -> None:
         row["revenue_share"] = float(row.get("latest_revenue") or 0) / total_revenue if total_revenue else None
         row["profit_share"] = float(row.get("latest_profit") or 0) / total_profit if total_profit else None
         row["market_cap_share"] = float(row.get("market_cap") or 0) / total_market_cap if total_market_cap else None
->>>>>>> 034781a8a70564f8407bcb69b393601a768c1a47
