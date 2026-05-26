@@ -35,8 +35,8 @@ function renderBlockI_Market(market) {
   `);
 
   const card = c.querySelector('.chart-card');
-  const vnIdx = parseFindicatorSeries(market?.filter(r => r.nameId === 3));  // VNINDEX
-  const liquidity = parseFindicatorSeries(market?.filter(r => r.nameId === 1)); // thanh khoản
+  const vnIdx = parseFindicatorSeries(market?.filter(r => r.name_id === 3));  // VNINDEX
+  const liquidity = parseFindicatorSeries(market?.filter(r => r.name_id === 1)); // thanh khoản
 
   function renderVNIndex(year) {
     const cutoff = yearToCutoff(year);

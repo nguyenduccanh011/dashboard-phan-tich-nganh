@@ -24,6 +24,7 @@
   renderBlockD(data.block_e);
   renderBlockE(data.block_e);
   renderBlockF(data.block_f);
+  renderBlockG(data.block_g, data.tickers, { pe_id: 150, pb_id: 151 });
 })();
 
 
@@ -42,9 +43,9 @@ function renderBlockA(blockA) {
   `);
 
   const card1 = container.lastElementChild;
-  const tpcp5y  = parseFindicatorSeries((blockA?.tpcp || []).filter(r => r.nameId === 8));
-  const tpcp10y = parseFindicatorSeries((blockA?.tpcp || []).filter(r => r.nameId === 9));
-  const ust10y  = parseFindicatorSeries((blockA?.tpcp || []).filter(r => r.nameId === 3));
+  const tpcp5y  = parseFindicatorSeries((blockA?.bond_yields || []).filter(r => r.name_id === 8));
+  const tpcp10y = parseFindicatorSeries((blockA?.bond_yields || []).filter(r => r.name_id === 9));
+  const ust10y  = parseFindicatorSeries((blockA?.bond_yields || []).filter(r => r.name_id === 3));
 
   function renderBondYield(year) {
     const cutoff = yearToCutoff(year);
@@ -111,7 +112,10 @@ function renderBlockB(blockB) {
   }
 
   const allQuarters = [...new Set(
-    tickers.flatMap(t => (revenues[t] || []).map(r => r.period || `${r.year}Q${r.quarter}`))
+    tickers.flatMap(t => {
+      const rows = revenues[t]?.type1 || Object.values(revenues[t] || {}).flat() || [];
+      return rows.map(r => r.period || `${r.year}Q${r.quarter}`);
+    })
   )].sort().slice(-12);
 
   createChart('chart-ins-revenue', {
@@ -121,7 +125,8 @@ function renderBlockB(blockB) {
       name: t,
       color: HC_COLORS[i],
       data: allQuarters.map(q => {
-        const r = (revenues[t] || []).find(x => (x.period || `${x.year}Q${x.quarter}`) === q);
+        const rows = revenues[t]?.type1 || Object.values(revenues[t] || {}).flat() || [];
+        const r = rows.find(x => (x.period || `${x.year}Q${x.quarter}`) === q);
         return r?.value ?? null;
       }),
     })),
@@ -211,58 +216,12 @@ function renderBlockD(blockE) {
 
 
 function renderBlockE(blockE) {
-  const container = document.getElementById('block-e-table');
-  const tickers = Object.keys(blockE || {});
-  if (!tickers.length) { container.innerHTML = '<p class="text-muted">Không có dữ liệu</p>'; return; }
-
-  const rows = tickers.map(t => {
-    const tr = blockE[t]?.trailing;
-    const tickerData = tr?.[t] || (Array.isArray(tr) ? tr : []);
-    const get = (id) => tickerData.find?.(r => r.accountId === id)?.value;
-    const analyst = blockE[t]?.analyst;
-    const rec = Array.isArray(analyst) ? analyst[0] : analyst;
-    return {
-      ticker: t,
-      marketCap: get(140), pe: get(144), pb: get(145),
-      roe: get(131), roa: get(132),
-      recommendation: rec?.recommend, upside: rec?.upside, targetPrice: rec?.targetPrice,
-    };
+  // corpType=2 (bảo hiểm): accountIds riêng
+  renderValuationTable('block-e-table', blockE, {
+    accountMap: { marketCap: 140, pe: 144, pb: 145, roe: 131, roa: 132 },
+    columns: ['marketCap', 'pe', 'pb', 'roe', 'roa'],
+    pctFields: ['roe', 'roa'],
   });
-
-  const recTag = (r) => {
-    if (!r) return '—';
-    const map = { BUY: 'tag-buy', HOLD: 'tag-hold', SELL: 'tag-sell' };
-    return `<span class="${map[r] || ''}">${r}</span>`;
-  };
-  const pct = v => v != null ? `<span class="${v >= 0 ? 'num-up' : 'num-down'}">${(v * 100).toFixed(1)}%</span>` : '—';
-  const num = (v, dp = 1) => v != null ? Highcharts.numberFormat(v, dp) : '—';
-
-  container.innerHTML = `
-    <table class="stock-table">
-      <thead>
-        <tr>
-          <th>Ticker</th><th>Vốn hóa (tỷ)</th><th>PE</th><th>PB</th>
-          <th>ROE</th><th>ROA</th>
-          <th>Recommend</th><th>Upside</th><th>Target</th>
-        </tr>
-      </thead>
-      <tbody>
-        ${rows.map(r => `
-          <tr>
-            <td>${r.ticker}</td>
-            <td>${num(r.marketCap, 0)}</td>
-            <td>${num(r.pe)}</td>
-            <td>${num(r.pb)}</td>
-            <td>${pct(r.roe)}</td>
-            <td>${pct(r.roa)}</td>
-            <td>${recTag(r.recommendation)}</td>
-            <td>${r.upside != null ? pct(r.upside / 100) : '—'}</td>
-            <td>${r.targetPrice ? num(r.targetPrice, 0) : '—'}</td>
-          </tr>
-        `).join('')}
-      </tbody>
-    </table>
-  `;
 }
 
 
@@ -275,25 +234,11 @@ function renderBlockF(blockF) {
         <div class="chart-container chart-lg" id="chart-bctc-${ticker}"></div>
       </div>
     `);
-
-    const tickerData = blockF[ticker];
-    const rows = tickerData?.[ticker] || (Array.isArray(tickerData) ? tickerData : []);
-    if (!rows?.length) { showEmpty(`chart-bctc-${ticker}`); return; }
-
-    const quarters = [...new Set(rows.map(r => r.period || `${r.year}Q${r.quarter}`))].sort().slice(-8);
-    const getQ = (accId) => quarters.map(q => {
-      const r = rows.find(x => (x.period || `${x.year}Q${x.quarter}`) === q && x.accountId === accId);
-      return r?.value ?? null;
-    });
-
-    createChart(`chart-bctc-${ticker}`, {
-      chart: { type: 'column' },
-      xAxis: { categories: quarters },
-      yAxis: [{ title: { text: 'Tỷ VNĐ' } }],
+    renderBctcChart(`chart-bctc-${ticker}`, ticker, blockF, {
       series: [
-        { name: 'Phí BH gốc', type: 'column', data: getQ(125), color: HC_COLORS[0] },
-        { name: 'LN gộp HĐ BH', type: 'column', data: getQ(170), color: HC_COLORS[2] },
-        { name: 'LNST', type: 'column', data: getQ(191), color: HC_COLORS[3] },
+        { name: 'Phí BH gốc',    accId: 125, type: 'column', color: HC_COLORS[0] },
+        { name: 'LN gộp HĐ BH', accId: 170, type: 'column', color: HC_COLORS[2] },
+        { name: 'LNST',          accId: 191, type: 'column', color: HC_COLORS[3] },
       ],
     });
   });

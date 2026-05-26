@@ -234,10 +234,12 @@ function formatVN(value, unit = '') {
  */
 function parseFindicatorSeries(rows, dateField = 'date', valueField = 'value') {
   if (!rows || !rows.length) return [];
-  return rows
+  const flat = Array.isArray(rows[0]) ? rows.flat() : rows;
+  return flat
     .map(row => {
       const d = new Date(row[dateField]);
-      return [d.getTime(), row[valueField]];
+      const v = row[valueField];
+      return [d.getTime(), v != null ? parseFloat(v) : null];
     })
     .filter(([t, v]) => !isNaN(t) && v != null)
     .sort((a, b) => a[0] - b[0]);

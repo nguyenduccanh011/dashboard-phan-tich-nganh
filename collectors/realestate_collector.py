@@ -23,6 +23,7 @@ async def collect():
     block_e = await _collect_block_e()
     block_f = await _collect_block_f()
 
+    block_g = await _collect_block_g()
     cache = {
         "sector": "realestate",
         "sector_name": "Bất động sản",
@@ -34,6 +35,7 @@ async def collect():
         "block_d": block_d,
         "block_e": block_e,
         "block_f": block_f,
+            "block_g": block_g,
     }
 
     CACHE_FILE.write_text(json.dumps(cache, ensure_ascii=False, indent=2), encoding="utf-8")
@@ -57,25 +59,25 @@ async def _collect_block_b():
     # Vốn đầu tư xã hội, macroItemId=21
     social_investment = await findicator.get(
         "macro-data/macro-item-detail",
-        params={"macroItemId": 21, "year": "5Y"}
+        params={"macroItemId": 21, "year": "5Y", "period": "quarter"}
     )
     # BĐS TQ: Đầu tư phát triển/xây dựng YoY (121), Diện tích sàn (122),
     # Doanh thu bán (123), Đầu tư TS cố định (125)
     china_re_invest = await findicator.get(
         "macro-data/macro-item-detail",
-        params={"macroItemId": 121, "year": "5Y"}
+        params={"macroItemId": 121, "year": "5Y", "valueType": "yoy", "period": "month"}
     )
     china_re_area = await findicator.get(
         "macro-data/macro-item-detail",
-        params={"macroItemId": 122, "year": "5Y"}
+        params={"macroItemId": 122, "year": "5Y", "valueType": "yoy", "period": "month"}
     )
     china_re_sales = await findicator.get(
         "macro-data/macro-item-detail",
-        params={"macroItemId": 123, "year": "5Y"}
+        params={"macroItemId": 123, "year": "5Y", "valueType": "yoy", "period": "month"}
     )
     china_fixed_asset = await findicator.get(
         "macro-data/macro-item-detail",
-        params={"macroItemId": 125, "year": "5Y"}
+        params={"macroItemId": 125, "year": "5Y", "valueType": "yoy", "period": "month"}
     )
     return {
         "laws": laws,
@@ -146,6 +148,35 @@ async def _collect_block_f():
         results[ticker] = ts
     return results
 
+
+
+async def _collect_block_g():
+    results = {}
+    for ticker in TICKERS:
+        div, val = await asyncio.gather(
+            findicator.get('enterprise/overview-dividend', params={'ticket': ticker, 'year': 'All'}),
+            findicator.get('enterprise/overview-valuation', params={'accountIds': '39,154', 'year': '5Y', 'ticket': ticker}),
+        )
+        try:
+            rev = await findicator.get(
+                'enterprise/manufactoring-revenue',
+                params={'ticket': ticker, 'year': 'All', 'period': 'quarter'},
+            )
+        except Exception:
+            rev = []
+        try:
+            pat = await findicator.get(
+                'enterprise/manufactoring-profit-after-tax',
+                params={'ticket': ticker, 'year': 'All', 'period': 'quarter'},
+            )
+        except Exception:
+            pat = []
+        try:
+            prof = await findicator.get('enterprise/corp-profile', params={'ticket': ticker})
+        except Exception:
+            prof = {}
+        results[ticker] = {'dividend': div, 'valuation': val, 'revenue': rev, 'profit_after_tax': pat, 'corp_profile': prof}
+    return results
 
 if __name__ == "__main__":
     asyncio.run(collect())

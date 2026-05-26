@@ -31,6 +31,7 @@ async def collect():
     block_f = await _collect_block_f()
     macro_transport = await _collect_macro_transport()
 
+    block_g = await _collect_block_g()
     cache = {
         "sector": "transport",
         "sector_name": "Vận tải biển",
@@ -43,6 +44,7 @@ async def collect():
         "block_e": block_e,
         "block_f": block_f,
         "macro_transport": macro_transport,
+            "block_g": block_g,
     }
 
     CACHE_FILE.write_text(json.dumps(cache, ensure_ascii=False, indent=2), encoding="utf-8")
@@ -148,6 +150,35 @@ async def _collect_macro_transport():
     return {k: (v if not isinstance(v, Exception) else {"error": str(v)})
             for k, v in zip(keys, tasks)}
 
+
+
+async def _collect_block_g():
+    results = {}
+    for ticker in TICKERS:
+        div, val = await asyncio.gather(
+            findicator.get('enterprise/overview-dividend', params={'ticket': ticker, 'year': 'All'}),
+            findicator.get('enterprise/overview-valuation', params={'accountIds': '39,154', 'year': '5Y', 'ticket': ticker}),
+        )
+        try:
+            rev = await findicator.get(
+                'enterprise/manufactoring-revenue',
+                params={'ticket': ticker, 'year': 'All', 'period': 'quarter'},
+            )
+        except Exception:
+            rev = []
+        try:
+            pat = await findicator.get(
+                'enterprise/manufactoring-profit-after-tax',
+                params={'ticket': ticker, 'year': 'All', 'period': 'quarter'},
+            )
+        except Exception:
+            pat = []
+        try:
+            prof = await findicator.get('enterprise/corp-profile', params={'ticket': ticker})
+        except Exception:
+            prof = {}
+        results[ticker] = {'dividend': div, 'valuation': val, 'revenue': rev, 'profit_after_tax': pat, 'corp_profile': prof}
+    return results
 
 if __name__ == "__main__":
     asyncio.run(collect())

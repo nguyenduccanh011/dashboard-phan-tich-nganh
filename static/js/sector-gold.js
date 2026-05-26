@@ -23,12 +23,13 @@
   renderBlockD(data.block_a);
   renderBlockE(data.block_e);
   renderBlockF(data.block_f);
+  renderBlockG(data.block_g, data.tickers, {});
 })();
 
 
 function renderBlockA(blockA) {
   const container = document.getElementById('block-a-charts');
-  const macro35 = blockA?.macro_35 || [];
+  const macro35 = blockA?.gold_prices || [];
 
   // Chart 1: Giá vàng quốc tế (USD/t.oz) + quy đổi VNĐ
   container.insertAdjacentHTML('beforeend', `
@@ -42,7 +43,7 @@ function renderBlockA(blockA) {
   `);
 
   const card1 = container.lastElementChild;
-  const goldIce = parseFindicatorSeries(macro35.filter(r => r.nameId === 78));
+  const goldIce = parseFindicatorSeries(macro35.filter(r => r.name_id === 78));
 
   function renderGoldIce(year) {
     const cutoff = yearToCutoff(year);
@@ -65,9 +66,9 @@ function renderBlockA(blockA) {
   `);
 
   const card2 = container.lastElementChild;
-  const goldQd   = parseFindicatorSeries(macro35.filter(r => r.nameId === 730));
-  const sjcBuy   = parseFindicatorSeries(macro35.filter(r => r.nameId === 584));
-  const sjcSell  = parseFindicatorSeries(macro35.filter(r => r.nameId === 585));
+  const goldQd   = parseFindicatorSeries(macro35.filter(r => r.name_id === 730));
+  const sjcBuy   = parseFindicatorSeries(macro35.filter(r => r.name_id === 584));
+  const sjcSell  = parseFindicatorSeries(macro35.filter(r => r.name_id === 585));
 
   function renderSjc(year) {
     const cutoff = yearToCutoff(year);
@@ -140,6 +141,29 @@ function renderBlockB(blockB) {
   }
   initYearButtons(card, renderRetail);
   renderRetail('1Y');
+
+  // Chart: Khách du lịch quốc tế VN (proxy nhu cầu ngoại tệ & vàng)
+  const touristData = parseFindicatorSeries(blockB?.tourists);
+  if (touristData.length) {
+    container.insertAdjacentHTML('beforeend', `
+      <div class="chart-card" data-year-options="1Y,3Y,5Y">
+        <div class="chart-header">
+          <span class="chart-title">Khách du lịch quốc tế VN (Lượt người/tháng)</span>
+          <div class="year-btns"></div>
+        </div>
+        <div class="chart-container" id="chart-gold-tourists"></div>
+      </div>
+    `);
+    const cardT = container.lastElementChild;
+    function renderTourists(year) {
+      const cutoff = yearToCutoff(year);
+      createStockChart('chart-gold-tourists', {
+        series: [{ name: 'Khách QT VN', data: touristData.filter(p => p[0] >= cutoff), color: HC_COLORS[1] }],
+      });
+    }
+    initYearButtons(cardT, renderTourists);
+    renderTourists('1Y');
+  }
 }
 
 
@@ -157,7 +181,7 @@ function renderBlockC(blockC) {
 
 function renderBlockD(blockA) {
   const container = document.getElementById('block-d-charts');
-  const macro35 = blockA?.macro_35 || [];
+  const macro35 = blockA?.gold_prices || [];
 
   container.insertAdjacentHTML('beforeend', `
     <div class="chart-card" data-year-options="1Y,3Y,5Y">
@@ -170,8 +194,8 @@ function renderBlockD(blockA) {
   `);
 
   const card = container.lastElementChild;
-  const goldQdRaw = macro35.filter(r => r.nameId === 730);
-  const sjcSellRaw = macro35.filter(r => r.nameId === 585);
+  const goldQdRaw = macro35.filter(r => r.name_id === 730);
+  const sjcSellRaw = macro35.filter(r => r.name_id === 585);
 
   // Tính spread: (SJC bán - Quy đổi) / Quy đổi * 100
   const qd = parseFindicatorSeries(goldQdRaw);
@@ -195,64 +219,12 @@ function renderBlockD(blockA) {
 
 
 function renderBlockE(blockE) {
-  const container = document.getElementById('block-e-table');
-  const tickers = Object.keys(blockE || {});
-  if (!tickers.length) { container.innerHTML = '<p class="text-muted">Không có dữ liệu</p>'; return; }
-
-  const rows = tickers.map(t => {
-    const tr = blockE[t]?.trailing;
-    const tickerData = tr?.[t] || (Array.isArray(tr) ? tr : []);
-    const get = (id) => tickerData.find?.(r => r.accountId === id)?.value;
-    const analyst = blockE[t]?.analyst;
-    const rec = Array.isArray(analyst) ? analyst[0] : analyst;
-    return {
-      ticker: t,
-      marketCap: get(35), pe: get(39), pb: get(40),
-      grossMargin: get(2), roe: get(8),
-      inventory: get(11), inventoryDays: get(13),
-      recommendation: rec?.recommend, upside: rec?.upside, targetPrice: rec?.targetPrice,
-    };
+  renderValuationTable('block-e-table', blockE, {
+    accountMap: { marketCap: 35, pe: 39, pb: 40, grossMargin: 2, roe: 8, inventory: 11, inventoryDays: 13 },
+    columns: ['marketCap', 'pe', 'pb', 'grossMargin', 'roe', 'inventory', 'inventoryDays'],
+    pctFields: ['grossMargin', 'roe'],
   });
-
-  const recTag = (r) => {
-    if (!r) return '—';
-    const map = { BUY: 'tag-buy', HOLD: 'tag-hold', SELL: 'tag-sell' };
-    return `<span class="${map[r] || ''}">${r}</span>`;
-  };
-  const pct = v => v != null ? `<span class="${v >= 0 ? 'num-up' : 'num-down'}">${(v * 100).toFixed(1)}%</span>` : '—';
-  const num = (v, dp = 1) => v != null ? Highcharts.numberFormat(v, dp) : '—';
-
-  container.innerHTML = `
-    <table class="stock-table">
-      <thead>
-        <tr>
-          <th>Ticker</th><th>Vốn hóa (tỷ)</th><th>PE</th><th>PB</th>
-          <th>Biên gộp</th><th>ROE</th><th>V.quay HTK</th><th>Ngày HTK</th>
-          <th>Recommend</th><th>Upside</th><th>Target</th>
-        </tr>
-      </thead>
-      <tbody>
-        ${rows.map(r => `
-          <tr>
-            <td>${r.ticker}</td>
-            <td>${num(r.marketCap, 0)}</td>
-            <td>${num(r.pe)}</td>
-            <td>${num(r.pb)}</td>
-            <td>${pct(r.grossMargin)}</td>
-            <td>${pct(r.roe)}</td>
-            <td>${num(r.inventory)}</td>
-            <td>${num(r.inventoryDays, 0)}</td>
-            <td>${recTag(r.recommendation)}</td>
-            <td>${r.upside != null ? pct(r.upside / 100) : '—'}</td>
-            <td>${r.targetPrice ? num(r.targetPrice, 0) : '—'}</td>
-          </tr>
-        `).join('')}
-      </tbody>
-    </table>
-  `;
 }
-
-
 function renderBlockF(blockF) {
   const container = document.getElementById('block-f-charts');
   Object.keys(blockF || {}).forEach(ticker => {
@@ -262,31 +234,6 @@ function renderBlockF(blockF) {
         <div class="chart-container chart-lg" id="chart-bctc-${ticker}"></div>
       </div>
     `);
-
-    const tickerData = blockF[ticker];
-    const rows = tickerData?.[ticker] || (Array.isArray(tickerData) ? tickerData : []);
-    if (!rows?.length) { showEmpty(`chart-bctc-${ticker}`); return; }
-
-    const quarters = [...new Set(rows.map(r => r.period || `${r.year}Q${r.quarter}`))].sort().slice(-8);
-    const getQ = (accId) => quarters.map(q => {
-      const r = rows.find(x => (x.period || `${x.year}Q${x.quarter}`) === q && x.accountId === accId);
-      return r?.value ?? null;
-    });
-
-    createChart(`chart-bctc-${ticker}`, {
-      chart: { type: 'column' },
-      xAxis: { categories: quarters },
-      yAxis: [
-        { title: { text: 'Tỷ VNĐ' } },
-        { title: { text: 'Biên gộp %' }, opposite: true, labels: { format: '{value}%' } },
-      ],
-      series: [
-        { name: 'Doanh thu', type: 'column', data: getQ(24), color: HC_COLORS[0] },
-        { name: 'LN gộp', type: 'column', data: getQ(28), color: HC_COLORS[2] },
-        { name: 'LNST', type: 'column', data: getQ(43), color: HC_COLORS[3] },
-        { name: 'Biên gộp %', type: 'line', data: getQ(2), color: HC_COLORS[1], yAxis: 1,
-          tooltip: { valueSuffix: '%' } },
-      ],
-    });
+    renderBctcChart(`chart-bctc-${ticker}`, ticker, blockF);
   });
 }

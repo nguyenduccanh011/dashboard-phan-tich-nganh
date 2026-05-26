@@ -23,6 +23,7 @@
   renderBlockD(data.block_a);
   renderBlockE(data.block_e);
   renderBlockF(data.block_f);
+  renderBlockG(data.block_g, data.tickers, {});
 })();
 
 
@@ -41,8 +42,8 @@ function renderBlockA(blockA) {
   `);
 
   const card1 = container.lastElementChild;
-  const cpi16 = parseFindicatorSeries(blockA?.cpi_medicine);
-  const cpi5  = parseFindicatorSeries(blockA?.cpi_medical_service);
+  const cpi16 = parseFindicatorSeries((blockA?.cpi_pharma || []).filter(r => r.name_id === 16));
+  const cpi5  = parseFindicatorSeries((blockA?.cpi_pharma || []).filter(r => r.name_id === 5));
 
   function renderCpi(year) {
     const cutoff = yearToCutoff(year);
@@ -68,8 +69,8 @@ function renderBlockA(blockA) {
   `);
 
   const card2 = container.lastElementChild;
-  const nkDuoc = parseFindicatorSeries(blockA?.import_pharma);
-  const nkNpl  = parseFindicatorSeries(blockA?.import_pharma_material);
+  const nkDuoc = parseFindicatorSeries((blockA?.nk_pharma || []).filter(r => r.name_id === 63));
+  const nkNpl  = parseFindicatorSeries((blockA?.nk_pharma || []).filter(r => r.name_id === 62));
 
   function renderImport(year) {
     const cutoff = yearToCutoff(year);
@@ -123,7 +124,7 @@ function renderBlockB(blockB) {
   `);
 
   const card = container.lastElementChild;
-  const fdi = parseFindicatorSeries(blockB?.fdi_pharma);
+  const fdi = parseFindicatorSeries(blockB?.fdi_health);
   const iip = parseFindicatorSeries(blockB?.iip_pharma);
 
   function renderFdiIip(year) {
@@ -192,63 +193,12 @@ function renderBlockD(blockA) {
 
 
 function renderBlockE(blockE) {
-  const container = document.getElementById('block-e-table');
-  const tickers = Object.keys(blockE || {});
-  if (!tickers.length) { container.innerHTML = '<p class="text-muted">Không có dữ liệu</p>'; return; }
-
-  const rows = tickers.map(t => {
-    const tr = blockE[t]?.trailing;
-    const tickerData = tr?.[t] || (Array.isArray(tr) ? tr : []);
-    const get = (id) => tickerData.find?.(r => r.accountId === id)?.value;
-    const analyst = blockE[t]?.analyst;
-    const rec = Array.isArray(analyst) ? analyst[0] : analyst;
-    return {
-      ticker: t,
-      marketCap: get(35), pe: get(39), pb: get(40),
-      grossMargin: get(2), roe: get(8), roa: get(9), current: get(27),
-      recommendation: rec?.recommend, upside: rec?.upside, targetPrice: rec?.targetPrice,
-    };
+  renderValuationTable('block-e-table', blockE, {
+    accountMap: { marketCap: 35, pe: 39, pb: 40, grossMargin: 2, roe: 8, roa: 9, current: 27 },
+    columns: ['marketCap', 'pe', 'pb', 'grossMargin', 'roe', 'roa', 'current'],
+    pctFields: ['grossMargin', 'roe', 'roa'],
   });
-
-  const recTag = (r) => {
-    if (!r) return '—';
-    const map = { BUY: 'tag-buy', HOLD: 'tag-hold', SELL: 'tag-sell' };
-    return `<span class="${map[r] || ''}">${r}</span>`;
-  };
-  const pct = v => v != null ? `<span class="${v >= 0 ? 'num-up' : 'num-down'}">${(v * 100).toFixed(1)}%</span>` : '—';
-  const num = (v, dp = 1) => v != null ? Highcharts.numberFormat(v, dp) : '—';
-
-  container.innerHTML = `
-    <table class="stock-table">
-      <thead>
-        <tr>
-          <th>Ticker</th><th>Vốn hóa (tỷ)</th><th>PE</th><th>PB</th>
-          <th>Biên gộp</th><th>ROE</th><th>ROA</th><th>Thanh toán HH</th>
-          <th>Recommend</th><th>Upside</th><th>Target</th>
-        </tr>
-      </thead>
-      <tbody>
-        ${rows.map(r => `
-          <tr>
-            <td>${r.ticker}</td>
-            <td>${num(r.marketCap, 0)}</td>
-            <td>${num(r.pe)}</td>
-            <td>${num(r.pb)}</td>
-            <td>${pct(r.grossMargin)}</td>
-            <td>${pct(r.roe)}</td>
-            <td>${pct(r.roa)}</td>
-            <td>${num(r.current)}</td>
-            <td>${recTag(r.recommendation)}</td>
-            <td>${r.upside != null ? pct(r.upside / 100) : '—'}</td>
-            <td>${r.targetPrice ? num(r.targetPrice, 0) : '—'}</td>
-          </tr>
-        `).join('')}
-      </tbody>
-    </table>
-  `;
 }
-
-
 function renderBlockF(blockF) {
   const container = document.getElementById('block-f-charts');
   Object.keys(blockF || {}).forEach(ticker => {
@@ -258,31 +208,6 @@ function renderBlockF(blockF) {
         <div class="chart-container chart-lg" id="chart-bctc-${ticker}"></div>
       </div>
     `);
-
-    const tickerData = blockF[ticker];
-    const rows = tickerData?.[ticker] || (Array.isArray(tickerData) ? tickerData : []);
-    if (!rows?.length) { showEmpty(`chart-bctc-${ticker}`); return; }
-
-    const quarters = [...new Set(rows.map(r => r.period || `${r.year}Q${r.quarter}`))].sort().slice(-8);
-    const getQ = (accId) => quarters.map(q => {
-      const r = rows.find(x => (x.period || `${x.year}Q${x.quarter}`) === q && x.accountId === accId);
-      return r?.value ?? null;
-    });
-
-    createChart(`chart-bctc-${ticker}`, {
-      chart: { type: 'column' },
-      xAxis: { categories: quarters },
-      yAxis: [
-        { title: { text: 'Tỷ VNĐ' } },
-        { title: { text: 'Biên gộp %' }, opposite: true, labels: { format: '{value}%' } },
-      ],
-      series: [
-        { name: 'Doanh thu', type: 'column', data: getQ(24), color: HC_COLORS[0] },
-        { name: 'LN gộp', type: 'column', data: getQ(28), color: HC_COLORS[2] },
-        { name: 'LNST', type: 'column', data: getQ(43), color: HC_COLORS[3] },
-        { name: 'Biên gộp %', type: 'line', data: getQ(2), color: HC_COLORS[1], yAxis: 1,
-          tooltip: { valueSuffix: '%' } },
-      ],
-    });
+    renderBctcChart(`chart-bctc-${ticker}`, ticker, blockF);
   });
 }

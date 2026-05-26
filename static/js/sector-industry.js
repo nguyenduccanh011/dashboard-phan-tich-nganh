@@ -23,6 +23,7 @@
   renderBlockC(data.block_c);
   renderBlockE(data.block_e);
   renderBlockF(data.block_f);
+  renderBlockG(data.block_g, data.tickers, {});
 })();
 
 
@@ -99,16 +100,14 @@ function renderBlockB(blockB) {
   `);
 
   const card1 = container.lastElementChild;
-  const fdiStatus = Array.isArray(blockB.fdi_status) ? blockB.fdi_status : [];
+  const fdiStatus = blockB.fdi_status?.fdi_sector || [];
   const fdiRealized = parseFindicatorSeries(
-    Array.isArray(blockB.fdi_realized) ? blockB.fdi_realized : [], 'date', 'value'
+    blockB.fdi_status?.fdi_realized || [], 'date', 'value'
   );
 
   function renderFdiStatus(year) {
     const cutoff = yearToCutoff(year);
-    const registered = parseFindicatorSeries(
-      fdiStatus.filter(r => r.type === 'registered' || r.seriesType === 'registered'), 'date', 'value'
-    ).filter(p => p[0] >= cutoff);
+    const registered = parseFindicatorSeries(fdiStatus, 'date', 'value').filter(p => p[0] >= cutoff);
 
     createStockChart('chart-fdi-status', {
       series: [
@@ -166,8 +165,8 @@ function renderBlockB(blockB) {
   const pmiChinaRows = parseFindicatorSeries(
     Array.isArray(blockB.pmi_china) ? blockB.pmi_china : []
   );
-  // PMI global — CN(34), IN(37), US(44), VN(45)
-  const pmiGlobalRows = Array.isArray(blockB.pmi_global) ? blockB.pmi_global : [];
+  // PMI global — CN(34), IN(37), US(44), VN(45); data uses camelCase nameId
+  const pmiGlobalRows = blockB.pmi_global?.data || [];
 
   function renderPmiChina(year) {
     const cutoff = yearToCutoff(year);
@@ -238,16 +237,16 @@ function renderBlockC(blockC) {
     </div>
   `);
 
-  const companies = Array.isArray(blockC.filter_company) ? blockC.filter_company : [];
+  const companies = blockC.filter_company?.result || [];
   if (!companies.length) {
     showEmpty('chart-kcn-companies');
   } else {
     createChart('chart-kcn-companies', {
       chart: { type: 'bar' },
-      xAxis: { categories: companies.map(c => c.ticker || c.symbol) },
+      xAxis: { categories: companies.map(c => c.ticket || c.ticker) },
       series: [{
         name: 'Vốn hóa (Tỷ VNĐ)',
-        data: companies.map(c => c.marketCap || c.market_cap || 0),
+        data: companies.map(c => c.market_cap_tyvnd || 0),
         color: HC_COLORS[0],
       }],
     });
@@ -256,98 +255,19 @@ function renderBlockC(blockC) {
 
 
 function renderBlockE(blockE) {
-  const container = document.getElementById('block-e-table');
-  const tickers = Object.keys(blockE);
-  if (!tickers.length) { container.innerHTML = '<p class="text-muted">Không có dữ liệu</p>'; return; }
-
-  const rows = tickers.map(t => {
-    const tr = blockE[t]?.trailing;
-    const tickerData = tr?.[t] || (Array.isArray(tr) ? tr : []);
-    const get = (id) => tickerData.find?.(r => r.accountId === id)?.value;
-    const analyst = blockE[t]?.analyst;
-    const rec = Array.isArray(analyst) ? analyst[0] : analyst;
-    return {
-      ticker: t,
-      marketCap: get(35), pe: get(39), pb: get(40),
-      grossMargin: get(2), roe: get(8), dtGrowth: get(163),
-      recommendation: rec?.recommend, upside: rec?.upside, targetPrice: rec?.targetPrice,
-    };
-  });
-
-  const recTag = (r) => {
-    if (!r) return '—';
-    const map = { BUY: 'tag-buy', HOLD: 'tag-hold', SELL: 'tag-sell' };
-    return `<span class="${map[r] || ''}">${r}</span>`;
-  };
-  const pct = v => v != null ? `<span class="${v >= 0 ? 'num-up' : 'num-down'}">${(v * 100).toFixed(1)}%</span>` : '—';
-  const num = (v, dp = 1) => v != null ? Highcharts.numberFormat(v, dp) : '—';
-
-  container.innerHTML = `
-    <table class="stock-table">
-      <thead>
-        <tr>
-          <th>Ticker</th><th>Vốn hóa (tỷ)</th><th>PE</th><th>PB</th>
-          <th>Biên gộp</th><th>ROE</th><th>DT YoY</th>
-          <th>Recommend</th><th>Upside</th><th>Target</th>
-        </tr>
-      </thead>
-      <tbody>
-        ${rows.map(r => `
-          <tr>
-            <td>${r.ticker}</td>
-            <td>${num(r.marketCap, 0)}</td>
-            <td>${num(r.pe)}</td>
-            <td>${num(r.pb)}</td>
-            <td>${pct(r.grossMargin)}</td>
-            <td>${pct(r.roe)}</td>
-            <td>${pct(r.dtGrowth)}</td>
-            <td>${recTag(r.recommendation)}</td>
-            <td>${r.upside != null ? pct(r.upside / 100) : '—'}</td>
-            <td>${r.targetPrice ? num(r.targetPrice, 0) : '—'}</td>
-          </tr>
-        `).join('')}
-      </tbody>
-    </table>
-  `;
+  renderValuationTable('block-e-table', blockE);
 }
 
 
 function renderBlockF(blockF) {
   const container = document.getElementById('block-f-charts');
-  const tickers = Object.keys(blockF);
-
-  tickers.forEach(ticker => {
+  Object.keys(blockF || {}).forEach(ticker => {
     container.insertAdjacentHTML('beforeend', `
       <div class="chart-card">
         <div class="chart-header"><span class="chart-title">BCTC ${ticker} — 8 quý</span></div>
         <div class="chart-container chart-lg" id="chart-bctc-${ticker}"></div>
       </div>
     `);
-
-    const tickerData = blockF[ticker];
-    const rows = tickerData?.[ticker] || (Array.isArray(tickerData) ? tickerData : []);
-    if (!rows?.length) { showEmpty(`chart-bctc-${ticker}`); return; }
-
-    const quarters = [...new Set(rows.map(r => r.period || `${r.year}Q${r.quarter}`))].sort().slice(-8);
-    const getQ = (accId) => quarters.map(q => {
-      const r = rows.find(x => (x.period || `${x.year}Q${x.quarter}`) === q && x.accountId === accId);
-      return r?.value ?? null;
-    });
-
-    createChart(`chart-bctc-${ticker}`, {
-      chart: { type: 'column' },
-      xAxis: { categories: quarters },
-      yAxis: [
-        { title: { text: 'Tỷ VNĐ' } },
-        { title: { text: 'Biên gộp %' }, opposite: true, labels: { format: '{value}%' } },
-      ],
-      series: [
-        { name: 'Doanh thu', type: 'column', data: getQ(24), color: HC_COLORS[0] },
-        { name: 'LN gộp', type: 'column', data: getQ(28), color: HC_COLORS[2] },
-        { name: 'LNST', type: 'column', data: getQ(43), color: HC_COLORS[3] },
-        { name: 'Biên gộp %', type: 'line', data: getQ(2), color: HC_COLORS[1], yAxis: 1,
-          tooltip: { valueSuffix: '%' } },
-      ],
-    });
+    renderBctcChart(`chart-bctc-${ticker}`, ticker, blockF);
   });
 }

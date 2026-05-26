@@ -23,6 +23,7 @@ async def collect():
     block_e = await _block_e()
     block_f = await _block_f()
 
+    block_g = await _collect_block_g()
     cache = {
         "sector": "oilgas",
         "sector_name": "Dầu khí",
@@ -34,6 +35,7 @@ async def collect():
         "block_d": {"computed_client_side": True},
         "block_e": block_e,
         "block_f": block_f,
+            "block_g": block_g,
     }
     CACHE_FILE.write_text(json.dumps(cache, ensure_ascii=False, indent=2), encoding="utf-8")
     print(f"[oilgas] cache saved → {CACHE_FILE}")
@@ -54,17 +56,21 @@ async def _block_a():
 
 
 async def _block_b():
-    # Gas tanker rates (VLGC, LGC, MGC, HDY SR, ETH, SR, COASTER Asia/Europe)
-    # MR tanker, VLCC, BDTI, BCTI
+    # Gas tanker: 312-319 (VLGC/LGC/MGC/HDY/ETH/SR/COASTER) + oil tanker: 339/340 (Aframax/Suezmax) + BDTI/BCTI 679/680
+    # Dùng transport/values — 322(MR) và 341(VLCC) trả 0 rows nên bỏ
     tanker_rates = await findicator.get(
-        "macro-data/macro-item-detail",
-        params={"macroItemId": 35, "nameId": "312,313,314,315,316,317,318,319,322,341,679,680", "year": "5Y"}
+        "transport/values",
+        params={"macroIds": "312,313,314,315,316,317,318,319,339,340,679,680", "year": "5Y"}
     )
     # Sản lượng LPG TQ
-    lpg_china = await findicator.get(
-        "macro-data/macro-item-detail",
-        params={"macroItemId": 119, "nameId": 7, "year": "5Y"}
-    )
+    try:
+        lpg_china = await findicator.get(
+            "macro-data/macro-item-detail",
+            params={"macroItemId": 119, "nameId": 7, "year": "5Y"}
+        )
+    except Exception as e:
+        print(f"[oilgas] lpg_china error: {e}")
+        lpg_china = []
     # IIP khai khoáng VN
     iip_mining = await findicator.get(
         "macro-data/macro-item-detail",
@@ -137,6 +143,35 @@ async def _block_f():
         results[ticker] = ts
     return results
 
+
+
+async def _collect_block_g():
+    results = {}
+    for ticker in TICKERS:
+        div, val = await asyncio.gather(
+            findicator.get('enterprise/overview-dividend', params={'ticket': ticker, 'year': 'All'}),
+            findicator.get('enterprise/overview-valuation', params={'accountIds': '39,154', 'year': '5Y', 'ticket': ticker}),
+        )
+        try:
+            rev = await findicator.get(
+                'enterprise/manufactoring-revenue',
+                params={'ticket': ticker, 'year': 'All', 'period': 'quarter'},
+            )
+        except Exception:
+            rev = []
+        try:
+            pat = await findicator.get(
+                'enterprise/manufactoring-profit-after-tax',
+                params={'ticket': ticker, 'year': 'All', 'period': 'quarter'},
+            )
+        except Exception:
+            pat = []
+        try:
+            prof = await findicator.get('enterprise/corp-profile', params={'ticket': ticker})
+        except Exception:
+            prof = {}
+        results[ticker] = {'dividend': div, 'valuation': val, 'revenue': rev, 'profit_after_tax': pat, 'corp_profile': prof}
+    return results
 
 if __name__ == "__main__":
     asyncio.run(collect())

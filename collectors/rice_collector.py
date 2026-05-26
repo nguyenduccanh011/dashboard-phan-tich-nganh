@@ -24,6 +24,7 @@ async def collect():
     block_e = await _block_e()
     block_f = await _block_f()
 
+    block_g = await _collect_block_g()
     cache = {
         "sector": "rice",
         "sector_name": "Lúa gạo",
@@ -34,6 +35,7 @@ async def collect():
         "block_d": {"computed_client_side": True},
         "block_e": block_e,
         "block_f": block_f,
+            "block_g": block_g,
     }
     CACHE_FILE.write_text(json.dumps(cache, ensure_ascii=False, indent=2), encoding="utf-8")
     print(f"[rice] cache saved → {CACHE_FILE}")
@@ -66,32 +68,20 @@ async def _block_b():
         "macro-data/macro-item-detail",
         params={"macroItemId": 25, "nameId": 9, "year": "5Y", "period": "month", "valueType": "yoy"}
     )
-    # XK gạo overview (tabId=6)
-    try:
-        xk_overview = await findicator.get(
-            "overview/overview-data",
-            params={"tabId": 6}
-        )
-    except Exception as e:
-        xk_overview = {"stale": True, "stale_reason": str(e)}
     # Bán lẻ VN
     retail = await findicator.get(
         "macro-data/macro-item-detail",
         params={"macroItemId": 23, "year": "5Y"}
     )
-    # PMI TQ (proxy demand gạo từ TQ)
-    try:
-        pmi_china = await findicator.get(
-            "macro-data/macro-item-detail",
-            params={"macroItemId": 115, "nameId": 8, "year": "5Y"}
-        )
-    except Exception as e:
-        pmi_china = {"stale": True, "stale_reason": str(e)}
+    # PMI TQ (proxy demand gạo từ TQ) — macroItemId=115, nameId=8
+    pmi_china = await findicator.get(
+        "macro-data/macro-item-detail",
+        params={"macroItemId": 115, "nameId": 8, "year": "5Y"}
+    )
 
     return {
         "xk_rice": xk_rice,
         "xk_rice_yoy": xk_rice_yoy,
-        "xk_overview": xk_overview,
         "retail": retail,
         "pmi_china": pmi_china,
     }
@@ -140,6 +130,35 @@ async def _collect_wichart_commodity(key: str, name: str) -> dict:
     except Exception as e:
         return {"data": [], "stale": True, "stale_reason": str(e), "source": f"WiChart key={key} name={name}"}
 
+
+
+async def _collect_block_g():
+    results = {}
+    for ticker in TICKERS:
+        div, val = await asyncio.gather(
+            findicator.get('enterprise/overview-dividend', params={'ticket': ticker, 'year': 'All'}),
+            findicator.get('enterprise/overview-valuation', params={'accountIds': '39,154', 'year': '5Y', 'ticket': ticker}),
+        )
+        try:
+            rev = await findicator.get(
+                'enterprise/manufactoring-revenue',
+                params={'ticket': ticker, 'year': 'All', 'period': 'quarter'},
+            )
+        except Exception:
+            rev = []
+        try:
+            pat = await findicator.get(
+                'enterprise/manufactoring-profit-after-tax',
+                params={'ticket': ticker, 'year': 'All', 'period': 'quarter'},
+            )
+        except Exception:
+            pat = []
+        try:
+            prof = await findicator.get('enterprise/corp-profile', params={'ticket': ticker})
+        except Exception:
+            prof = {}
+        results[ticker] = {'dividend': div, 'valuation': val, 'revenue': rev, 'profit_after_tax': pat, 'corp_profile': prof}
+    return results
 
 if __name__ == "__main__":
     asyncio.run(collect())

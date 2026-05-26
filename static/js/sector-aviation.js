@@ -21,9 +21,10 @@
   renderBlockA(data.block_a);
   renderBlockB(data.block_b);
   renderBlockC(data.block_c, data.block_f);
-  renderBlockD(data.block_a, data.block_f);
+  renderBlockD(data.block_a, data.block_b, data.block_f);
   renderBlockE(data.block_e);
   renderBlockF(data.block_f);
+  renderBlockG(data.block_g, data.tickers, {});
 })();
 
 
@@ -43,9 +44,9 @@ function renderBlockA(blockA) {
 
   const card1 = container.lastElementChild;
   const fuelRows = Array.isArray(blockA.fuel_prices) ? blockA.fuel_prices : [];
-  const brentRows = fuelRows.filter(r => r.nameId === 65 || r.name_id === 65);
-  const jetV1Rows = fuelRows.filter(r => r.nameId === 623 || r.name_id === 623);
-  const jetV2Rows = fuelRows.filter(r => r.nameId === 627 || r.name_id === 627);
+  const brentRows = fuelRows.filter(r => r.name_id === 65 || r.name_id === 65);
+  const jetV1Rows = fuelRows.filter(r => r.name_id === 623 || r.name_id === 623);
+  const jetV2Rows = fuelRows.filter(r => r.name_id === 627 || r.name_id === 627);
 
   function renderFuel(year) {
     const cutoff = yearToCutoff(year);
@@ -222,6 +223,58 @@ function renderBlockB(blockB) {
   }
   initYearButtons(card3, renderTransport);
   renderTransport('1Y');
+
+  // Chart 4: Luân chuyển hành khách (Triệu HK.km)
+  container.insertAdjacentHTML('beforeend', `
+    <div class="chart-card" data-year-options="1Y,3Y,5Y">
+      <div class="chart-header">
+        <span class="chart-title">Luân chuyển hành khách (Triệu HK.km)</span>
+        <div class="year-btns"></div>
+      </div>
+      <div class="chart-container" id="chart-luanchuy-hk"></div>
+    </div>
+  `);
+
+  const card4 = container.lastElementChild;
+  const luanchuyhkRows = Array.isArray(blockB.luanchuy_hk) ? blockB.luanchuy_hk : [];
+
+  function renderLuanchuy(year) {
+    const cutoff = yearToCutoff(year);
+    createStockChart('chart-luanchuy-hk', {
+      series: [{
+        name: 'Luân chuyển HK (Triệu HK.km)',
+        color: HC_COLORS[2],
+        data: parseFindicatorSeries(luanchuyhkRows, 'date', 'value').filter(p => p[0] >= cutoff),
+      }],
+    });
+  }
+  initYearButtons(card4, renderLuanchuy);
+  renderLuanchuy('1Y');
+
+  // Chart 5: Khách quốc tế YoY (%)
+  const yoyRaw = blockB.visitors_yoy || [];
+  const yoyFlat = Array.isArray(yoyRaw[0]) ? yoyRaw[0] : yoyRaw;
+  const yoyData = parseFindicatorSeries(yoyFlat);
+  if (yoyData.length) {
+    container.insertAdjacentHTML('beforeend', `
+      <div class="chart-card" data-year-options="1Y,3Y">
+        <div class="chart-header">
+          <span class="chart-title">Khách quốc tế đến VN (YoY%)</span>
+          <div class="year-btns"></div>
+        </div>
+        <div class="chart-container chart-sm" id="chart-visitors-yoy"></div>
+      </div>
+    `);
+    const cardYoy = container.lastElementChild;
+    function renderVisitorsYoy(year) {
+      const cutoff = yearToCutoff(year);
+      createStockChart('chart-visitors-yoy', {
+        series: [{ name: 'Khách QT YoY (%)', data: yoyData.filter(p => p[0] >= cutoff), color: HC_COLORS[1] }],
+      });
+    }
+    initYearButtons(cardYoy, renderVisitorsYoy);
+    renderVisitorsYoy('1Y');
+  }
 }
 
 
@@ -270,111 +323,120 @@ function renderBlockC(blockC, blockF) {
 }
 
 
-function renderBlockD(blockA, blockF) {
+function renderBlockD(blockA, blockB, blockF) {
   const container = document.getElementById('block-d-charts');
   container.insertAdjacentHTML('beforeend', `
     <div class="chart-card">
-      <div class="chart-header"><span class="chart-title">Spread Hàng không – Nhiên liệu</span></div>
+      <div class="chart-header"><span class="chart-title">Spread Hàng không – Nhiên liệu (proxy margin / chuyến bay)</span></div>
       <div class="chart-container" id="chart-aviation-spread"></div>
     </div>
   `);
-  showEmpty('chart-aviation-spread', 'Proxy margin = DT thuần / chuyến bay − (Brent × hệ số × tỷ giá)');
+
+  // Hệ số quy đổi: ~100 bbl nhiên liệu / chuyến bay (trung bình nội địa + quốc tế ngắn VN)
+  const BBL_PER_FLIGHT = 100;
+
+  function dateToQuarter(dateStr) {
+    const d = new Date(dateStr);
+    if (isNaN(d.getTime())) return null;
+    return `${d.getFullYear()}Q${Math.floor(d.getMonth() / 3) + 1}`;
+  }
+
+  function avgByQuarter(rows, dateField, valueField) {
+    const sum = {}, cnt = {};
+    rows.forEach(r => {
+      const q = dateToQuarter(r[dateField]);
+      if (!q) return;
+      const v = parseFloat(r[valueField]);
+      if (isNaN(v)) return;
+      sum[q] = (sum[q] || 0) + v;
+      cnt[q] = (cnt[q] || 0) + 1;
+    });
+    const out = {};
+    Object.keys(sum).forEach(q => out[q] = sum[q] / cnt[q]);
+    return out;
+  }
+
+  const brentRows = (blockA?.fuel_prices || []).filter(r => r.name_id === 65);
+  const brentByQ = avgByQuarter(brentRows, 'date', 'value');
+  const usdByQ = avgByQuarter(blockA?.usd_vnd || [], 'date', 'value');
+
+  const flightsData = blockB?.flights || {};
+  const tickers = ['VJC', 'HVN', 'BAV'];
+
+  // Tổng chuyến bay theo quý cho từng hãng
+  const quarterlyFlights = {};
+  tickers.forEach(t => {
+    const sums = {};
+    (flightsData[t] || []).forEach(r => {
+      const q = dateToQuarter(r.date);
+      if (!q) return;
+      sums[q] = (sums[q] || 0) + (parseFloat(r.value) || 0);
+    });
+    quarterlyFlights[t] = sums;
+  });
+
+  // Doanh thu thuần (accountId=24) theo quý, dedupe theo id
+  function revenueByQuarter(rows) {
+    const seen = new Set(), map = {};
+    (rows || []).forEach(r => {
+      if (r.accountId !== 24) return;
+      const key = `${r.year}Q${r.quarter}`;
+      if (seen.has(r.id + key)) return;
+      seen.add(r.id + key);
+      map[key] = r.value;
+    });
+    return map;
+  }
+
+  const series = tickers.map((t, i) => {
+    const td = blockF?.[t];
+    const rows = Array.isArray(td) ? td : (td?.[t] || []);
+    const revByQ = revenueByQuarter(rows);
+
+    const points = [];
+    Object.keys(revByQ).forEach(q => {
+      const rev = revByQ[q];
+      const flights = quarterlyFlights[t]?.[q];
+      const brent = brentByQ[q];
+      const rate = usdByQ[q];
+      if (!rev || !flights || !brent || !rate) return;
+
+      const revPerFlight = rev / flights;                         // VND / chuyến
+      const fuelCostPerFlight = brent * BBL_PER_FLIGHT * rate;    // VND / chuyến
+      const spreadTrieu = (revPerFlight - fuelCostPerFlight) / 1e6; // triệu VND / chuyến
+
+      const [yr, qn] = q.split('Q');
+      points.push([Date.UTC(+yr, (+qn - 1) * 3, 1), Math.round(spreadTrieu)]);
+    });
+
+    return { name: t, color: HC_COLORS[i], data: points.sort((a, b) => a[0] - b[0]) };
+  }).filter(s => s.data.length > 0);
+
+  if (!series.length) {
+    showEmpty('chart-aviation-spread', 'Không đủ dữ liệu để tính spread (cần Brent, tỷ giá, chuyến bay và BCTC cùng quý)');
+    return;
+  }
+
+  createStockChart('chart-aviation-spread', {
+    yAxis: [{ title: { text: 'Triệu VNĐ / chuyến bay' } }],
+    tooltip: { valueSuffix: ' triệu VNĐ/chuyến' },
+    series,
+  });
 }
 
 
 function renderBlockE(blockE) {
-  const container = document.getElementById('block-e-table');
-  const tickers = Object.keys(blockE);
-  if (!tickers.length) { container.innerHTML = '<p class="text-muted">Không có dữ liệu</p>'; return; }
-
-  const rows = tickers.map(t => {
-    const tr = blockE[t]?.trailing;
-    const tickerData = tr?.[t] || (Array.isArray(tr) ? tr : []);
-    const get = (id) => tickerData.find?.(r => r.accountId === id)?.value;
-    const analyst = blockE[t]?.analyst;
-    const rec = Array.isArray(analyst) ? analyst[0] : analyst;
-    return {
-      ticker: t,
-      marketCap: get(35), pe: get(39), pb: get(40),
-      grossMargin: get(2), roe: get(8), dtGrowth: get(163),
-      recommendation: rec?.recommend, upside: rec?.upside, targetPrice: rec?.targetPrice,
-    };
-  });
-
-  const recTag = (r) => {
-    if (!r) return '—';
-    const map = { BUY: 'tag-buy', HOLD: 'tag-hold', SELL: 'tag-sell' };
-    return `<span class="${map[r] || ''}">${r}</span>`;
-  };
-  const pct = v => v != null ? `<span class="${v >= 0 ? 'num-up' : 'num-down'}">${(v*100).toFixed(1)}%</span>` : '—';
-  const num = (v, dp=1) => v != null ? Highcharts.numberFormat(v, dp) : '—';
-
-  container.innerHTML = `
-    <table class="stock-table">
-      <thead>
-        <tr>
-          <th>Ticker</th><th>Vốn hóa (tỷ)</th><th>PE</th><th>PB</th>
-          <th>Biên gộp</th><th>ROE</th><th>DT YoY</th>
-          <th>Recommend</th><th>Upside</th><th>Target</th>
-        </tr>
-      </thead>
-      <tbody>
-        ${rows.map(r => `
-          <tr>
-            <td>${r.ticker}</td>
-            <td>${num(r.marketCap, 0)}</td>
-            <td>${num(r.pe)}</td>
-            <td>${num(r.pb)}</td>
-            <td>${pct(r.grossMargin)}</td>
-            <td>${pct(r.roe)}</td>
-            <td>${pct(r.dtGrowth)}</td>
-            <td>${recTag(r.recommendation)}</td>
-            <td>${r.upside != null ? pct(r.upside/100) : '—'}</td>
-            <td>${r.targetPrice ? num(r.targetPrice, 0) : '—'}</td>
-          </tr>
-        `).join('')}
-      </tbody>
-    </table>
-  `;
+  renderValuationTable('block-e-table', blockE);
 }
-
-
 function renderBlockF(blockF) {
   const container = document.getElementById('block-f-charts');
-  const tickers = Object.keys(blockF);
-
-  tickers.forEach(ticker => {
+  Object.keys(blockF || {}).forEach(ticker => {
     container.insertAdjacentHTML('beforeend', `
       <div class="chart-card">
         <div class="chart-header"><span class="chart-title">BCTC ${ticker} — 8 quý</span></div>
         <div class="chart-container chart-lg" id="chart-bctc-${ticker}"></div>
       </div>
     `);
-
-    const tickerData = blockF[ticker];
-    const rows = tickerData?.[ticker] || (Array.isArray(tickerData) ? tickerData : []);
-    if (!rows?.length) { showEmpty(`chart-bctc-${ticker}`); return; }
-
-    const quarters = [...new Set(rows.map(r => r.period || `${r.year}Q${r.quarter}`))].sort().slice(-8);
-    const getQ = (accId) => quarters.map(q => {
-      const r = rows.find(x => (x.period || `${x.year}Q${x.quarter}`) === q && x.accountId === accId);
-      return r?.value ?? null;
-    });
-
-    createChart(`chart-bctc-${ticker}`, {
-      chart: { type: 'column' },
-      xAxis: { categories: quarters },
-      yAxis: [
-        { title: { text: 'Tỷ VNĐ' } },
-        { title: { text: 'Biên gộp %' }, opposite: true, labels: { format: '{value}%' } },
-      ],
-      series: [
-        { name: 'Doanh thu', type: 'column', data: getQ(24), color: HC_COLORS[0] },
-        { name: 'LN gộp', type: 'column', data: getQ(28), color: HC_COLORS[2] },
-        { name: 'LNST', type: 'column', data: getQ(43), color: HC_COLORS[3] },
-        { name: 'Biên gộp %', type: 'line', data: getQ(2), color: HC_COLORS[1], yAxis: 1,
-          tooltip: { valueSuffix: '%' } },
-      ],
-    });
+    renderBctcChart(`chart-bctc-${ticker}`, ticker, blockF);
   });
 }

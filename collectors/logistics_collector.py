@@ -22,6 +22,7 @@ async def collect():
     block_e = await _block_e()
     block_f = await _block_f()
 
+    block_g = await _collect_block_g()
     cache = {
         "sector": "logistics",
         "sector_name": "Logistics & Cảng biển",
@@ -32,6 +33,7 @@ async def collect():
         "block_d": {"computed_client_side": True},
         "block_e": block_e,
         "block_f": block_f,
+            "block_g": block_g,
     }
     CACHE_FILE.write_text(json.dumps(cache, ensure_ascii=False, indent=2), encoding="utf-8")
     print(f"[logistics] cache saved → {CACHE_FILE}")
@@ -81,7 +83,7 @@ async def _block_b():
     # Luân chuyển hàng hoá VN (3 phương thức)
     freight_turnover = await findicator.get(
         "macro-data/macro-item-detail",
-        params={"macroItemId": 32, "year": "5Y", "period": "month"}
+        params={"macroItemId": 32, "year": "5Y", "period": "month", "valueType": "value"}
     )
     # Giá vận tải kho bãi VN
     try:
@@ -95,7 +97,7 @@ async def _block_b():
     try:
         china_trade = await findicator.get(
             "macro-data/macro-item-detail",
-            params={"macroItemId": 127, "year": "5Y", "period": "month"}
+            params={"macroItemId": 127, "year": "5Y", "period": "month", "valueType": "value"}
         )
     except Exception as e:
         china_trade = {"stale": True, "stale_reason": str(e)}
@@ -103,10 +105,42 @@ async def _block_b():
     try:
         us_trade = await findicator.get(
             "macro-data/macro-item-detail",
-            params={"macroItemId": 87, "year": "5Y", "period": "month"}
+            params={"macroItemId": 87, "year": "5Y", "period": "month", "valueType": "value"}
         )
     except Exception as e:
         us_trade = {"stale": True, "stale_reason": str(e)}
+    # XK VN YoY breakdown theo mặt hàng (16 nhóm, overview tabId=6)
+    try:
+        xk_breakdown = await findicator.get(
+            "overview/overview-data",
+            params={"tabId": 6, "repo": "overview_vietnam"}
+        )
+    except Exception as e:
+        xk_breakdown = {"stale": True, "stale_reason": str(e)}
+    # NK VN YoY breakdown theo nhóm NVL (overview tabId=7)
+    try:
+        nk_breakdown = await findicator.get(
+            "overview/overview-data",
+            params={"tabId": 7, "repo": "overview_vietnam"}
+        )
+    except Exception as e:
+        nk_breakdown = {"stale": True, "stale_reason": str(e)}
+    # Cán cân thương mại hàng hoá VN (macroItemId=140)
+    try:
+        trade_balance = await findicator.get(
+            "macro-data/macro-item-detail",
+            params={"macroItemId": 140, "year": "5Y", "period": "month"}
+        )
+    except Exception as e:
+        trade_balance = {"stale": True, "stale_reason": str(e)}
+    # PMI Mỹ (leading indicator đơn hàng XK)
+    try:
+        pmi_us = await findicator.get(
+            "macro-data/macro-item-detail",
+            params={"macroItemId": 78, "year": "5Y", "period": "month"}
+        )
+    except Exception as e:
+        pmi_us = {"stale": True, "stale_reason": str(e)}
 
     return {
         "xk_vn": xk_vn,
@@ -119,6 +153,10 @@ async def _block_b():
         "transport_price": transport_price,
         "china_trade": china_trade,
         "us_trade": us_trade,
+        "xk_breakdown": xk_breakdown,
+        "nk_breakdown": nk_breakdown,
+        "trade_balance": trade_balance,
+        "pmi_us": pmi_us,
     }
 
 
@@ -155,6 +193,35 @@ async def _block_f():
         results[ticker] = ts
     return results
 
+
+
+async def _collect_block_g():
+    results = {}
+    for ticker in TICKERS:
+        div, val = await asyncio.gather(
+            findicator.get('enterprise/overview-dividend', params={'ticket': ticker, 'year': 'All'}),
+            findicator.get('enterprise/overview-valuation', params={'accountIds': '39,154', 'year': '5Y', 'ticket': ticker}),
+        )
+        try:
+            rev = await findicator.get(
+                'enterprise/manufactoring-revenue',
+                params={'ticket': ticker, 'year': 'All', 'period': 'quarter'},
+            )
+        except Exception:
+            rev = []
+        try:
+            pat = await findicator.get(
+                'enterprise/manufactoring-profit-after-tax',
+                params={'ticket': ticker, 'year': 'All', 'period': 'quarter'},
+            )
+        except Exception:
+            pat = []
+        try:
+            prof = await findicator.get('enterprise/corp-profile', params={'ticket': ticker})
+        except Exception:
+            prof = {}
+        results[ticker] = {'dividend': div, 'valuation': val, 'revenue': rev, 'profit_after_tax': pat, 'corp_profile': prof}
+    return results
 
 if __name__ == "__main__":
     asyncio.run(collect())

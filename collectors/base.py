@@ -61,9 +61,23 @@ _MACRO_META = {
     78:  ("macro_us_prd_pmi",              "month",   "value"),
     84:  ("macro_us_retailsales_sales",    "month",   "value"),
     115: ("macro_cn_prd_pmi",              "month",   "value"),
-    127: ("macro_cn_exim",                 "month",   "yoy"),
+    119: ("macro_cn_prd_industrial",       "month",   "value"),
+    121: ("macro_cn_realestate_invest",    "month",   "value"),
+    122: ("macro_cn_realestate_area",      "month",   "value"),
+    123: ("macro_cn_realestate_sales",     "month",   "value"),
+    125: ("macro_cn_fixed_asset",          "month",   "yoy"),
+    126: ("macro_cn_retailsales",          "month",   "value"),
+    127: ("macro_cn_exim",                 "month",   "value"),
     134: ("macro_vn_stock",                "date",    "value"),
     139: ("macro_us_gdp_forecast",         "date",    "value"),
+    # Vĩ mô VN — đầu tư & vận tải
+    18:  ("macro_vn_fdi_realized",         "month",   "value"),
+    21:  ("macro_vn_capital_society",      "month",   "value"),
+    32:  ("macro_vn_trans_carriedgoods",   "month",   "value"),
+    33:  ("macro_vn_transport_price",      "quarter", "yoy"),
+    56:  ("macro_vn_balance_payment",      "month",   "value"),
+    87:  ("macro_us_exim",                 "month",   "value"),
+    140: ("macro_vn_exim_comdty_net",      "month",   "value"),
 }
 _TOKEN_FILE = SECRETS_DIR / "findicator_token.txt"
 _CREDS_FILE = SECRETS_DIR / "findicator_creds.json"
@@ -225,6 +239,24 @@ class FindicatorClient:
         if path.exists():
             return json.loads(path.read_text(encoding="utf-8"))
         return None
+
+    @staticmethod
+    def normalize_block_f(raw: dict, ticker: str) -> dict:
+        """Đảm bảo output luôn là {ticker: {ticker: [rows]}}"""
+        rows = raw.get(ticker, [])
+        if isinstance(rows, list):
+            return {ticker: {ticker: rows}}
+        return {ticker: rows}  # đã đúng format
+
+    @staticmethod
+    def normalize_block_e_analyst(analyst_raw) -> list:
+        """Đảm bảo analyst luôn là list với field 'recommend'"""
+        if analyst_raw is None:
+            return []
+        item = analyst_raw[0] if isinstance(analyst_raw, list) else analyst_raw
+        if 'recommendation' in item and 'recommend' not in item:
+            item['recommend'] = item.pop('recommendation')
+        return [item] if not isinstance(analyst_raw, list) else analyst_raw
 
 
 class WiChartClient:

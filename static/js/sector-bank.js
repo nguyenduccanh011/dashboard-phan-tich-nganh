@@ -24,6 +24,7 @@
   renderBlockD(data.block_c);
   renderBlockE(data.block_e);
   renderBlockF(data.block_f);
+  renderBlockG(data.block_g, data.tickers, { pe_id: 89, pb_id: 90 });
   renderBankCharts(data.bank_charts);
 })();
 
@@ -42,8 +43,7 @@ function renderBlockA(blockA) {
     </div>
   `);
   const lnhCard = container.querySelector('[id="chart-lnh"]').closest('.chart-card');
-  const lnhRaw = blockA.lnh;
-  const lnhSeries = Array.isArray(lnhRaw) ? lnhRaw : (lnhRaw?.data || []);
+  const lnhSeries = blockA.lnh?.chart?.series || [];
   function renderLnh(year) {
     const cutoff = yearToCutoff(year);
     createStockChart('chart-lnh', {
@@ -70,10 +70,10 @@ function renderBlockA(blockA) {
   `);
   const depCard = container.querySelector('[id="chart-deposit-rate"]').closest('.chart-card');
   const depRows = blockA.deposit_rate || [];
-  const depNameIds = [...new Set(depRows.map(r => r.nameId))];
+  const depNameIds = [...new Set(depRows.map(r => r.name_id))];
   const depSeriesData = depNameIds.map((nid, i) => ({
-    name: depRows.find(r => r.nameId === nid)?.name || `Kỳ hạn ${nid}`,
-    data: parseFindicatorSeries(depRows.filter(r => r.nameId === nid)),
+    name: depRows.find(r => r.name_id === nid)?.name || `Kỳ hạn ${nid}`,
+    data: parseFindicatorSeries(depRows.filter(r => r.name_id === nid)),
     color: HC_COLORS[i % HC_COLORS.length],
   }));
   function renderDepositRate(year) {
@@ -129,15 +129,15 @@ function renderBlockA(blockA) {
   `);
   const tpcpCard = container.querySelector('[id="chart-tpcp"]').closest('.chart-card');
   const tpcpRows = blockA.tpcp || [];
-  const tpcpMap = {
-    'VN_5Y': { name: 'VN 5Y', color: HC_COLORS[0] },
-    'VN_10Y': { name: 'VN 10Y', color: HC_COLORS[1] },
-    'US_2Y': { name: 'US 2Y', color: HC_COLORS[2] },
-    'US_10Y': { name: 'US 10Y', color: HC_COLORS[3] },
-  };
-  const tpcpSeriesData = Object.entries(tpcpMap).map(([nid, meta]) => ({
-    name: meta.name, color: meta.color,
-    data: parseFindicatorSeries(tpcpRows.filter(r => r.nameId === nid || r.name === nid)),
+  const tpcpMap = [
+    { id: 8, name: 'VN 5Y',  color: HC_COLORS[0] },
+    { id: 9, name: 'VN 10Y', color: HC_COLORS[1] },
+    { id: 5, name: 'US 2Y',  color: HC_COLORS[2] },
+    { id: 3, name: 'US 10Y', color: HC_COLORS[3] },
+  ];
+  const tpcpSeriesData = tpcpMap.map(t => ({
+    name: t.name, color: t.color,
+    data: parseFindicatorSeries(tpcpRows.filter(r => r.name_id === t.id)),
   }));
   function renderTpcp(year) {
     const cutoff = yearToCutoff(year);
@@ -167,10 +167,10 @@ function renderBlockA(blockA) {
     setStaleBadge(omoCard, 'warn', 'Dữ liệu dừng 31/12/2025');
   }
   const omoRows = blockA.omo || [];
-  const omoNameIds = [...new Set(omoRows.map(r => r.nameId))];
+  const omoNameIds = [...new Set(omoRows.map(r => r.name_id))];
   const omoSeriesData = omoNameIds.map((nid, i) => ({
-    name: omoRows.find(r => r.nameId === nid)?.name || `OMO ${nid}`,
-    data: parseFindicatorSeries(omoRows.filter(r => r.nameId === nid)),
+    name: omoRows.find(r => r.name_id === nid)?.name || `OMO ${nid}`,
+    data: parseFindicatorSeries(omoRows.filter(r => r.name_id === nid)),
     color: HC_COLORS[i % HC_COLORS.length],
   }));
   function renderOmo(year) {
@@ -185,7 +185,7 @@ function renderBlockA(blockA) {
 
   // Chart 6: Dự trữ ngoại hối
   container.insertAdjacentHTML('beforeend', `
-    <div class="chart-card" data-year-options="1Y,3Y,5Y">
+    <div class="chart-card" data-year-options="3Y,5Y,MAX">
       <div class="chart-header">
         <span class="chart-title">Dự trữ ngoại hối VN</span>
         <div class="year-btns"></div>
@@ -194,6 +194,7 @@ function renderBlockA(blockA) {
     </div>
   `);
   const fxCard = container.querySelector('[id="chart-forex-reserve"]').closest('.chart-card');
+  setStaleBadge(fxCard, 'warn', 'Dữ liệu đến 12/2024');
   const fxData = parseFindicatorSeries(blockA.forex_reserve || []);
   function renderForexReserve(year) {
     const cutoff = yearToCutoff(year);
@@ -203,7 +204,35 @@ function renderBlockA(blockA) {
     });
   }
   initYearButtons(fxCard, renderForexReserve);
-  renderForexReserve('1Y');
+  renderForexReserve('3Y');
+
+  // Chart 7: DXY Index
+  const dxyRaw = blockA.dxy;
+  if (dxyRaw && (Array.isArray(dxyRaw[0]) ? dxyRaw[0].length : dxyRaw.length)) {
+    const dxyRows = Array.isArray(dxyRaw[0]) ? dxyRaw[0] : dxyRaw;
+    const dxyData = parseFindicatorSeries(dxyRows);
+    if (dxyData.length) {
+      container.insertAdjacentHTML('beforeend', `
+        <div class="chart-card" data-year-options="1Y,3Y,5Y">
+          <div class="chart-header">
+            <span class="chart-title">DXY Index (USD Index)</span>
+            <div class="year-btns"></div>
+          </div>
+          <div class="chart-container" id="chart-dxy"></div>
+        </div>
+      `);
+      const dxyCard = container.lastElementChild;
+      function renderDxy(year) {
+        const cutoff = yearToCutoff(year);
+        createStockChart('chart-dxy', {
+          yAxis: [{ title: { text: 'pts' } }],
+          series: [{ name: 'DXY', data: dxyData.filter(p => p[0] >= cutoff), color: HC_COLORS[4] }],
+        });
+      }
+      initYearButtons(dxyCard, renderDxy);
+      renderDxy('1Y');
+    }
+  }
 }
 
 
@@ -274,20 +303,24 @@ function renderBlockB(blockB) {
   `);
   const bopCard = container.querySelector('[id="chart-bop"]').closest('.chart-card');
   const bopRows = blockB.balance_of_payments || [];
-  const bopVanglai = parseFindicatorSeries(bopRows.filter(r => r.nameId === 1));
-  const bopTongthe = parseFindicatorSeries(bopRows.filter(r => r.nameId === 40));
-  function renderBop(year) {
-    const cutoff = yearToCutoff(year);
-    createStockChart('chart-bop', {
-      yAxis: [{ title: { text: 'Triệu USD' } }],
-      series: [
-        { name: 'Vãng lai', data: bopVanglai.filter(p => p[0] >= cutoff), color: HC_COLORS[0] },
-        { name: 'Tổng thể', data: bopTongthe.filter(p => p[0] >= cutoff), color: HC_COLORS[1] },
-      ],
-    });
+  if (!bopRows.length) {
+    showEmpty('chart-bop', 'Chưa có dữ liệu cán cân thanh toán');
+  } else {
+    const bopVanglai = parseFindicatorSeries(bopRows.filter(r => r.name_id === 1));
+    const bopTongthe = parseFindicatorSeries(bopRows.filter(r => r.name_id === 40));
+    function renderBop(year) {
+      const cutoff = yearToCutoff(year);
+      createStockChart('chart-bop', {
+        yAxis: [{ title: { text: 'Triệu USD' } }],
+        series: [
+          { name: 'Vãng lai', data: bopVanglai.filter(p => p[0] >= cutoff), color: HC_COLORS[0] },
+          { name: 'Tổng thể', data: bopTongthe.filter(p => p[0] >= cutoff), color: HC_COLORS[1] },
+        ],
+      });
+    }
+    initYearButtons(bopCard, renderBop);
+    renderBop('1Y');
   }
-  initYearButtons(bopCard, renderBop);
-  renderBop('1Y');
 
   // Chart: CASA/NPL snapshot per-bank (bar)
   container.insertAdjacentHTML('beforeend', `
@@ -300,18 +333,19 @@ function renderBlockB(blockB) {
   `);
   const overviewData = blockB.overview;
   if (!overviewData) { showEmpty('chart-bank-overview'); return; }
-  // overview trả về list banks với casa/npl fields
-  const banks = Array.isArray(overviewData) ? overviewData : (overviewData?.data || []);
-  if (banks.length) {
+  // overview is {casaAndCof: [{ticket,name_legend,value},...], yeaAndNpl: [...], crWRA: [...]}
+  const casaRows = (overviewData.casaAndCof || []).filter(r => r.name_legend === 'CASA');
+  const nplRows  = (overviewData.yeaAndNpl  || []).filter(r => r.name_legend === 'NPL');
+  const tickets  = casaRows.map(r => r.ticket);
+  if (tickets.length) {
+    const getVal = (rows, ticket) => { const r = rows.find(x => x.ticket === ticket); return r ? +(r.value * 100).toFixed(2) : null; };
     createChart('chart-bank-overview', {
       chart: { type: 'bar' },
-      xAxis: { categories: banks.map(b => b.ticket || b.name) },
-      yAxis: [
-        { title: { text: '%' }, labels: { format: '{value:.1f}%' } },
-      ],
+      xAxis: { categories: tickets },
+      yAxis: [{ title: { text: '%' }, labels: { format: '{value:.1f}%' } }],
       series: [
-        { name: 'CASA %', data: banks.map(b => b.casa || null), color: HC_COLORS[0] },
-        { name: 'NPL %', data: banks.map(b => b.npl || null), color: HC_COLORS[3] },
+        { name: 'CASA %', data: tickets.map(t => getVal(casaRows, t)), color: HC_COLORS[0] },
+        { name: 'NPL %',  data: tickets.map(t => getVal(nplRows,  t)), color: HC_COLORS[3] },
       ],
     });
   } else {
@@ -340,11 +374,13 @@ function renderBlockC(blockC) {
     const r = (rows || []).find(x => x.accountId === accId);
     return r?.value ?? null;
   };
+  const getRows = (t) => getTickerRows(blockC, t);
+  const pct100 = v => v != null ? +(v * 100).toFixed(4) : null;
 
-  const nimData   = tickers.map(t => getVal(blockC[t], 60));
-  const casaData  = tickers.map(t => getVal(blockC[t], 57));
-  const cofData   = tickers.map(t => getVal(blockC[t], 58));
-  const ldrData   = tickers.map(t => getVal(blockC[t], 75));
+  const nimData   = tickers.map(t => pct100(getVal(getRows(t), 60)));
+  const casaData  = tickers.map(t => pct100(getVal(getRows(t), 57)));
+  const cofData   = tickers.map(t => pct100(getVal(getRows(t), 58)));
+  const ldrData   = tickers.map(t => pct100(getVal(getRows(t), 75)));
 
   createChart('chart-nim-per-bank', {
     chart: { type: 'bar' },
@@ -377,11 +413,12 @@ function renderBlockD(blockC) {
     const r = (rows || []).find(x => x.accountId === accId);
     return r?.value ?? null;
   };
+  const getRows = (t) => getTickerRows(blockC, t);
 
   const spreadData = tickers.map(t => {
-    const nim = getVal(blockC[t], 60);
-    const cof = getVal(blockC[t], 58);
-    return (nim != null && cof != null) ? parseFloat((nim - cof).toFixed(3)) : null;
+    const nim = getVal(getRows(t), 60);
+    const cof = getVal(getRows(t), 58);
+    return (nim != null && cof != null) ? parseFloat(((nim - cof) * 100).toFixed(3)) : null;
   });
 
   createChart('chart-nim-spread', {
@@ -394,120 +431,30 @@ function renderBlockD(blockC) {
 
 
 function renderBlockE(blockE) {
-  const container = document.getElementById('block-e-table');
-  const tickers = Object.keys(blockE || {});
-  if (!tickers.length) { container.innerHTML = '<p class="text-muted">Không có dữ liệu</p>'; return; }
-
-  const get = (rows, id) => (rows || []).find(r => r.accountId === id)?.value;
-
-  const rows = tickers.map(t => {
-    const tr = blockE[t]?.trailing;
-    const analyst = blockE[t]?.analyst;
-    const rec = analyst?.recommendation;
-    return {
-      ticker: t,
-      vonHoa: get(tr, 85),
-      pe: get(tr, 89),       // corpType=1: PE=89
-      pb: get(tr, 90),       // corpType=1: PB=90
-      roe: get(tr, 67),      // corpType=1: ROE=67
-      roa: get(tr, 68),      // corpType=1: ROA=68
-      nim: get(tr, 60),
-      npl: get(tr, 62),
-      casa: get(tr, 57),
-      cir: get(tr, 159),
-      llcr: get(tr, 64),
-      recommendation: rec?.type,
-      upside: rec?.upside,
-      targetPrice: rec?.targetPrice,
-    };
+  renderValuationTable('block-e-table', blockE, {
+    accountMap: { vonHoa: 85, pe: 89, pb: 90, roe: 67, roa: 68, nim: 60, npl: 62, casa: 57, cir: 159, llcr: 64 },
+    columns: ['vonHoa', 'pe', 'pb', 'roe', 'roa', 'nim', 'npl', 'casa', 'cir', 'llcr'],
+    pctFields: ['roe', 'roa', 'nim', 'npl', 'casa', 'cir'],
   });
-
-  const recTag = (r) => {
-    if (!r) return '—';
-    const map = { BUY: 'tag-buy', HOLD: 'tag-hold', SELL: 'tag-sell' };
-    return `<span class="${map[r] || ''}">${r}</span>`;
-  };
-  const pct = v => v != null ? `<span class="${v >= 0 ? 'num-up' : 'num-down'}">${(v * 100).toFixed(2)}%</span>` : '—';
-  const num = (v, dp = 1) => v != null ? Highcharts.numberFormat(v, dp) : '—';
-
-  container.innerHTML = `
-    <table class="stock-table">
-      <thead>
-        <tr>
-          <th>Ticker</th>
-          <th>Vốn hóa (tỷ)</th>
-          <th>PE</th>
-          <th>PB</th>
-          <th>ROE</th>
-          <th>ROA</th>
-          <th>NIM</th>
-          <th>NPL</th>
-          <th>CASA</th>
-          <th>CIR</th>
-          <th>LLCR</th>
-          <th>Recommend</th>
-          <th>Upside</th>
-          <th>Target</th>
-        </tr>
-      </thead>
-      <tbody>
-        ${rows.map(r => `
-          <tr>
-            <td>${r.ticker}</td>
-            <td>${num(r.vonHoa, 0)}</td>
-            <td>${num(r.pe)}</td>
-            <td>${num(r.pb)}</td>
-            <td>${pct(r.roe)}</td>
-            <td>${pct(r.roa)}</td>
-            <td>${r.nim != null ? r.nim.toFixed(2) + '%' : '—'}</td>
-            <td>${r.npl != null ? r.npl.toFixed(2) + '%' : '—'}</td>
-            <td>${r.casa != null ? r.casa.toFixed(2) + '%' : '—'}</td>
-            <td>${r.cir != null ? r.cir.toFixed(2) + '%' : '—'}</td>
-            <td>${num(r.llcr)}</td>
-            <td>${recTag(r.recommendation)}</td>
-            <td>${r.upside != null ? pct(r.upside / 100) : '—'}</td>
-            <td>${r.targetPrice ? num(r.targetPrice, 0) : '—'}</td>
-          </tr>
-        `).join('')}
-      </tbody>
-    </table>
-  `;
 }
 
 
 function renderBlockF(blockF) {
   const container = document.getElementById('block-f-charts');
-  const tickers = Object.keys(blockF || {});
-
-  tickers.forEach(ticker => {
+  Object.keys(blockF || {}).forEach(ticker => {
     container.insertAdjacentHTML('beforeend', `
       <div class="chart-card">
         <div class="chart-header"><span class="chart-title">BCTC ${ticker} — 8 quý</span></div>
         <div class="chart-container chart-lg" id="chart-bctc-${ticker}"></div>
       </div>
     `);
-
-    const rows = blockF[ticker];
-    if (!rows?.length) { showEmpty(`chart-bctc-${ticker}`); return; }
-
-    const quarters = [...new Set(rows.map(r => r.period))].sort().slice(-8);
-    const getQ = (accId) => quarters.map(q => {
-      const r = rows.find(x => x.period === q && x.accountId === accId);
-      return r?.value ?? null;
-    });
-
-    createChart(`chart-bctc-${ticker}`, {
-      chart: { type: 'column' },
-      xAxis: { categories: quarters },
-      yAxis: [
-        { title: { text: 'Tỷ VNĐ' } },
-      ],
+    renderBctcChart(`chart-bctc-${ticker}`, ticker, blockF, {
       series: [
-        { name: 'NII', type: 'column', data: getQ(1), color: HC_COLORS[0] },
-        { name: 'Tổng TOI', type: 'column', data: getQ(46), color: HC_COLORS[1] },
-        { name: 'Dự phòng', type: 'column', data: getQ(16), color: HC_COLORS[3] },
-        { name: 'LNTT', type: 'line', data: getQ(17), color: HC_COLORS[2] },
-        { name: 'LNST', type: 'line', data: getQ(21), color: HC_COLORS[4] },
+        { name: 'NII',      accId: 1,  type: 'column', color: HC_COLORS[0] },
+        { name: 'Tổng TOI', accId: 46, type: 'column', color: HC_COLORS[1] },
+        { name: 'Dự phòng', accId: 16, type: 'column', color: HC_COLORS[3] },
+        { name: 'LNTT',     accId: 17, type: 'line',   color: HC_COLORS[2] },
+        { name: 'LNST',     accId: 21, type: 'line',   color: HC_COLORS[4] },
       ],
     });
   });
@@ -563,14 +510,14 @@ function _renderPerBankCharts(ticker, bankData) {
   `);
   const patRows = bankData.profit_after_tax || [];
   if (patRows.length) {
-    const periods = [...new Set(patRows.map(r => r.period))].sort().slice(-8);
+    const periods = [...new Set(patRows.map(r => r.period || `${r.year}Q${r.quarter}`))].sort().slice(-8);
     createChart(`chart-pat-${ticker}`, {
       chart: { type: 'column' },
       xAxis: { categories: periods },
       yAxis: [{ title: { text: 'Tỷ VNĐ' } }],
       series: [{
         name: `LNST ${ticker}`,
-        data: periods.map(p => patRows.find(r => r.period === p)?.value ?? null),
+        data: periods.map(p => { const r = patRows.find(x => (x.period || `${x.year}Q${x.quarter}`) === p); return r?.value ?? null; }),
         color: HC_COLORS[0],
       }],
     });

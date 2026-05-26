@@ -28,6 +28,7 @@ async def collect():
     block_e = await _block_e()
     block_f = await _block_f()
 
+    block_g = await _collect_block_g()
     cache = {
         "sector": "insurance",
         "sector_name": "Bảo hiểm",
@@ -43,6 +44,7 @@ async def collect():
         }},
         "block_e": block_e,
         "block_f": block_f,
+            "block_g": block_g,
     }
     CACHE_FILE.write_text(json.dumps(cache, ensure_ascii=False, indent=2), encoding="utf-8")
     print(f"[insurance] cache saved → {CACHE_FILE}")
@@ -121,6 +123,29 @@ async def _block_f():
         results[ticker] = ts
     return results
 
+
+
+async def _collect_block_g():
+    results = {}
+    for ticker in TICKERS:
+        div, val = await asyncio.gather(
+            findicator.get('enterprise/overview-dividend', params={'ticket': ticker, 'year': 'All'}),
+            findicator.get('enterprise/overview-valuation', params={'accountIds': '150,151', 'year': '5Y', 'ticket': ticker}),
+        )
+        rev = []
+        try:
+            pat = await findicator.get(
+                'enterprise/manufactoring-profit-after-tax',
+                params={'ticket': ticker, 'year': 'All', 'period': 'quarter'},
+            )
+        except Exception:
+            pat = []
+        try:
+            prof = await findicator.get('enterprise/corp-profile', params={'ticket': ticker})
+        except Exception:
+            prof = {}
+        results[ticker] = {'dividend': div, 'valuation': val, 'revenue': rev, 'profit_after_tax': pat, 'corp_profile': prof}
+    return results
 
 if __name__ == "__main__":
     asyncio.run(collect())

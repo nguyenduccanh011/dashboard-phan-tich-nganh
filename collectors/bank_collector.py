@@ -27,6 +27,7 @@ async def collect():
     block_f = await _collect_block_f()
     bank_charts = await _collect_bank_charts()
 
+    block_g = await _collect_block_g()
     cache = {
         "sector": "bank",
         "sector_name": "Ngân hàng",
@@ -39,6 +40,7 @@ async def collect():
         "block_e": block_e,
         "block_f": block_f,
         "bank_charts": bank_charts,
+            "block_g": block_g,
     }
 
     CACHE_FILE.write_text(json.dumps(cache, ensure_ascii=False, indent=2), encoding="utf-8")
@@ -105,13 +107,18 @@ async def _collect_block_a():
 
 
 async def _collect_block_b():
-    # Tăng trưởng tín dụng vs trần NHNN (dùng ngày đầu tháng hiện tại)
+    # Tăng trưởng tín dụng vs trần NHNN — thử tháng hiện tại, fallback 3 tháng trước
     today = datetime.now()
-    credit_date = f"{today.year}-{today.month:02d}-01"
-    credit_growth = await findicator.get(
-        "bank/bank-credit-growth",
-        params={"date": credit_date}
-    )
+    credit_growth = []
+    for months_back in range(0, 4):
+        m = today.month - months_back
+        y = today.year
+        while m <= 0:
+            m += 12; y -= 1
+        credit_date = f"{y}-{m:02d}-01"
+        credit_growth = await findicator.get("bank/bank-credit-growth", params={"date": credit_date})
+        if credit_growth:
+            break
     # CASA/NPL/CoF snapshot per-bank
     overview = await findicator.get("bank/overview/bank-data")
 
@@ -216,11 +223,16 @@ async def _collect_bank_charts():
     metadata = await findicator.get("bank/bank-picture-overview-metadata")
     results["metadata"] = metadata
 
-    # TPDN outstanding
-    try:
-        bond_issuer = await findicator.get("enterprise/bank-debt-by-bond-issuer")
-    except Exception:
-        bond_issuer = []
+    # TPDN outstanding (per-bank, quarter 5Y)
+    bond_issuer = {}
+    for ticker in ["VCB", "BID", "CTG", "TCB", "ACB", "MBB"]:
+        try:
+            bond_issuer[ticker] = await findicator.get(
+                "enterprise/bank-debt-by-bond-issuer",
+                params={"ticket": ticker, "period": "quarter", "year": "5Y"}
+            )
+        except Exception:
+            bond_issuer[ticker] = []
     results["bond_issuer"] = bond_issuer
 
     # Per-bank detailed charts (VCB làm default)
@@ -277,15 +289,34 @@ async def _collect_bank_charts():
             params={"ticket": ticker, "period": "quarter", "year": "5Y"}
         )
 
-        ticker_data["loan_by_sector"] = []
-        ticker_data["loan_by_type"] = []
-        ticker_data["loan_by_quality"] = []
-
         per_bank[ticker] = ticker_data
 
     results["per_bank"] = per_bank
     return results
 
+
+
+async def _collect_block_g():
+    results = {}
+    for ticker in TICKERS:
+        div, val = await asyncio.gather(
+            findicator.get('enterprise/overview-dividend', params={'ticket': ticker, 'year': 'All'}),
+            findicator.get('enterprise/overview-valuation', params={'accountIds': '89,90', 'year': '5Y', 'ticket': ticker}),
+        )
+        rev = []
+        try:
+            pat = await findicator.get(
+                'enterprise/manufactoring-profit-after-tax',
+                params={'ticket': ticker, 'year': 'All', 'period': 'quarter'},
+            )
+        except Exception:
+            pat = []
+        try:
+            prof = await findicator.get('enterprise/corp-profile', params={'ticket': ticker})
+        except Exception:
+            prof = {}
+        results[ticker] = {'dividend': div, 'valuation': val, 'revenue': rev, 'profit_after_tax': pat, 'corp_profile': prof}
+    return results
 
 if __name__ == "__main__":
     asyncio.run(collect())

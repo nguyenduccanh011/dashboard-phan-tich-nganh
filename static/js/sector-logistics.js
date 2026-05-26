@@ -18,6 +18,7 @@
   renderBlockD(data.block_a, data.block_b);
   renderBlockE(data.block_e);
   renderBlockF(data.block_f);
+  renderBlockG(data.block_g, data.tickers, {});
 })();
 
 function renderBlockA(blockA) {
@@ -33,9 +34,9 @@ function renderBlockA(blockA) {
     </div>
   `);
   const card = c.lastElementChild;
-  const raw = blockA?.macro_35 || [];
-  const bdi = parseFindicatorSeries(raw.filter(r => r.nameId === 681));
-  const wci = parseFindicatorSeries(raw.filter(r => r.nameId === 688));
+  const raw = blockA?.freight_indices || [];
+  const bdi = parseFindicatorSeries(raw.filter(r => r.name_id === 681));
+  const wci = parseFindicatorSeries(raw.filter(r => r.name_id === 688));
 
   function render(year) {
     const cut = yearToCutoff(year);
@@ -63,7 +64,7 @@ function renderBlockA(blockA) {
     </div>
   `);
   const card2 = c.lastElementChild;
-  const brent = parseFindicatorSeries(raw.filter(r => r.nameId === 65));
+  const brent = parseFindicatorSeries(raw.filter(r => r.name_id === 65));
   function renderBrent(year) {
     const cut = yearToCutoff(year);
     createStockChart('chart-logistics-brent', {
@@ -74,9 +75,32 @@ function renderBlockA(blockA) {
   renderBrent('1Y');
 }
 
+// nameId → tên mặt hàng XK/NK (overview tabId=6/7)
+const XK_NAMES = {
+  12: 'Thủy sản', 13: 'Xi măng/Clinker', 14: 'Hóa chất', 15: 'SP hóa chất',
+  16: 'Phân bón', 17: 'Cao su', 18: 'SP cao su', 19: 'Gỗ & SP gỗ',
+  20: 'SP gỗ tinh chế', 21: 'Xơ sợi dệt', 22: 'Dệt & may',
+  23: 'Sắt thép', 24: 'SP sắt thép', 25: 'Máy tính/Điện tử', 26: 'Điện thoại', 70: 'Tổng XK',
+};
+const NK_NAMES = {
+  27: 'Hóa chất', 28: 'SP hóa chất', 29: 'Chất dẻo NL', 30: 'SP chất dẻo',
+  31: 'Vải các loại', 32: 'NPL dệt may', 33: 'Sắt thép NK', 34: 'SP sắt thép NK',
+  35: 'Máy tính/ĐT NK', 36: 'Điện thoại NK', 71: 'Tổng NK',
+};
+
+function parseOverviewSeries(data, nameId) {
+  if (!Array.isArray(data)) return [];
+  return data
+    .filter(r => r.nameId === nameId)
+    .map(r => [new Date(r.date).getTime(), r.value != null ? parseFloat(r.value) * 100 : null])
+    .filter(([t, v]) => !isNaN(t) && v != null)
+    .sort((a, b) => a[0] - b[0]);
+}
+
 function renderBlockB(blockB) {
   const c = document.getElementById('block-b-charts');
 
+  // Chart 1: XNK VN tổng kim ngạch
   c.insertAdjacentHTML('beforeend', `
     <div class="chart-card" data-year-options="1Y,3Y,5Y">
       <div class="chart-header">
@@ -87,8 +111,8 @@ function renderBlockB(blockB) {
     </div>
   `);
   const card = c.lastElementChild;
-  const exp = parseFindicatorSeries(blockB?.export_vn);
-  const imp = parseFindicatorSeries(blockB?.import_vn);
+  const exp = parseFindicatorSeries(blockB?.xk_vn);
+  const imp = parseFindicatorSeries(blockB?.nk_vn);
 
   function render(year) {
     const cut = yearToCutoff(year);
@@ -102,6 +126,111 @@ function renderBlockB(blockB) {
   initYearButtons(card, render);
   render('3Y');
 
+  // Chart 2: XK VN YoY breakdown theo mặt hàng
+  c.insertAdjacentHTML('beforeend', `
+    <div class="chart-card" data-year-options="1Y,3Y">
+      <div class="chart-header">
+        <span class="chart-title">XK VN YoY theo mặt hàng (%)</span>
+        <div class="year-btns"></div>
+      </div>
+      <div class="chart-container" id="chart-xk-breakdown"></div>
+    </div>
+  `);
+  const cardXk = c.lastElementChild;
+  const xkData = blockB?.xk_breakdown?.data || [];
+  const XK_TOP = [26, 25, 22, 19, 12, 23, 70];
+  const xkSeries = XK_TOP.map((nid, i) => ({
+    name: XK_NAMES[nid] || String(nid),
+    data: parseOverviewSeries(xkData, nid),
+    color: HC_COLORS[i % HC_COLORS.length],
+    ...(nid === 70 ? { dashStyle: 'ShortDash', lineWidth: 2 } : {}),
+  })).filter(s => s.data.length);
+
+  function renderXkBreakdown(year) {
+    const cut = yearToCutoff(year);
+    if (!xkSeries.length) { showEmpty('chart-xk-breakdown', 'Không có dữ liệu'); return; }
+    createChart('chart-xk-breakdown', {
+      chart: { type: 'line' },
+      xAxis: { type: 'datetime' },
+      yAxis: {
+        title: { text: 'YoY (%)' },
+        plotLines: [{ value: 0, color: '#666', width: 1, dashStyle: 'Dot' }],
+      },
+      tooltip: { valueSuffix: '%', valueDecimals: 1 },
+      series: xkSeries.map(s => ({ ...s, data: s.data.filter(p => p[0] >= cut) })),
+    });
+  }
+  initYearButtons(cardXk, renderXkBreakdown);
+  renderXkBreakdown('1Y');
+
+  // Chart 3: NK VN YoY breakdown theo nhóm NVL
+  c.insertAdjacentHTML('beforeend', `
+    <div class="chart-card" data-year-options="1Y,3Y">
+      <div class="chart-header">
+        <span class="chart-title">NK VN YoY theo nhóm NVL (%)</span>
+        <div class="year-btns"></div>
+      </div>
+      <div class="chart-container" id="chart-nk-breakdown"></div>
+    </div>
+  `);
+  const cardNk = c.lastElementChild;
+  const nkData = blockB?.nk_breakdown?.data || [];
+  const NK_TOP = [35, 36, 29, 33, 31, 71];
+  const nkSeries = NK_TOP.map((nid, i) => ({
+    name: NK_NAMES[nid] || String(nid),
+    data: parseOverviewSeries(nkData, nid),
+    color: HC_COLORS[i % HC_COLORS.length],
+    ...(nid === 71 ? { dashStyle: 'ShortDash', lineWidth: 2 } : {}),
+  })).filter(s => s.data.length);
+
+  function renderNkBreakdown(year) {
+    const cut = yearToCutoff(year);
+    if (!nkSeries.length) { showEmpty('chart-nk-breakdown', 'Không có dữ liệu'); return; }
+    createChart('chart-nk-breakdown', {
+      chart: { type: 'line' },
+      xAxis: { type: 'datetime' },
+      yAxis: {
+        title: { text: 'YoY (%)' },
+        plotLines: [{ value: 0, color: '#666', width: 1, dashStyle: 'Dot' }],
+      },
+      tooltip: { valueSuffix: '%', valueDecimals: 1 },
+      series: nkSeries.map(s => ({ ...s, data: s.data.filter(p => p[0] >= cut) })),
+    });
+  }
+  initYearButtons(cardNk, renderNkBreakdown);
+  renderNkBreakdown('1Y');
+
+  // Chart 4: Cán cân thương mại VN & PMI Mỹ
+  c.insertAdjacentHTML('beforeend', `
+    <div class="chart-card" data-year-options="1Y,3Y,5Y">
+      <div class="chart-header">
+        <span class="chart-title">Cán cân TM VN (Tr USD) & PMI Mỹ</span>
+        <div class="year-btns"></div>
+      </div>
+      <div class="chart-container" id="chart-trade-balance"></div>
+    </div>
+  `);
+  const cardBal = c.lastElementChild;
+  const tradeBal = parseFindicatorSeries(Array.isArray(blockB?.trade_balance) ? blockB.trade_balance : []);
+  const pmiUs = parseFindicatorSeries(Array.isArray(blockB?.pmi_us) ? blockB.pmi_us : []);
+
+  function renderTradeBalance(year) {
+    const cut = yearToCutoff(year);
+    createStockChart('chart-trade-balance', {
+      yAxis: [
+        { title: { text: 'Cán cân TM (Tr USD)' }, plotLines: [{ value: 0, color: '#666', width: 1, dashStyle: 'Dot' }] },
+        { title: { text: 'PMI Mỹ (pts)' }, opposite: true, plotLines: [{ value: 50, color: HC_COLORS[1], width: 1, dashStyle: 'ShortDash' }] },
+      ],
+      series: [
+        { name: 'Cán cân TM VN', data: tradeBal.filter(p => p[0] >= cut), color: HC_COLORS[0], type: 'column' },
+        { name: 'PMI Mỹ', data: pmiUs.filter(p => p[0] >= cut), color: HC_COLORS[3], yAxis: 1 },
+      ],
+    });
+  }
+  initYearButtons(cardBal, renderTradeBalance);
+  renderTradeBalance('3Y');
+
+  // Chart 5: PMI VN & FDI Logistics
   c.insertAdjacentHTML('beforeend', `
     <div class="chart-card" data-year-options="1Y,3Y,5Y">
       <div class="chart-header">
@@ -112,7 +241,7 @@ function renderBlockB(blockB) {
     </div>
   `);
   const card2 = c.lastElementChild;
-  const pmi = parseFindicatorSeries(blockB?.pmi_vn);
+  const pmi = parseFindicatorSeries(blockB?.pmi);
   const fdi = parseFindicatorSeries(blockB?.fdi_logistics);
 
   function render2(year) {
@@ -146,53 +275,54 @@ function renderBlockC(blockC) {
 function renderBlockD(blockA, blockB) {
   const c = document.getElementById('block-d-charts');
   c.insertAdjacentHTML('beforeend', `
-    <div class="chart-card">
-      <div class="chart-header"><span class="chart-title">BDI/WCI vs DT ngành</span></div>
+    <div class="chart-card" data-year-options="1Y,3Y,5Y">
+      <div class="chart-header">
+        <span class="chart-title">Container Routes (Shanghai → LA / NY)</span>
+        <div class="year-btns"></div>
+      </div>
       <div class="chart-container" id="chart-logistics-spread"></div>
     </div>
   `);
-  showEmpty('chart-logistics-spread', 'So sánh Freight Index với DT từ BCTC per-DN');
+  const card = c.lastElementChild;
+  const containerRoutes = blockB?.container_routes || [];
+  const shLa = parseFindicatorSeries(containerRoutes.filter(r => r.name_id === 691));
+  const shNy = parseFindicatorSeries(containerRoutes.filter(r => r.name_id === 692));
+
+  if (!shLa.length && !shNy.length) {
+    showEmpty('chart-logistics-spread', 'Không có dữ liệu container routes');
+    return;
+  }
+
+  function render(year) {
+    const cut = yearToCutoff(year);
+    createStockChart('chart-logistics-spread', {
+      yAxis: [{ title: { text: 'USD/FEU' } }],
+      series: [
+        { name: 'Shanghai → LA', data: shLa.filter(p => p[0] >= cut), color: HC_COLORS[0] },
+        { name: 'Shanghai → NY', data: shNy.filter(p => p[0] >= cut), color: HC_COLORS[1] },
+      ].filter(s => s.data.length),
+    });
+  }
+  initYearButtons(card, render);
+  render('1Y');
 }
 
 function renderBlockE(blockE) {
-  const c = document.getElementById('block-e-table');
-  const tickers = Object.keys(blockE || {});
-  if (!tickers.length) { c.innerHTML = '<p>Không có dữ liệu</p>'; return; }
-  const pct = v => v != null ? `<span class="${v >= 0 ? 'num-up' : 'num-down'}">${(v * 100).toFixed(1)}%</span>` : '—';
-  const num = (v, dp = 1) => v != null ? Highcharts.numberFormat(v, dp) : '—';
-  const rows = tickers.map(t => {
-    const arr = Array.isArray(blockE[t]?.trailing) ? blockE[t].trailing : [];
-    const get = id => arr.find(r => r.accountId === id)?.value;
-    const rec = Array.isArray(blockE[t]?.analyst) ? blockE[t].analyst[0] : blockE[t]?.analyst;
-    return { ticker: t, marketCap: get(35), pe: get(39), pb: get(40), margin: get(2), roe: get(8), roa: get(9), debt: get(22), rec: rec?.recommend, upside: rec?.upside };
+  renderValuationTable('block-e-table', blockE, {
+    accountMap: { marketCap: 35, pe: 39, pb: 40, grossMargin: 2, roe: 8, roa: 9, leverage: 22 },
+    columns: ['marketCap', 'pe', 'pb', 'grossMargin', 'roe', 'roa', 'leverage'],
+    pctFields: ['grossMargin', 'roe', 'roa'],
   });
-  c.innerHTML = `<table class="stock-table"><thead><tr><th>Ticker</th><th>Vốn hóa</th><th>PE</th><th>PB</th><th>Biên gộp</th><th>ROE</th><th>ROA</th><th>Nợ/VCS</th><th>Rec</th><th>Upside</th></tr></thead><tbody>${
-    rows.map(r => `<tr><td>${r.ticker}</td><td>${num(r.marketCap,0)}</td><td>${num(r.pe)}</td><td>${num(r.pb)}</td><td>${pct(r.margin)}</td><td>${pct(r.roe)}</td><td>${pct(r.roa)}</td><td>${num(r.debt)}</td><td>${r.rec||'—'}</td><td>${r.upside!=null?pct(r.upside/100):'—'}</td></tr>`).join('')
-  }</tbody></table>`;
 }
-
 function renderBlockF(blockF) {
-  const c = document.getElementById('block-f-charts');
+  const container = document.getElementById('block-f-charts');
   Object.keys(blockF || {}).forEach(ticker => {
-    c.insertAdjacentHTML('beforeend', `
+    container.insertAdjacentHTML('beforeend', `
       <div class="chart-card">
         <div class="chart-header"><span class="chart-title">BCTC ${ticker} — 8 quý</span></div>
         <div class="chart-container chart-lg" id="chart-bctc-${ticker}"></div>
       </div>
     `);
-    const rows = Array.isArray(blockF[ticker]) ? blockF[ticker] : [];
-    if (!rows.length) { showEmpty(`chart-bctc-${ticker}`); return; }
-    const quarters = [...new Set(rows.map(r => r.period || `${r.year}Q${r.quarter}`))].sort().slice(-8);
-    const getQ = id => quarters.map(q => rows.find(x => (x.period || `${x.year}Q${x.quarter}`) === q && x.accountId === id)?.value ?? null);
-    createChart(`chart-bctc-${ticker}`, {
-      chart: { type: 'column' }, xAxis: { categories: quarters },
-      yAxis: [{ title: { text: 'Tỷ VNĐ' } }, { title: { text: 'Biên gộp %' }, opposite: true, labels: { format: '{value}%' } }],
-      series: [
-        { name: 'Doanh thu', type: 'column', data: getQ(24), color: HC_COLORS[0] },
-        { name: 'LN gộp', type: 'column', data: getQ(28), color: HC_COLORS[2] },
-        { name: 'LNST', type: 'column', data: getQ(43), color: HC_COLORS[3] },
-        { name: 'Biên gộp %', type: 'line', data: getQ(2), color: HC_COLORS[1], yAxis: 1, tooltip: { valueSuffix: '%' } },
-      ],
-    });
+    renderBctcChart(`chart-bctc-${ticker}`, ticker, blockF);
   });
 }

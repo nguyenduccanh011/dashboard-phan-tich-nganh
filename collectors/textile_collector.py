@@ -6,11 +6,26 @@ Output: cache/sector_textile.json
 import asyncio
 import json
 from pathlib import Path
-from datetime import datetime
+from datetime import datetime, date
 from collectors.base import findicator
 
 CACHE_FILE = Path("cache/sector_textile.json")
 TICKERS = ["TCM", "TNG", "MSH", "VGT", "STK", "ADS"]
+
+
+def _quarters(n=8):
+    """Trả n quý gần nhất dạng MM/DD/YYYY để dùng làm date param."""
+    today = date.today()
+    q = (today.month - 1) // 3
+    results = []
+    for _ in range(n):
+        m = q * 3 + 1
+        results.append(f"{m:02d}/01/{today.year - (q < 0)}")
+        q -= 1
+        if q < 0:
+            q = 3
+            today = today.replace(year=today.year - 1)
+    return results
 
 
 async def collect():
@@ -18,11 +33,14 @@ async def collect():
 
     block_a = await _collect_block_a()
     block_b = await _collect_block_b()
-    block_c = {"computed_client_side": True}
-    block_d = {"computed_client_side": True}
     block_e = await _collect_block_e()
     block_f = await _collect_block_f()
+    # block_c render từ block_b.overview (textileApplication, textileExportOverall)
+    # block_d render từ block_f (BCTC, tính margin phía client)
+    block_c = {"source": "block_b.overview"}
+    block_d = {"source": "block_f"}
 
+    block_g = await _collect_block_g()
     cache = {
         "sector": "textile",
         "sector_name": "Dệt may",
@@ -34,6 +52,7 @@ async def collect():
         "block_d": block_d,
         "block_e": block_e,
         "block_f": block_f,
+            "block_g": block_g,
     }
 
     CACHE_FILE.write_text(json.dumps(cache, ensure_ascii=False, indent=2), encoding="utf-8")
@@ -75,41 +94,19 @@ async def _collect_block_b():
         "textile/values-by-macro-ids",
         params={"macroIds": 25, "repo": "MacroVnEximExcomdty", "year": "5Y", "period": "month_yoy"}
     )
-    xk_country = await _try_get("textile/textileExportCountry")
     overview = await _try_get("textile/overview/textile-data")
+    xk_country = overview.get("textileExportCountry", []) if isinstance(overview, dict) else []
     nk_material = await _try_get(
         "textile/values-by-macro-ids",
-        params={"macroIds": 26, "repo": "MacroVnEximImcomdty", "year": "5Y", "period": "month_value"}
+        params={"macroIds": 1, "repo": "MacroVnEximImcomdty", "year": "5Y", "period": "month_value"}
     )
     fdi = await findicator.get(
         "macro-data/macro-item-detail",
-        params={"macroItemId": 15, "year": "5Y"}
+        params={"macroItemId": 18, "year": "5Y", "period": "month"}
     )
-    labour = await _try_get(
-        "textile/values-by-macro-ids",
-        params={"repo": "MacroVnLabourIndex", "year": "5Y", "period": "month_value"}
-    )
-    iip = await _try_get(
-        "textile/values-by-macro-ids",
-        params={"repo": "MacroVnPrdIip", "year": "5Y", "period": "month_value"}
-    )
-    xk_bangladesh = await _try_get(
-        "textile/values-by-macro-ids",
-        params={"repo": "MacroGlobalBangladeshExportComdty", "year": "5Y", "period": "month_value"}
-    )
-    xk_china = await _try_get(
-        "textile/values-by-macro-ids",
-        params={"repo": "MacroGlobalChinaExportComdty", "year": "5Y", "period": "month_value"}
-    )
-    xk_india = await _try_get(
-        "textile/values-by-macro-ids",
-        params={"repo": "MacroGlobalIndiaExportComdty", "year": "5Y", "period": "month_value"}
-    )
-    xk_turkey = await _try_get(
-        "textile/values-by-macro-ids",
-        params={"repo": "MacroGlobalTurkeyExportComdty", "year": "5Y", "period": "month_value"}
-    )
-    pmi_global = await _try_get("overview/overview-data", params={"tabId": 4})
+    # labour/iip/xk_bangladesh/china/india/turkey: repos trống ở server (macroIds 1-100 đều empty)
+    # + không được dùng trong sector-textile.js → bỏ để tiết kiệm API calls
+    pmi_global = await _try_get("overview/overview-data", params={"tabId": 4, "repo": "overview_global"})
     us_apparel_retail = await findicator.get(
         "macro-data/macro-item-detail",
         params={"macroItemId": 84, "nameId": 20, "year": "5Y"}
@@ -121,12 +118,6 @@ async def _collect_block_b():
         "overview": overview,
         "nk_material": nk_material,
         "fdi": fdi,
-        "labour": labour,
-        "iip": iip,
-        "xk_bangladesh": xk_bangladesh,
-        "xk_china": xk_china,
-        "xk_india": xk_india,
-        "xk_turkey": xk_turkey,
         "pmi_global": pmi_global,
         "us_apparel_retail": us_apparel_retail,
     }
@@ -153,21 +144,56 @@ async def _collect_block_e():
 
 
 async def _collect_block_f():
+    quarters = _quarters(8)
     results = {}
     for ticker in TICKERS[:4]:  # TCM, TNG, MSH, VGT
-        ts = await findicator.get(
-            "enterprise/v2/finance-ticket-data",
-            params={
-                "tableName": "INCOME_STATEMENT",
-                "corpType": 4,
-                "ticket": f'["{ticker}"]',
-                "accountIds": "24,28,43,2",
-                "period": "quarter",
-            }
-        )
-        results[ticker] = ts
+        all_rows = []
+        for qdate in quarters:
+            rows = await findicator.get(
+                "enterprise/v2/finance-ticket-data",
+                params={
+                    "tableName": "INCOME_STATEMENT",
+                    "corpType": 4,
+                    "ticket": f'["{ticker}"]',
+                    "accountIds": "24,28,43,2",
+                    "period": "quarter",
+                    "date": qdate,
+                }
+            )
+            ticker_rows = rows.get(ticker, []) if isinstance(rows, dict) else rows
+            all_rows.extend(ticker_rows if isinstance(ticker_rows, list) else [])
+        results[ticker] = all_rows
     return results
 
+
+
+async def _collect_block_g():
+    results = {}
+    for ticker in TICKERS:
+        div, val = await asyncio.gather(
+            findicator.get('enterprise/overview-dividend', params={'ticket': ticker, 'year': 'All'}),
+            findicator.get('enterprise/overview-valuation', params={'accountIds': '39,154', 'year': '5Y', 'ticket': ticker}),
+        )
+        try:
+            rev = await findicator.get(
+                'enterprise/manufactoring-revenue',
+                params={'ticket': ticker, 'year': 'All', 'period': 'quarter'},
+            )
+        except Exception:
+            rev = []
+        try:
+            pat = await findicator.get(
+                'enterprise/manufactoring-profit-after-tax',
+                params={'ticket': ticker, 'year': 'All', 'period': 'quarter'},
+            )
+        except Exception:
+            pat = []
+        try:
+            prof = await findicator.get('enterprise/corp-profile', params={'ticket': ticker})
+        except Exception:
+            prof = {}
+        results[ticker] = {'dividend': div, 'valuation': val, 'revenue': rev, 'profit_after_tax': pat, 'corp_profile': prof}
+    return results
 
 if __name__ == "__main__":
     asyncio.run(collect())

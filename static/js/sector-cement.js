@@ -24,6 +24,7 @@
   renderBlockD(data.block_a, data.block_c);
   renderBlockE(data.block_e);
   renderBlockF(data.block_f);
+  renderBlockG(data.block_g, data.tickers, {});
 })();
 
 
@@ -151,11 +152,11 @@ function renderBlockB(blockB) {
   initYearButtons(card2, renderCapex);
   renderCapex('1Y');
 
-  // Chart 3: Chỉ số tiêu thụ & tồn kho CN
+  // Chart 3: Tiêu thụ & tồn kho clinker xi măng
   container.insertAdjacentHTML('beforeend', `
     <div class="chart-card" data-year-options="1Y,3Y,5Y">
       <div class="chart-header">
-        <span class="chart-title">Chỉ số tiêu thụ & tồn kho CN</span>
+        <span class="chart-title">Tiêu thụ & tồn kho clinker (Nghìn tấn)</span>
         <div class="year-btns"></div>
       </div>
       <div class="chart-container" id="chart-industry-index"></div>
@@ -172,12 +173,12 @@ function renderBlockB(blockB) {
       chart: { type: 'line' },
       series: [
         {
-          name: 'Tiêu thụ CN',
+          name: 'Tiêu thụ clinker (Nghìn tấn)',
           color: HC_COLORS[0],
           data: parseFindicatorSeries(consumRows, 'date', 'value').filter(p => p[0] >= cutoff),
         },
         {
-          name: 'Tồn kho CN',
+          name: 'Tồn kho clinker (Nghìn tấn)',
           color: HC_COLORS[3],
           data: parseFindicatorSeries(inventRows, 'date', 'value').filter(p => p[0] >= cutoff),
         },
@@ -186,6 +187,86 @@ function renderBlockB(blockB) {
   }
   initYearButtons(card3, renderIndustryIndex);
   renderIndustryIndex('1Y');
+
+  // Chart 4: Sản lượng thép VN (proxy nhu cầu xây dựng)
+  container.insertAdjacentHTML('beforeend', `
+    <div class="chart-card" data-year-options="1Y,3Y,5Y">
+      <div class="chart-header">
+        <span class="chart-title">Sản lượng thép VN (proxy nhu cầu xây dựng)</span>
+        <div class="year-btns"></div>
+      </div>
+      <div class="chart-container" id="chart-steel-production"></div>
+    </div>
+  `);
+
+  const card4 = container.lastElementChild;
+  const steelRows = Array.isArray(blockB.steel_production) ? blockB.steel_production : [];
+
+  function renderSteel(year) {
+    const cutoff = yearToCutoff(year);
+    createStockChart('chart-steel-production', {
+      series: [{
+        name: 'Sản lượng thép (Nghìn tấn)',
+        color: HC_COLORS[4],
+        data: parseFindicatorSeries(steelRows, 'date', 'value').filter(p => p[0] >= cutoff),
+      }],
+    });
+  }
+  initYearButtons(card4, renderSteel);
+  renderSteel('1Y');
+
+  // Chart 5: IIP xi măng VN — sản lượng sản xuất (Triệu tấn, nested [[]])
+  const iipFlat = (Array.isArray(blockB.iip_yoy) ? blockB.iip_yoy : []).flat();
+  const iipSeries = parseFindicatorSeries(iipFlat, 'date', 'value');
+  if (iipSeries.length) {
+    container.insertAdjacentHTML('beforeend', `
+      <div class="chart-card" data-year-options="1Y,3Y,5Y">
+        <div class="chart-header">
+          <span class="chart-title">Sản lượng sản xuất xi măng VN (Triệu tấn)</span>
+          <div class="year-btns"></div>
+        </div>
+        <div class="chart-container" id="chart-cement-iip"></div>
+      </div>
+    `);
+    const card5 = container.lastElementChild;
+    function renderIip(year) {
+      const cutoff = yearToCutoff(year);
+      createStockChart('chart-cement-iip', {
+        series: [{ name: 'Sản lượng SX (Triệu tấn)', data: iipSeries.filter(p => p[0] >= cutoff), color: HC_COLORS[5] }],
+      });
+    }
+    initYearButtons(card5, renderIip);
+    renderIip('1Y');
+  }
+
+  // Chart 6: XK clinker (Triệu USD + Nghìn tấn, nested [[]])
+  const clinkerYoyFlat = (Array.isArray(blockB.clinker_yoy) ? blockB.clinker_yoy : []).flat();
+  const clinkerYoyVal = parseFindicatorSeries(clinkerYoyFlat, 'date', 'value');
+  const clinkerYoyVol = parseFindicatorSeries(clinkerYoyFlat, 'date', 'volume');
+  if (clinkerYoyVal.length) {
+    container.insertAdjacentHTML('beforeend', `
+      <div class="chart-card" data-year-options="1Y,3Y,5Y">
+        <div class="chart-header">
+          <span class="chart-title">XK clinker VN (Triệu USD & Nghìn tấn)</span>
+          <div class="year-btns"></div>
+        </div>
+        <div class="chart-container" id="chart-clinker-yoy"></div>
+      </div>
+    `);
+    const card6 = container.lastElementChild;
+    function renderClinkerYoy(year) {
+      const cutoff = yearToCutoff(year);
+      createStockChart('chart-clinker-yoy', {
+        yAxis: [{ title: { text: 'Triệu USD' } }, { title: { text: 'Nghìn tấn' }, opposite: true }],
+        series: [
+          { name: 'Kim ngạch XK (Triệu USD)', data: clinkerYoyVal.filter(p => p[0] >= cutoff), color: HC_COLORS[0], yAxis: 0 },
+          { name: 'Sản lượng XK (Nghìn tấn)', data: clinkerYoyVol.filter(p => p[0] >= cutoff), color: HC_COLORS[1], yAxis: 1 },
+        ],
+      });
+    }
+    initYearButtons(card6, renderClinkerYoy);
+    renderClinkerYoy('1Y');
+  }
 }
 
 
@@ -237,108 +318,95 @@ function renderBlockC(blockC) {
 function renderBlockD(blockA, blockC) {
   const container = document.getElementById('block-d-charts');
   container.insertAdjacentHTML('beforeend', `
-    <div class="chart-card">
-      <div class="chart-header"><span class="chart-title">Spread Xi măng – Than</span></div>
+    <div class="chart-card" data-year-options="1Y,3Y,5Y">
+      <div class="chart-header">
+        <span class="chart-title">Spread Xi măng – Than (VNĐ/kg)</span>
+        <div class="year-btns"></div>
+      </div>
       <div class="chart-container" id="chart-cement-spread"></div>
     </div>
   `);
-  showEmpty('chart-cement-spread', 'Spread = Giá xi măng nội địa − Chi phí than đầu vào');
+
+  const card = container.lastElementChild;
+  const cementRows = Array.isArray(blockC.internal_price) ? blockC.internal_price : [];
+  const coalRows = Array.isArray(blockA.coal_price) ? blockA.coal_price : [];
+
+  // Build lookup: coal USD/T -> VNĐ/kg (dùng tỷ giá xấp xỉ 25,000 VNĐ/USD)
+  const USD_VND = 25000;
+  const coalByMonth = {};
+  coalRows.forEach(r => {
+    const d = new Date(r.date);
+    const key = `${d.getFullYear()}-${d.getMonth()}`;
+    coalByMonth[key] = (coalByMonth[key] || []);
+    coalByMonth[key].push(parseFloat(r.value));
+  });
+
+  // Tính spread = giá xi măng (VNĐ/kg) - giá than quy đổi (VNĐ/kg)
+  function buildSpreadSeries(cutoff) {
+    const result = [];
+    cementRows.forEach(r => {
+      const ts = new Date(r.date).getTime();
+      if (ts < cutoff) return;
+      const d = new Date(r.date);
+      const key = `${d.getFullYear()}-${d.getMonth()}`;
+      const coalArr = coalByMonth[key];
+      if (!coalArr || !coalArr.length) return;
+      const coalAvg = coalArr.reduce((a, b) => a + b, 0) / coalArr.length;
+      const coalVnd = coalAvg * USD_VND / 1000;
+      const spread = parseFloat(r.value) - coalVnd;
+      result.push([ts, Math.round(spread)]);
+    });
+    return result.sort((a, b) => a[0] - b[0]);
+  }
+
+  function renderSpread(year) {
+    const cutoff = yearToCutoff(year);
+    const spreadData = buildSpreadSeries(cutoff);
+    const cementData = parseFindicatorSeries(cementRows).filter(p => p[0] >= cutoff);
+
+    if (!spreadData.length) {
+      showEmpty('chart-cement-spread', 'Không có dữ liệu spread');
+      return;
+    }
+    createChart('chart-cement-spread', {
+      chart: { type: 'line' },
+      yAxis: [
+        { title: { text: 'VNĐ/kg' } },
+        { title: { text: 'VNĐ/kg' }, opposite: true },
+      ],
+      series: [
+        {
+          name: 'Spread Xi măng – Than (VNĐ/kg)',
+          color: HC_COLORS[0],
+          data: spreadData,
+        },
+        {
+          name: 'Giá xi măng nội địa (VNĐ/kg)',
+          color: HC_COLORS[2],
+          yAxis: 1,
+          dashStyle: 'ShortDash',
+          data: cementData,
+        },
+      ],
+    });
+  }
+  initYearButtons(card, renderSpread);
+  renderSpread('1Y');
 }
 
 
 function renderBlockE(blockE) {
-  const container = document.getElementById('block-e-table');
-  const tickers = Object.keys(blockE);
-  if (!tickers.length) { container.innerHTML = '<p class="text-muted">Không có dữ liệu</p>'; return; }
-
-  const rows = tickers.map(t => {
-    const tr = blockE[t]?.trailing;
-    const tickerData = tr?.[t] || (Array.isArray(tr) ? tr : []);
-    const get = (id) => tickerData.find?.(r => r.accountId === id)?.value;
-    const analyst = blockE[t]?.analyst;
-    const rec = Array.isArray(analyst) ? analyst[0] : analyst;
-    return {
-      ticker: t,
-      marketCap: get(35), pe: get(39), pb: get(40),
-      grossMargin: get(2), roe: get(8), dtGrowth: get(163),
-      recommendation: rec?.recommend, upside: rec?.upside, targetPrice: rec?.targetPrice,
-    };
-  });
-
-  const recTag = (r) => {
-    if (!r) return '—';
-    const map = { BUY: 'tag-buy', HOLD: 'tag-hold', SELL: 'tag-sell' };
-    return `<span class="${map[r] || ''}">${r}</span>`;
-  };
-  const pct = v => v != null ? `<span class="${v >= 0 ? 'num-up' : 'num-down'}">${(v*100).toFixed(1)}%</span>` : '—';
-  const num = (v, dp=1) => v != null ? Highcharts.numberFormat(v, dp) : '—';
-
-  container.innerHTML = `
-    <table class="stock-table">
-      <thead>
-        <tr>
-          <th>Ticker</th><th>Vốn hóa (tỷ)</th><th>PE</th><th>PB</th>
-          <th>Biên gộp</th><th>ROE</th><th>DT YoY</th>
-          <th>Recommend</th><th>Upside</th><th>Target</th>
-        </tr>
-      </thead>
-      <tbody>
-        ${rows.map(r => `
-          <tr>
-            <td>${r.ticker}</td>
-            <td>${num(r.marketCap, 0)}</td>
-            <td>${num(r.pe)}</td>
-            <td>${num(r.pb)}</td>
-            <td>${pct(r.grossMargin)}</td>
-            <td>${pct(r.roe)}</td>
-            <td>${pct(r.dtGrowth)}</td>
-            <td>${recTag(r.recommendation)}</td>
-            <td>${r.upside != null ? pct(r.upside/100) : '—'}</td>
-            <td>${r.targetPrice ? num(r.targetPrice, 0) : '—'}</td>
-          </tr>
-        `).join('')}
-      </tbody>
-    </table>
-  `;
+  renderValuationTable('block-e-table', blockE);
 }
-
-
 function renderBlockF(blockF) {
   const container = document.getElementById('block-f-charts');
-  const tickers = Object.keys(blockF);
-
-  tickers.forEach(ticker => {
+  Object.keys(blockF || {}).forEach(ticker => {
     container.insertAdjacentHTML('beforeend', `
       <div class="chart-card">
         <div class="chart-header"><span class="chart-title">BCTC ${ticker} — 8 quý</span></div>
         <div class="chart-container chart-lg" id="chart-bctc-${ticker}"></div>
       </div>
     `);
-
-    const tickerData = blockF[ticker];
-    const rows = tickerData?.[ticker] || (Array.isArray(tickerData) ? tickerData : []);
-    if (!rows?.length) { showEmpty(`chart-bctc-${ticker}`); return; }
-
-    const quarters = [...new Set(rows.map(r => r.period || `${r.year}Q${r.quarter}`))].sort().slice(-8);
-    const getQ = (accId) => quarters.map(q => {
-      const r = rows.find(x => (x.period || `${x.year}Q${x.quarter}`) === q && x.accountId === accId);
-      return r?.value ?? null;
-    });
-
-    createChart(`chart-bctc-${ticker}`, {
-      chart: { type: 'column' },
-      xAxis: { categories: quarters },
-      yAxis: [
-        { title: { text: 'Tỷ VNĐ' } },
-        { title: { text: 'Biên gộp %' }, opposite: true, labels: { format: '{value}%' } },
-      ],
-      series: [
-        { name: 'Doanh thu', type: 'column', data: getQ(24), color: HC_COLORS[0] },
-        { name: 'LN gộp', type: 'column', data: getQ(28), color: HC_COLORS[2] },
-        { name: 'LNST', type: 'column', data: getQ(43), color: HC_COLORS[3] },
-        { name: 'Biên gộp %', type: 'line', data: getQ(2), color: HC_COLORS[1], yAxis: 1,
-          tooltip: { valueSuffix: '%' } },
-      ],
-    });
+    renderBctcChart(`chart-bctc-${ticker}`, ticker, blockF);
   });
 }

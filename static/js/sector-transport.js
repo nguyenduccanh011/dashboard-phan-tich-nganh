@@ -23,6 +23,7 @@
   renderMacroTransport(data.macro_transport);
   renderBlockE(data.block_e);
   renderBlockF(data.block_f);
+  renderBlockG(data.block_g, data.tickers, {});
 })();
 
 // nameId → label mapping cho freight indices
@@ -70,8 +71,8 @@ function renderBlockA(blockA) {
     </div>
   `);
   const card = container.querySelector('[id="chart-oil-price"]').closest('.chart-card');
-  const brentData = parseFindicatorSeries(oilRows.filter(r => r.nameId === 65));
-  const wtiData   = parseFindicatorSeries(oilRows.filter(r => r.nameId === 67));
+  const brentData = parseFindicatorSeries(oilRows.filter(r => r.name_id === 65));
+  const wtiData   = parseFindicatorSeries(oilRows.filter(r => r.name_id === 67));
 
   function renderOil(year) {
     const cutoff = yearToCutoff(year);
@@ -124,7 +125,7 @@ function renderBlockB(blockB) {
         const meta = FREIGHT_LABELS[nid];
         return {
           name: meta.name,
-          data: parseFindicatorSeries(freightRows.filter(r => r.nameId === nid)),
+          data: parseFindicatorSeries(freightRows.filter(r => r.name_id === nid)),
           color: meta.color,
         };
       })
@@ -156,7 +157,7 @@ function renderBlockB(blockB) {
   const routeNameIds = [689, 690, 691, 692, 693, 694, 695, 696];
   const routeSeriesData = routeNameIds.map((nid, i) => ({
     name: FREIGHT_LABELS[nid]?.name || `Route ${nid}`,
-    data: parseFindicatorSeries(freightRows.filter(r => r.nameId === nid)),
+    data: parseFindicatorSeries(freightRows.filter(r => r.name_id === nid)),
     color: HC_COLORS[i % HC_COLORS.length],
   })).filter(s => s.data.length > 0);
 
@@ -220,9 +221,7 @@ function renderMacroTransport(macro) {
     </div>
   `);
   const vnExpCard = container.querySelector('[id="chart-vn-export"]').closest('.chart-card');
-  const vnExpData = parseFindicatorSeries(
-    Array.isArray(macro.vn_export) ? macro.vn_export : (macro.vn_export?.data || [])
-  );
+  const vnExpData = parseFindicatorSeries(macro?.vn_export || [], 'date', 'valueUnit');
   function renderVnExport(year) {
     const cutoff = yearToCutoff(year);
     createStockChart('chart-vn-export', {
@@ -236,107 +235,23 @@ function renderMacroTransport(macro) {
 
 
 function renderBlockE(blockE) {
-  const container = document.getElementById('block-e-table');
-  const tickers = Object.keys(blockE || {});
-  if (!tickers.length) { container.innerHTML = '<p class="text-muted">Không có dữ liệu</p>'; return; }
-
-  const get = (rows, id) => (rows || []).find(r => r.accountId === id)?.value;
-
-  const rows = tickers.map(t => {
-    const tr = blockE[t]?.trailing;
-    const analyst = blockE[t]?.analyst;
-    const rec = analyst?.recommendation;
-    return {
-      ticker: t,
-      marketCap: get(tr, 35), pe: get(tr, 39), pb: get(tr, 40),
-      grossMargin: get(tr, 2), roe: get(tr, 8),
-      dtGrowth: get(tr, 163), peFwd: get(tr, 154),
-      recommendation: rec?.type, upside: rec?.upside, targetPrice: rec?.targetPrice,
-    };
+  renderValuationTable('block-e-table', blockE, {
+    accountMap: { marketCap: 35, pe: 39, pb: 40, peFwd: 154, grossMargin: 2, roe: 8, dtGrowth: 163 },
+    columns: ['marketCap', 'pe', 'pb', 'peFwd', 'grossMargin', 'roe', 'dtGrowth'],
+    pctFields: ['grossMargin', 'roe', 'dtGrowth'],
   });
-
-  const recTag = (r) => {
-    if (!r) return '—';
-    const map = { BUY: 'tag-buy', HOLD: 'tag-hold', SELL: 'tag-sell' };
-    return `<span class="${map[r] || ''}">${r}</span>`;
-  };
-  const pct = v => v != null ? `<span class="${v >= 0 ? 'num-up' : 'num-down'}">${(v * 100).toFixed(1)}%</span>` : '—';
-  const num = (v, dp = 1) => v != null ? Highcharts.numberFormat(v, dp) : '—';
-
-  container.innerHTML = `
-    <table class="stock-table">
-      <thead>
-        <tr>
-          <th>Ticker</th>
-          <th>Vốn hóa (tỷ)</th>
-          <th>PE</th>
-          <th>PB</th>
-          <th>PE fwd</th>
-          <th>Biên gộp</th>
-          <th>ROE</th>
-          <th>DT YoY</th>
-          <th>Recommend</th>
-          <th>Upside</th>
-          <th>Target</th>
-        </tr>
-      </thead>
-      <tbody>
-        ${rows.map(r => `
-          <tr>
-            <td>${r.ticker}</td>
-            <td>${num(r.marketCap, 0)}</td>
-            <td>${num(r.pe)}</td>
-            <td>${num(r.pb)}</td>
-            <td>${num(r.peFwd)}</td>
-            <td>${pct(r.grossMargin)}</td>
-            <td>${pct(r.roe)}</td>
-            <td>${pct(r.dtGrowth)}</td>
-            <td>${recTag(r.recommendation)}</td>
-            <td>${r.upside != null ? pct(r.upside / 100) : '—'}</td>
-            <td>${r.targetPrice ? num(r.targetPrice, 0) : '—'}</td>
-          </tr>
-        `).join('')}
-      </tbody>
-    </table>
-  `;
 }
 
 
 function renderBlockF(blockF) {
   const container = document.getElementById('block-f-charts');
-  const tickers = Object.keys(blockF || {});
-
-  tickers.forEach(ticker => {
+  Object.keys(blockF || {}).forEach(ticker => {
     container.insertAdjacentHTML('beforeend', `
       <div class="chart-card">
         <div class="chart-header"><span class="chart-title">BCTC ${ticker} — 8 quý</span></div>
         <div class="chart-container chart-lg" id="chart-bctc-${ticker}"></div>
       </div>
     `);
-
-    const rows = blockF[ticker];
-    if (!rows?.length) { showEmpty(`chart-bctc-${ticker}`); return; }
-
-    const quarters = [...new Set(rows.map(r => r.period))].sort().slice(-8);
-    const getQ = (accId) => quarters.map(q => {
-      const r = rows.find(x => x.period === q && x.accountId === accId);
-      return r?.value ?? null;
-    });
-
-    createChart(`chart-bctc-${ticker}`, {
-      chart: { type: 'column' },
-      xAxis: { categories: quarters },
-      yAxis: [
-        { title: { text: 'Tỷ VNĐ' } },
-        { title: { text: 'Biên gộp %' }, opposite: true, labels: { format: '{value}%' } },
-      ],
-      series: [
-        { name: 'Doanh thu', type: 'column', data: getQ(24), color: HC_COLORS[0] },
-        { name: 'LN gộp',   type: 'column', data: getQ(28), color: HC_COLORS[2] },
-        { name: 'LNST',     type: 'column', data: getQ(43), color: HC_COLORS[3] },
-        { name: 'Biên gộp %', type: 'line', data: getQ(2), color: HC_COLORS[1], yAxis: 1,
-          tooltip: { valueSuffix: '%' } },
-      ],
-    });
+    renderBctcChart(`chart-bctc-${ticker}`, ticker, blockF);
   });
 }

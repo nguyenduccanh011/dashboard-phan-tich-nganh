@@ -37,6 +37,7 @@ async def collect():
     block_e = await _collect_block_e()
     block_f = await _collect_block_f()
 
+    block_g = await _collect_block_g()
     cache = {
         "sector": "steel",
         "sector_name": "Thép",
@@ -48,6 +49,7 @@ async def collect():
         "block_d": block_d,
         "block_e": block_e,
         "block_f": block_f,
+            "block_g": block_g,
     }
 
     CACHE_FILE.write_text(json.dumps(cache, ensure_ascii=False, indent=2), encoding="utf-8")
@@ -89,10 +91,17 @@ async def _collect_block_b():
     try:
         inventory = await findicator.get(
             "steel/domestic-market-data",
-            params={"seriesType": "TIME_SERIES", "type": "inventory"}
+            params={"seriesType": "TIME_SERIES", "type": "inventory", "year": "5Y"}
         )
     except Exception:
         inventory = []
+    try:
+        sales_status = await findicator.get(
+            "steel/domestic-market-data",
+            params={"seriesType": "TIME_SERIES", "type": "sales", "year": "5Y"}
+        )
+    except Exception:
+        sales_status = []
     export_status = await findicator.get(
         "steel/demand-export-status",
         params={"seriesType": "TIME_SERIES", "year": "5Y"}
@@ -101,18 +110,24 @@ async def _collect_block_b():
         overview = await findicator.get("steel/overview/steel-data")
     except Exception:
         overview = {}
+    cn_series = await _try(findicator.get(
+        "steel/time-series",
+        params={"year": "5Y", "macroIds": "1,2,3,4,5,6,7", "period": "month_value", "repo": "SteelCNOverall"}
+    ), default=[])
     return {
         "market_share": market_share,
         "inventory": inventory,
+        "sales_status": sales_status,
         "export_status": export_status,
         "overview": overview,
+        "cn_series": cn_series,
     }
 
 
 async def _collect_block_c():
     prices = await findicator.get(
         "steel/input-price",
-        params={"macroIds": "47,49,159,167", "vnMacroIds": 11, "year": "5Y"}
+        params={"macroIds": "47,49,159,167,177", "vnMacroIds": 11, "year": "5Y"}
     )
     return {"sell_prices": prices}
 
@@ -164,6 +179,35 @@ async def _collect_block_f():
         results[ticker] = all_rows
     return results
 
+
+
+async def _collect_block_g():
+    results = {}
+    for ticker in TICKERS:
+        div, val = await asyncio.gather(
+            findicator.get('enterprise/overview-dividend', params={'ticket': ticker, 'year': 'All'}),
+            findicator.get('enterprise/overview-valuation', params={'accountIds': '39,154', 'year': '5Y', 'ticket': ticker}),
+        )
+        try:
+            rev = await findicator.get(
+                'enterprise/manufactoring-revenue',
+                params={'ticket': ticker, 'year': 'All', 'period': 'quarter'},
+            )
+        except Exception:
+            rev = []
+        try:
+            pat = await findicator.get(
+                'enterprise/manufactoring-profit-after-tax',
+                params={'ticket': ticker, 'year': 'All', 'period': 'quarter'},
+            )
+        except Exception:
+            pat = []
+        try:
+            prof = await findicator.get('enterprise/corp-profile', params={'ticket': ticker})
+        except Exception:
+            prof = {}
+        results[ticker] = {'dividend': div, 'valuation': val, 'revenue': rev, 'profit_after_tax': pat, 'corp_profile': prof}
+    return results
 
 if __name__ == "__main__":
     asyncio.run(collect())

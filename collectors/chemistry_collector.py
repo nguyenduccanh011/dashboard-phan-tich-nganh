@@ -7,7 +7,7 @@ import asyncio
 import json
 from pathlib import Path
 from datetime import datetime
-from collectors.base import findicator, wichart
+from collectors.base import findicator
 
 CACHE_FILE = Path("cache/sector_chemistry.json")
 TICKERS = ["DPM", "DCM", "LAS", "BFC", "DDV", "CSV"]
@@ -19,10 +19,11 @@ async def collect():
     block_a = await _collect_block_a()
     block_b = await _collect_block_b()
     block_c = await _collect_block_c()
-    block_d = {"computed_client_side": True}
+    block_d = await _collect_block_d()
     block_e = await _collect_block_e()
     block_f = await _collect_block_f()
 
+    block_g = await _collect_block_g()
     cache = {
         "sector": "chemistry",
         "sector_name": "Phân bón / Hóa chất",
@@ -34,6 +35,7 @@ async def collect():
         "block_d": block_d,
         "block_e": block_e,
         "block_f": block_f,
+            "block_g": block_g,
     }
 
     CACHE_FILE.write_text(json.dumps(cache, ensure_ascii=False, indent=2), encoding="utf-8")
@@ -42,24 +44,13 @@ async def collect():
 
 
 async def _collect_block_a():
-    # Khí TN Henry Hub (66), Than ICE (68), Lưu Huỳnh TQ (182), Axit Sulfuric TQ (253), Phốt pho vàng TQ (213)
+    # Khí TN Henry Hub (66), Than ICE (68), Lưu Huỳnh TQ (182), Axit Sulfuric TQ (253),
+    # Phốt pho vàng TQ (213), Xút NaOH TQ Spot (243)
     macro_35 = await findicator.get(
         "macro-data/macro-item-detail",
-        params={"macroItemId": 35, "nameId": "66,68,182,253,213", "year": "5Y"}
+        params={"macroItemId": 35, "nameId": "66,68,182,253,213,243", "year": "5Y"}
     )
-    # Xút (NaOH) TQ Spot — đầu vào Chlor-Alkali (CSV, DDV)
-    try:
-        naoh_tq = await wichart.get(
-            "chart/general-data-series",
-            params={"dataSeriesNames": "Hàng hóa thế giới - Xút (NaOH) Trung Quốc (Spot)"}
-        )
-    except Exception:
-        naoh_tq = {"stale": True, "stale_reason": "sstock NaOH TQ endpoint error"}
-
-    return {
-        "macro_35": macro_35,
-        "naoh_tq": naoh_tq,
-    }
+    return {"macro_35": macro_35}
 
 
 async def _collect_block_b():
@@ -69,19 +60,10 @@ async def _collect_block_b():
     caustic_soda_data = await findicator.get("chemistry/overview/caustic-soda-data")
     # Cơ cấu chi phí DAP/MAP
     phosphorus_data = await findicator.get("chemistry/overview/phosphorus-data")
-    # Giá phân bón VN theo tháng
-    try:
-        fertilizer_price = await findicator.get(
-            "chemistry/fertilizer-product-price",
-            params={"period": "month_value"}
-        )
-    except Exception:
-        fertilizer_price = []
     return {
         "fertilizer_data": fertilizer_data,
         "caustic_soda_data": caustic_soda_data,
         "phosphorus_data": phosphorus_data,
-        "fertilizer_price": fertilizer_price,
     }
 
 
@@ -93,6 +75,15 @@ async def _collect_block_c():
         params={"macroItemId": 35, "nameId": "50,190,12,13,156,29,30", "year": "5Y"}
     )
     return {"prices": prices}
+
+
+async def _collect_block_d():
+    # USD/VND (nameId=2 = tỷ giá VCB) dùng để tính spread Urea–Khí
+    usdvnd = await findicator.get(
+        "macro-data/macro-item-detail",
+        params={"macroItemId": 52, "nameId": "2", "year": "5Y"}
+    )
+    return {"usdvnd": usdvnd, "computed_client_side": True}
 
 
 async def _collect_block_e():
@@ -131,6 +122,35 @@ async def _collect_block_f():
         results[ticker] = ts
     return results
 
+
+
+async def _collect_block_g():
+    results = {}
+    for ticker in TICKERS:
+        div, val = await asyncio.gather(
+            findicator.get('enterprise/overview-dividend', params={'ticket': ticker, 'year': 'All'}),
+            findicator.get('enterprise/overview-valuation', params={'accountIds': '39,154', 'year': '5Y', 'ticket': ticker}),
+        )
+        try:
+            rev = await findicator.get(
+                'enterprise/manufactoring-revenue',
+                params={'ticket': ticker, 'year': 'All', 'period': 'quarter'},
+            )
+        except Exception:
+            rev = []
+        try:
+            pat = await findicator.get(
+                'enterprise/manufactoring-profit-after-tax',
+                params={'ticket': ticker, 'year': 'All', 'period': 'quarter'},
+            )
+        except Exception:
+            pat = []
+        try:
+            prof = await findicator.get('enterprise/corp-profile', params={'ticket': ticker})
+        except Exception:
+            prof = {}
+        results[ticker] = {'dividend': div, 'valuation': val, 'revenue': rev, 'profit_after_tax': pat, 'corp_profile': prof}
+    return results
 
 if __name__ == "__main__":
     asyncio.run(collect())

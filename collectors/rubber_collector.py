@@ -7,11 +7,26 @@ Lưu ý: WiChart cao_su stale ~15 tháng (đến 02/2025) — vẫn fetch, JS hi
 import asyncio
 import json
 from pathlib import Path
-from datetime import datetime
+from datetime import datetime, date
 from collectors.base import findicator, wichart
 
 CACHE_FILE = Path("cache/sector_rubber.json")
 TICKERS = ["DPR", "PHR", "TRC"]
+
+
+def _quarters(n=8):
+    today = date.today()
+    q = (today.month - 1) // 3
+    results = []
+    yr = today.year
+    for _ in range(n):
+        m = q * 3 + 1
+        results.append(f"{m:02d}/01/{yr}")
+        q -= 1
+        if q < 0:
+            q = 3
+            yr -= 1
+    return results
 
 
 async def collect():
@@ -22,6 +37,7 @@ async def collect():
     block_e = await _collect_block_e()
     block_f = await _collect_block_f()
 
+    block_g = await _collect_block_g()
     cache = {
         "sector": "rubber",
         "sector_name": "Cao su",
@@ -33,6 +49,7 @@ async def collect():
         "block_d": block_d,
         "block_e": block_e,
         "block_f": block_f,
+            "block_g": block_g,
     }
 
     CACHE_FILE.write_text(json.dumps(cache, ensure_ascii=False, indent=2), encoding="utf-8")
@@ -59,13 +76,32 @@ async def _collect_block_a():
     }
 
 
+def _compute_yoy_pct(nested):
+    """Chuyển [[{date,value}×12], ...] sang flat [{date, value=YoY%}]."""
+    if not isinstance(nested, list) or len(nested) < 2:
+        return []
+    result = []
+    for yi in range(1, len(nested)):
+        prev = {r["date"][5:7]: r["value"] for r in nested[yi - 1] if isinstance(r, dict) and r.get("value") is not None}
+        for r in nested[yi]:
+            if not isinstance(r, dict):
+                continue
+            m = r["date"][5:7]
+            pv = prev.get(m)
+            cv = r.get("value")
+            if pv and cv is not None and pv != 0:
+                result.append({"date": r["date"], "value": round((cv - pv) / pv * 100, 2)})
+    return result
+
+
 async def _collect_block_b():
     overview = await findicator.get("rubber/overview/rubber-data")
     try:
-        export_yoy = await findicator.get(
+        raw_yoy = await findicator.get(
             "rubber/values-year-over-year",
-            params={"repo": "macro_vn_exim_excomdty", "year": "5Y"}
+            params={"macroIds": 1, "repo": "macro_vn_exim_excomdty", "year": "5Y"}
         )
+        export_yoy = _compute_yoy_pct(raw_yoy)
     except Exception:
         export_yoy = []
     return {
@@ -83,7 +119,7 @@ async def _collect_block_c():
         ),
         findicator.get(
             "rubber/values",
-            params={"repo": "macro_comdty", "macroIds": 93, "period": "date_value", "year": "5Y"}
+            params={"repo": "macro_comdty", "macroIds": 97, "period": "date_value", "year": "5Y"}
         ),
     )
 
@@ -126,21 +162,56 @@ async def _collect_block_e():
 
 
 async def _collect_block_f():
+    quarters = _quarters(8)
     results = {}
     for ticker in TICKERS:
-        ts = await findicator.get(
-            "enterprise/v2/finance-ticket-data",
-            params={
-                "tableName": "INCOME_STATEMENT",
-                "corpType": 4,
-                "ticket": f'["{ticker}"]',
-                "accountIds": "24,28,43,2",
-                "period": "quarter",
-            }
-        )
-        results[ticker] = ts
+        all_rows = []
+        for qdate in quarters:
+            rows = await findicator.get(
+                "enterprise/v2/finance-ticket-data",
+                params={
+                    "tableName": "INCOME_STATEMENT",
+                    "corpType": 4,
+                    "ticket": f'["{ticker}"]',
+                    "accountIds": "24,28,43,2",
+                    "period": "quarter",
+                    "date": qdate,
+                }
+            )
+            ticker_rows = rows.get(ticker, []) if isinstance(rows, dict) else rows
+            all_rows.extend(ticker_rows if isinstance(ticker_rows, list) else [])
+        results[ticker] = all_rows
     return results
 
+
+
+async def _collect_block_g():
+    results = {}
+    for ticker in TICKERS:
+        div, val = await asyncio.gather(
+            findicator.get('enterprise/overview-dividend', params={'ticket': ticker, 'year': 'All'}),
+            findicator.get('enterprise/overview-valuation', params={'accountIds': '39,154', 'year': '5Y', 'ticket': ticker}),
+        )
+        try:
+            rev = await findicator.get(
+                'enterprise/manufactoring-revenue',
+                params={'ticket': ticker, 'year': 'All', 'period': 'quarter'},
+            )
+        except Exception:
+            rev = []
+        try:
+            pat = await findicator.get(
+                'enterprise/manufactoring-profit-after-tax',
+                params={'ticket': ticker, 'year': 'All', 'period': 'quarter'},
+            )
+        except Exception:
+            pat = []
+        try:
+            prof = await findicator.get('enterprise/corp-profile', params={'ticket': ticker})
+        except Exception:
+            prof = {}
+        results[ticker] = {'dividend': div, 'valuation': val, 'revenue': rev, 'profit_after_tax': pat, 'corp_profile': prof}
+    return results
 
 if __name__ == "__main__":
     asyncio.run(collect())

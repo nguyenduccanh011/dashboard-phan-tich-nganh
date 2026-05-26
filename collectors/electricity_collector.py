@@ -27,6 +27,7 @@ async def collect():
     block_e = await _collect_block_e()
     block_f = await _collect_block_f()
 
+    block_g = await _collect_block_g()
     cache = {
         "sector": "electricity",
         "sector_name": "Điện",
@@ -38,6 +39,7 @@ async def collect():
         "block_d": block_d,
         "block_e": block_e,
         "block_f": block_f,
+            "block_g": block_g,
     }
 
     CACHE_FILE.write_text(json.dumps(cache, ensure_ascii=False, indent=2), encoding="utf-8")
@@ -106,7 +108,7 @@ async def _collect_block_b():
         # electric-output-plant: không có year param
         findicator.get("electricity/electric-output-plant"),
         # proportion: year=5Y
-        findicator.get("electricity/output-resource-by-proportion", params={"year": "5Y"}),
+        findicator.get("electricity/output-resource-by-proportion", params={"year": "All"}),
         findicator.get("electricity/electric-description-structure"),
         findicator.get("electricity/enso-nearest-date"),
         findicator.get(
@@ -115,12 +117,12 @@ async def _collect_block_b():
         ),
         findicator.get(
             "macro-data/macro-item-detail",
-            params={"macroItemId": 119, "nameId": 15, "year": "5Y"}
+            params={"macroItemId": 119, "nameId": 15, "year": "5Y", "period": "month"}
         ),
         *resource_value_tasks,
     )
     try:
-        enso_history = await findicator.get("electricity/enso-history")
+        enso_history = await findicator.get("electricity/enso-history", params={"year": "All"})
     except Exception:
         enso_history = []
 
@@ -129,18 +131,21 @@ async def _collect_block_b():
         for i, rid in enumerate(RESOURCE_IDS)
     }
 
-    # ENSO forecast: dùng date từ enso-nearest-date
+    # ENSO forecast: dùng date từ enso-nearest-date (trả về list hoặc dict)
     enso_forecast = None
-    if isinstance(enso_nearest, dict):
+    enso_date = None
+    if isinstance(enso_nearest, list) and enso_nearest:
+        enso_date = enso_nearest[0]
+    elif isinstance(enso_nearest, dict):
         enso_date = enso_nearest.get("date") or enso_nearest.get("nearestDate")
-        if enso_date:
-            try:
-                enso_forecast = await findicator.get(
-                    "electricity/enso-forecast",
-                    params={"date": enso_date}
-                )
-            except Exception:
-                enso_forecast = None
+    if enso_date:
+        try:
+            enso_forecast = await findicator.get(
+                "electricity/enso-forecast",
+                params={"date": enso_date}
+            )
+        except Exception:
+            enso_forecast = None
 
     # Sản lượng per-DN by year (gọi song song)
     manufacturing_tasks = [
@@ -241,6 +246,35 @@ async def _collect_block_f():
         results[ticker] = ts
     return results
 
+
+
+async def _collect_block_g():
+    results = {}
+    for ticker in TICKERS:
+        div, val = await asyncio.gather(
+            findicator.get('enterprise/overview-dividend', params={'ticket': ticker, 'year': 'All'}),
+            findicator.get('enterprise/overview-valuation', params={'accountIds': '39,154', 'year': '5Y', 'ticket': ticker}),
+        )
+        try:
+            rev = await findicator.get(
+                'enterprise/manufactoring-revenue',
+                params={'ticket': ticker, 'year': 'All', 'period': 'quarter'},
+            )
+        except Exception:
+            rev = []
+        try:
+            pat = await findicator.get(
+                'enterprise/manufactoring-profit-after-tax',
+                params={'ticket': ticker, 'year': 'All', 'period': 'quarter'},
+            )
+        except Exception:
+            pat = []
+        try:
+            prof = await findicator.get('enterprise/corp-profile', params={'ticket': ticker})
+        except Exception:
+            prof = {}
+        results[ticker] = {'dividend': div, 'valuation': val, 'revenue': rev, 'profit_after_tax': pat, 'corp_profile': prof}
+    return results
 
 if __name__ == "__main__":
     asyncio.run(collect())

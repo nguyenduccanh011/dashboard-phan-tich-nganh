@@ -24,6 +24,7 @@
   renderBlockD(data.block_a, data.block_c);
   renderBlockE(data.block_e);
   renderBlockF(data.block_f);
+  renderBlockG(data.block_g, data.tickers, {});
 })();
 
 
@@ -41,8 +42,8 @@ function renderBlockA(blockA) {
     </div>
   `);
   const cardCoal = container.lastElementChild;
-  const seriesCoalIce = parseFindicatorSeries(blockA.macro_35?.filter(r => r.nameId === 68));
-  const seriesCoalTq  = parseFindicatorSeries(blockA.macro_35?.filter(r => r.nameId === 196));
+  const seriesCoalIce = parseFindicatorSeries(blockA.macro_35?.filter(r => r.name_id === 68));
+  const seriesCoalTq  = parseFindicatorSeries(blockA.macro_35?.filter(r => r.name_id === 196));
   function renderCoal(year) {
     const cutoff = yearToCutoff(year);
     createStockChart('chart-coal', {
@@ -70,8 +71,8 @@ function renderBlockA(blockA) {
     </div>
   `);
   const cardGas = container.lastElementChild;
-  const seriesGas   = parseFindicatorSeries(blockA.macro_35?.filter(r => r.nameId === 66));
-  const seriesBrent = parseFindicatorSeries(blockA.macro_35?.filter(r => r.nameId === 65));
+  const seriesGas   = parseFindicatorSeries(blockA.macro_35?.filter(r => r.name_id === 66));
+  const seriesBrent = parseFindicatorSeries(blockA.macro_35?.filter(r => r.name_id === 65));
   function renderGasBrent(year) {
     const cutoff = yearToCutoff(year);
     createStockChart('chart-gas-brent', {
@@ -178,7 +179,7 @@ function renderBlockB(blockB) {
         name: resourceNames[rid] || `Nguồn ${rid}`,
         color: HC_COLORS[i],
         data: periods.map(p => {
-          const row = filtered.find(r => (r.date || r.time) === p && r.resourceId === rid);
+          const row = filtered.find(r => (r.date || r.time) === p && r.name_id === rid);
           return row?.value ?? null;
         }),
       })),
@@ -224,10 +225,23 @@ function renderBlockB(blockB) {
   const cardEnso = container.lastElementChild;
   const ensoHistory = blockB.enso_history || [];
   const ensoForecast = blockB.enso_forecast || [];
+  // enso_history: {date, lanina, elnino} — combined index = elnino + lanina (lanina is negative)
+  function parseEnsoHistory(rows) {
+    if (!rows || !rows.length) return [];
+    const flat = Array.isArray(rows[0]) ? rows.flat() : rows;
+    return flat
+      .map(r => {
+        const t = new Date(r.date).getTime();
+        const v = (r.elnino || 0) + (r.lanina || 0);
+        return [t, v];
+      })
+      .filter(([t]) => !isNaN(t))
+      .sort((a, b) => a[0] - b[0]);
+  }
   function renderEnso(year) {
     const cutoff = yearToCutoff(year === 'All' ? 'MAX' : year);
-    const histData = parseFindicatorSeries(ensoHistory).filter(p => p[0] >= cutoff);
-    const fcastData = parseFindicatorSeries(ensoForecast);
+    const histData = parseEnsoHistory(ensoHistory).filter(p => p[0] >= cutoff);
+    const fcastData = parseFindicatorSeries(ensoForecast, 'date', 'value');
     if (!histData.length && !fcastData.length) { showEmpty('chart-enso'); return; }
     createStockChart('chart-enso', {
       series: [
@@ -286,6 +300,53 @@ function renderBlockB(blockB) {
   }
   initYearButtons(cardIip, renderIip);
   renderIip('1Y');
+
+  // Chart 6: Sản lượng điện per-DN theo năm (Triệu kWh)
+  const mfgData = blockB.manufacturing_per_dn || {};
+  const mfgTickers = Object.keys(mfgData).filter(t => (mfgData[t] || []).length);
+  if (mfgTickers.length) {
+    container.insertAdjacentHTML('beforeend', `
+      <div class="chart-card">
+        <div class="chart-header">
+          <span class="chart-title">Sản lượng điện per-DN (Triệu kWh)</span>
+        </div>
+        <div class="chart-container" id="chart-mfg-dn"></div>
+      </div>
+    `);
+    const allYears = [...new Set(mfgTickers.flatMap(t => (mfgData[t] || []).map(r => r.year)))].sort();
+    createChart('chart-mfg-dn', {
+      chart: { type: 'column' },
+      xAxis: { categories: allYears.map(String) },
+      series: mfgTickers.map((t, i) => ({
+        name: t,
+        color: HC_COLORS[i],
+        data: allYears.map(y => { const r = (mfgData[t] || []).find(x => x.year === y); return r ? r.value : null; }),
+      })),
+    });
+  }
+
+  // Chart 7: Điện nhập khẩu từ Trung Quốc (100 Triệu kWh)
+  const elecTqData = parseFindicatorSeries(blockB.elec_tq);
+  if (elecTqData.length) {
+    container.insertAdjacentHTML('beforeend', `
+      <div class="chart-card" data-year-options="1Y,3Y,5Y">
+        <div class="chart-header">
+          <span class="chart-title">Điện nhập khẩu từ TQ (100 Triệu kWh)</span>
+          <div class="year-btns"></div>
+        </div>
+        <div class="chart-container" id="chart-elec-tq"></div>
+      </div>
+    `);
+    const cardTq = container.lastElementChild;
+    function renderElecTq(year) {
+      const cutoff = yearToCutoff(year);
+      createStockChart('chart-elec-tq', {
+        series: [{ name: 'NK điện TQ (100 Tr kWh)', data: elecTqData.filter(p => p[0] >= cutoff), color: HC_COLORS[4] }],
+      });
+    }
+    initYearButtons(cardTq, renderElecTq);
+    renderElecTq('1Y');
+  }
 }
 
 
@@ -301,7 +362,9 @@ function renderBlockC(blockC) {
       <div class="chart-container chart-sm" id="chart-output-price"></div>
     </div>
   `);
-  const outputPriceData = parseFindicatorSeries(blockC.output_price);
+  const rawPrice = blockC.output_price || [];
+  const flatPrice = Array.isArray(rawPrice[0]) ? rawPrice.flat() : rawPrice;
+  const outputPriceData = parseFindicatorSeries(flatPrice);
   if (outputPriceData.length) {
     createStockChart('chart-output-price', {
       series: [{ name: 'Giá điện bq (VNĐ/kWh)', data: outputPriceData, color: HC_COLORS[0] }],
@@ -321,7 +384,7 @@ function renderBlockC(blockC) {
   `);
   const policyResource = blockC.policy_resource;
   if (policyResource && policyResource.length) {
-    const categories = policyResource.map(r => r.name || r.resourceName || '');
+    const categories = policyResource.map(r => r.name_legend || r.name || '');
     const values = policyResource.map(r => r.value || r.capacity || 0);
     createChart('chart-policy-resource', {
       chart: { type: 'bar' },
@@ -353,114 +416,123 @@ function renderBlockC(blockC) {
   } else {
     showEmpty('chart-solar');
   }
+
+  // Chart 4: Giá FIT năng lượng tái tạo (Cent/kWh) — grouped by đợt quy định
+  container.insertAdjacentHTML('beforeend', `
+    <div class="chart-card">
+      <div class="chart-header">
+        <span class="chart-title">Giá FIT năng lượng tái tạo (Cent/kWh)</span>
+      </div>
+      <div class="chart-container chart-sm" id="chart-fit"></div>
+    </div>
+  `);
+  const fitRows = (blockC.policy_renewable || []).filter(r => r.unit === 'Cent/Kwh' && r.value != null);
+  if (fitRows.length) {
+    const names = [...new Set(fitRows.map(r => r.name))];
+    const dates = [...new Set(fitRows.map(r => r.date))].sort();
+    createChart('chart-fit', {
+      chart: { type: 'bar' },
+      xAxis: { categories: names },
+      series: dates.map((d, i) => ({
+        name: d,
+        color: HC_COLORS[i],
+        data: names.map(n => { const r = fitRows.find(x => x.name === n && x.date === d); return r ? r.value : null; }),
+      })),
+    });
+  } else {
+    showEmpty('chart-fit');
+  }
 }
 
 
 function renderBlockD(blockA, blockC) {
   const container = document.getElementById('block-d-charts');
   container.insertAdjacentHTML('beforeend', `
-    <div class="chart-card">
-      <div class="chart-header"><span class="chart-title">Biên giá điện — Chi phí NVL</span></div>
+    <div class="chart-card" data-year-options="1Y,3Y,5Y">
+      <div class="chart-header">
+        <span class="chart-title">Biên giá điện — Chi phí than NK (proxy VNĐ/kWh)</span>
+        <div class="year-btns"></div>
+      </div>
       <div class="chart-container" id="chart-spread"></div>
     </div>
   `);
-  showEmpty('chart-spread', 'Giá điện bq (VNĐ/kWh) vs Chi phí than NK × USD/VND');
+  const card = container.lastElementChild;
+
+  const rawPrice = blockC?.output_price;
+  const priceRows = Array.isArray(rawPrice)
+    ? (Array.isArray(rawPrice[0]) ? rawPrice.flat() : rawPrice)
+    : [];
+
+  const macro35 = blockA?.macro_35 || [];
+  const coalRows = macro35.filter(r => r.name_id === 68); // Newcastle ICE USD/ton
+  const usdRows = blockA?.usd_vnd || [];
+
+  function monthlyAvg(rows, dateField, valField) {
+    const sum = {}, cnt = {};
+    rows.forEach(r => {
+      const d = new Date(r[dateField]);
+      if (isNaN(d.getTime())) return;
+      const k = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}`;
+      sum[k] = (sum[k] || 0) + parseFloat(r[valField] || 0);
+      cnt[k] = (cnt[k] || 0) + 1;
+    });
+    const out = {};
+    Object.keys(sum).forEach(k => out[k] = sum[k] / cnt[k]);
+    return out;
+  }
+
+  const coalByMonth = monthlyAvg(coalRows, 'date', 'value');
+  const usdByMonth = monthlyAvg(usdRows, 'date', 'value');
+  const pricePts = parseFindicatorSeries(priceRows);
+
+  // coal cost per kWh ≈ coal(USD/T) × USD/VND × 0.00035 (kg coal/kWh)
+  const COAL_KG_PER_KWH = 0.00035;
+  const coalCostPts = [], spreadPts = [];
+
+  pricePts.forEach(([ts, elecPrice]) => {
+    const d = new Date(ts);
+    const k = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}`;
+    const coal = coalByMonth[k];
+    const usd = usdByMonth[k];
+    if (!coal || !usd) return;
+    const coalCost = Math.round(coal * usd * COAL_KG_PER_KWH);
+    coalCostPts.push([ts, coalCost]);
+    spreadPts.push([ts, Math.round(elecPrice - coalCost)]);
+  });
+
+  if (!pricePts.length) {
+    showEmpty('chart-spread', 'Không có dữ liệu giá điện bq');
+    return;
+  }
+
+  function render(year) {
+    const cut = yearToCutoff(year);
+    const series = [
+      { name: 'Giá điện bq (VNĐ/kWh)', data: pricePts.filter(p => p[0] >= cut), color: HC_COLORS[0] },
+    ];
+    if (coalCostPts.length) {
+      series.push({ name: 'Chi phí than NK (proxy VNĐ/kWh)', data: coalCostPts.filter(p => p[0] >= cut), color: HC_COLORS[3] });
+      series.push({ name: 'Spread', data: spreadPts.filter(p => p[0] >= cut), color: HC_COLORS[1] });
+    }
+    createStockChart('chart-spread', { yAxis: [{ title: { text: 'VNĐ/kWh' } }], series });
+  }
+  initYearButtons(card, render);
+  render('1Y');
 }
 
 
 function renderBlockE(blockE) {
-  const container = document.getElementById('block-e-table');
-  const tickers = Object.keys(blockE || {});
-  if (!tickers.length) { container.innerHTML = '<p class="text-muted">Không có dữ liệu</p>'; return; }
-
-  const rows = tickers.map(t => {
-    const trRaw = blockE[t]?.trailing;
-    const tickerData = trRaw?.[t] || (Array.isArray(trRaw) ? trRaw : []);
-    const get = (id) => tickerData.find?.(r => r.accountId === id)?.value;
-    const analyst = blockE[t]?.analyst;
-    const rec = Array.isArray(analyst) ? analyst[0] : analyst;
-    return {
-      ticker: t,
-      marketCap: get(35), pe: get(39), pb: get(40),
-      grossMargin: get(2), roe: get(8), dtGrowth: get(163), peFwd: get(154),
-      recommendation: rec?.recommend, upside: rec?.upside, targetPrice: rec?.targetPrice,
-    };
-  });
-
-  const recTag = (r) => {
-    if (!r) return '—';
-    const map = { BUY: 'tag-buy', HOLD: 'tag-hold', SELL: 'tag-sell' };
-    return `<span class="${map[r] || ''}">${r}</span>`;
-  };
-  const pct = v => v != null ? `<span class="${v >= 0 ? 'num-up' : 'num-down'}">${(v*100).toFixed(1)}%</span>` : '—';
-  const num = (v, dp=1) => v != null ? Highcharts.numberFormat(v, dp) : '—';
-
-  container.innerHTML = `
-    <table class="stock-table">
-      <thead>
-        <tr>
-          <th>Ticker</th><th>Vốn hóa (tỷ)</th><th>PE</th><th>PB</th>
-          <th>Biên gộp</th><th>ROE</th><th>DT YoY</th>
-          <th>Recommend</th><th>Upside</th><th>Target</th>
-        </tr>
-      </thead>
-      <tbody>
-        ${rows.map(r => `
-          <tr>
-            <td>${r.ticker}</td>
-            <td>${num(r.marketCap, 0)}</td>
-            <td>${num(r.pe)}</td>
-            <td>${num(r.pb)}</td>
-            <td>${pct(r.grossMargin)}</td>
-            <td>${pct(r.roe)}</td>
-            <td>${pct(r.dtGrowth)}</td>
-            <td>${recTag(r.recommendation)}</td>
-            <td>${r.upside != null ? pct(r.upside/100) : '—'}</td>
-            <td>${r.targetPrice ? num(r.targetPrice, 0) : '—'}</td>
-          </tr>
-        `).join('')}
-      </tbody>
-    </table>
-  `;
+  renderValuationTable('block-e-table', blockE);
 }
-
-
 function renderBlockF(blockF) {
   const container = document.getElementById('block-f-charts');
-  const tickers = Object.keys(blockF || {});
-
-  tickers.forEach(ticker => {
+  Object.keys(blockF || {}).forEach(ticker => {
     container.insertAdjacentHTML('beforeend', `
       <div class="chart-card">
         <div class="chart-header"><span class="chart-title">BCTC ${ticker} — 8 quý</span></div>
         <div class="chart-container chart-lg" id="chart-bctc-${ticker}"></div>
       </div>
     `);
-
-    const tickerData = blockF[ticker];
-    const rows = tickerData?.[ticker] || (Array.isArray(tickerData) ? tickerData : []);
-    if (!rows?.length) { showEmpty(`chart-bctc-${ticker}`); return; }
-
-    const quarters = [...new Set(rows.map(r => r.period || `${r.year}Q${r.quarter}`))].sort().slice(-8);
-    const getQ = (accId) => quarters.map(q => {
-      const r = rows.find(x => (x.period || `${x.year}Q${x.quarter}`) === q && x.accountId === accId);
-      return r?.value ?? null;
-    });
-
-    createChart(`chart-bctc-${ticker}`, {
-      chart: { type: 'column' },
-      xAxis: { categories: quarters },
-      yAxis: [
-        { title: { text: 'Tỷ VNĐ' } },
-        { title: { text: 'Biên gộp %' }, opposite: true, labels: { format: '{value}%' } },
-      ],
-      series: [
-        { name: 'Doanh thu', type: 'column', data: getQ(24), color: HC_COLORS[0] },
-        { name: 'LN gộp', type: 'column', data: getQ(28), color: HC_COLORS[2] },
-        { name: 'LNST', type: 'column', data: getQ(43), color: HC_COLORS[3] },
-        { name: 'Biên gộp %', type: 'line', data: getQ(2), color: HC_COLORS[1], yAxis: 1,
-          tooltip: { valueSuffix: '%' } },
-      ],
-    });
+    renderBctcChart(`chart-bctc-${ticker}`, ticker, blockF);
   });
 }

@@ -10,12 +10,16 @@ import asyncio
 import json
 from pathlib import Path
 from datetime import datetime
-from collectors.base import findicator, wichart
+from collectors.base import findicator
 
 CACHE_FILE = Path("cache/sector_securities.json")
 TICKERS = ["SSI", "VND", "HCM", "MBS", "VCI", "BSI", "FTS"]
-# Top CTCK cho sstock market share time-series
-TOP_CTCK = ["SSI", "VPS", "TCBS", "VCI", "HCM", "MBS", "VND", "MAS", "KIS", "FTS"]
+
+
+def _last_8_years():
+    """corpType=3 chỉ có dữ liệu annual (Q1). Trả về 8 năm gần nhất."""
+    now = datetime.now()
+    return list(range(now.year, now.year - 8, -1))
 
 
 async def collect():
@@ -23,10 +27,11 @@ async def collect():
     block_a = await _collect_block_a()
     block_b = await _collect_block_b()
     block_c = await _collect_block_c()
-    block_d = {"computed_client_side": True}
+    block_d = await _collect_block_d()
     block_e = await _collect_block_e()
     block_f = await _collect_block_f()
 
+    block_g = await _collect_block_g()
     cache = {
         "sector": "securities",
         "sector_name": "Chứng khoán",
@@ -38,6 +43,7 @@ async def collect():
         "block_d": block_d,
         "block_e": block_e,
         "block_f": block_f,
+            "block_g": block_g,
     }
 
     CACHE_FILE.write_text(json.dumps(cache, ensure_ascii=False, indent=2), encoding="utf-8")
@@ -91,23 +97,10 @@ async def _collect_block_b():
         params={"macroItemId": 134, "nameId": "19,22,24", "year": "5Y"}
     )
 
-    # Thị phần môi giới quarterly per-CTCK (sstock)
-    market_share_ts = {}
-    for ctck in TOP_CTCK:
-        try:
-            data = await wichart.get(
-                "chart/general-data-series",
-                params={"dataSeriesNames": f"Thị phần giao dịch - {ctck}"}
-            )
-            market_share_ts[ctck] = data
-        except Exception as e:
-            market_share_ts[ctck] = {"error": str(e)}
-
     return {
         "brokerage_share": brokerage_share,
         "margin_debt": margin_debt_results,
         "market_breadth_pe": market_breadth_pe,
-        "market_share_ts": market_share_ts,
     }
 
 
@@ -149,16 +142,52 @@ async def _collect_block_c():
 
         results[ticker] = ticker_data
 
-    # Dòng tiền ròng TTCK (nameId=1 và 2)
+    # Dòng tiền ròng TTCK (nameId=1 mua ròng NN, nameId=2 tự doanh)
     try:
-        money_flow = await findicator.get(
+        mf1 = await findicator.get(
             "stock/money-flow",
-            params={"nameId": "1,2", "period": "month_value", "year": "1Y"}
+            params={"nameId": 1, "period": "month_value", "year": "1Y"}
         )
     except Exception:
-        money_flow = []
-    results["money_flow"] = money_flow
+        mf1 = []
+    try:
+        mf2 = await findicator.get(
+            "stock/money-flow",
+            params={"nameId": 2, "period": "month_value", "year": "1Y"}
+        )
+    except Exception:
+        mf2 = []
+    results["money_flow"] = (mf1 if isinstance(mf1, list) else []) + (mf2 if isinstance(mf2, list) else [])
 
+    return results
+
+
+async def _collect_block_d():
+    # TRAILING annual 8 năm: thị phần môi giới + margin metrics
+    # corpType=3 chỉ có annual data (Q1 mỗi năm)
+    # 107=Thị phần HOSE, 160=HNX, 161=UPCOM, 108=Tăng trưởng dư nợ margin YoY, 109=Margin/Vốn CSH
+    years = _last_8_years()
+    results = {}
+    for ticker in TICKERS:
+        all_rows = []
+        for year in years:
+            try:
+                data = await findicator.get(
+                    "enterprise/v2/finance-ticket-data",
+                    params={
+                        "tableName": "TRAILING",
+                        "corpType": 3,
+                        "ticket": f'["{ticker}"]',
+                        "accountIds": "107,160,161,108,109",
+                        "period": "quarter",
+                        "date": f"01/01/{year}",
+                    }
+                )
+                rows = data.get(ticker, []) if isinstance(data, dict) else []
+                all_rows.extend(rows)
+            except Exception:
+                pass
+        results[ticker] = {ticker: all_rows}
     return results
 
 
@@ -187,21 +216,55 @@ async def _collect_block_e():
 
 
 async def _collect_block_f():
+    # INCOME_STATEMENT annual 8 năm corpType=3 (không có dữ liệu quarterly)
+    # 56=DT môi giới, 62=Doanh thu HĐ, 80=Chi phí HĐ, 95=KQ HĐ, 100=LNTT, 106=LNST
+    years = _last_8_years()
     results = {}
     for ticker in TICKERS[:4]:  # SSI, VND, HCM, MBS
-        data = await findicator.get(
-            "enterprise/v2/finance-ticket-data",
-            params={
-                "tableName": "INCOME_STATEMENT",
-                "corpType": 3,
-                "ticket": f'["{ticker}"]',
-                "accountIds": "24,28,43,2",
-                "period": "quarter",
-            }
-        )
-        results[ticker] = data
+        all_rows = []
+        for year in years:
+            try:
+                data = await findicator.get(
+                    "enterprise/v2/finance-ticket-data",
+                    params={
+                        "tableName": "INCOME_STATEMENT",
+                        "corpType": 3,
+                        "ticket": f'["{ticker}"]',
+                        "accountIds": "56,62,80,95,100,106",
+                        "period": "quarter",
+                        "date": f"01/01/{year}",
+                    }
+                )
+                rows = data.get(ticker, []) if isinstance(data, dict) else []
+                all_rows.extend(rows)
+            except Exception:
+                pass
+        results[ticker] = {ticker: all_rows}
     return results
 
+
+
+async def _collect_block_g():
+    results = {}
+    for ticker in TICKERS:
+        div, val = await asyncio.gather(
+            findicator.get('enterprise/overview-dividend', params={'ticket': ticker, 'year': 'All'}),
+            findicator.get('enterprise/overview-valuation', params={'accountIds': '152,153', 'year': '5Y', 'ticket': ticker}),
+        )
+        rev = []
+        try:
+            pat = await findicator.get(
+                'enterprise/manufactoring-profit-after-tax',
+                params={'ticket': ticker, 'year': 'All', 'period': 'quarter'},
+            )
+        except Exception:
+            pat = []
+        try:
+            prof = await findicator.get('enterprise/corp-profile', params={'ticket': ticker})
+        except Exception:
+            prof = {}
+        results[ticker] = {'dividend': div, 'valuation': val, 'revenue': rev, 'profit_after_tax': pat, 'corp_profile': prof}
+    return results
 
 if __name__ == "__main__":
     asyncio.run(collect())

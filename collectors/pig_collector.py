@@ -23,6 +23,7 @@ async def collect():
     block_e = await _collect_block_e()
     block_f = await _collect_block_f()
 
+    block_g = await _collect_block_g()
     cache = {
         "sector": "pig",
         "sector_name": "Chăn nuôi heo",
@@ -34,6 +35,7 @@ async def collect():
         "block_d": block_d,
         "block_e": block_e,
         "block_f": block_f,
+            "block_g": block_g,
     }
 
     CACHE_FILE.write_text(json.dumps(cache, ensure_ascii=False, indent=2), encoding="utf-8")
@@ -57,17 +59,19 @@ async def _collect_block_a():
     try:
         pig_breeding = await findicator.get(
             "pig/macro-comdty-vn",
-            params={"macroIds": 63, "period": "date_value"}
+            params={"macroIds": 63, "period": "date_value", "year": "3Y"}
         )
-    except Exception:
+    except Exception as e:
+        print(f"[pig] pig_breeding error: {e}")
         pig_breeding = []
     # Giá vốn nuôi VN (VNĐ/kg)
     try:
         cost_of_raising = await findicator.get(
             "pig/macro-comdty-vn",
-            params={"macroIds": 8, "period": "date_value"}
+            params={"macroIds": 8, "period": "date_value", "year": "3Y"}
         )
-    except Exception:
+    except Exception as e:
+        print(f"[pig] cost_of_raising error: {e}")
         cost_of_raising = []
     return {
         "macro_35": macro_35,
@@ -82,13 +86,14 @@ async def _collect_block_b():
     pig_farming, pig_legend = await asyncio.gather(
         findicator.get(
             "pig/pig_farming_global",
-            params={"macroIds": "1,3", "period": "month_value", "year": "1Y"}
+            # id=1 (tổng đàn) không trả data; id=3 (heo nái), id=5 (giết mổ/tháng) có data
+            params={"macroIds": "3,5", "period": "month_value", "year": "1Y"}
         ),
         findicator.get("pig/legend"),
     )
     return {
-        "pig_farming": pig_farming,       # đàn VN + số heo nái
-        "pig_legend": pig_legend,          # contains macroGlobalDimImportComdty (NK thịt heo)
+        "pig_farming": pig_farming,       # id=3 (heo nái) + id=5 (giết mổ/tháng)
+        "pig_legend": pig_legend,          # macroGlobalDimImportComdty = metadata only (no time-series available)
     }
 
 
@@ -97,16 +102,18 @@ async def _collect_block_c():
     try:
         heo_hoi_vn = await findicator.get(
             "pig/macro-comdty-vn",
-            params={"macroIds": 9, "period": "date_value"}
+            params={"macroIds": 9, "period": "date_value", "year": "3Y"}
         )
-    except Exception:
+    except Exception as e:
+        print(f"[pig] heo_hoi_vn error: {e}")
         heo_hoi_vn = []
     try:
         heo_tq = await findicator.get(
             "pig/macro-comdty",
-            params={"macroIds": 260, "period": "date_value"}
+            params={"macroIds": 260, "period": "date_value", "year": "3Y"}
         )
-    except Exception:
+    except Exception as e:
+        print(f"[pig] heo_tq error: {e}")
         heo_tq = []
 
     try:
@@ -156,6 +163,35 @@ async def _collect_block_f():
         results[ticker] = ts
     return results
 
+
+
+async def _collect_block_g():
+    results = {}
+    for ticker in TICKERS:
+        div, val = await asyncio.gather(
+            findicator.get('enterprise/overview-dividend', params={'ticket': ticker, 'year': 'All'}),
+            findicator.get('enterprise/overview-valuation', params={'accountIds': '39,154', 'year': '5Y', 'ticket': ticker}),
+        )
+        try:
+            rev = await findicator.get(
+                'enterprise/manufactoring-revenue',
+                params={'ticket': ticker, 'year': 'All', 'period': 'quarter'},
+            )
+        except Exception:
+            rev = []
+        try:
+            pat = await findicator.get(
+                'enterprise/manufactoring-profit-after-tax',
+                params={'ticket': ticker, 'year': 'All', 'period': 'quarter'},
+            )
+        except Exception:
+            pat = []
+        try:
+            prof = await findicator.get('enterprise/corp-profile', params={'ticket': ticker})
+        except Exception:
+            prof = {}
+        results[ticker] = {'dividend': div, 'valuation': val, 'revenue': rev, 'profit_after_tax': pat, 'corp_profile': prof}
+    return results
 
 if __name__ == "__main__":
     asyncio.run(collect())

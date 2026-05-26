@@ -1,6 +1,6 @@
 // static/js/sector-textile.js
 // Render trang ngành Dệt may — 6 khối A–F
-// Phụ thuộc: charts.js (đã load qua sector.html)
+// Phụ thuộc: charts.js, sector-utils.js (đã load qua sector.html)
 
 (async function SectorTextile() {
   let data;
@@ -20,15 +20,18 @@
 
   renderBlockA(data.block_a);
   renderBlockB(data.block_b);
+  renderBlockC(data.block_b);
+  renderBlockD(data.block_f);
   renderBlockE(data.block_e);
   renderBlockF(data.block_f);
+  renderBlockG(data.block_g, data.tickers, {});
 })();
 
 
 function renderBlockA(blockA) {
   const container = document.getElementById('block-a-charts');
   const macro35 = Array.isArray(blockA.macro_35) ? blockA.macro_35 : [];
-  const byNameId = (id) => parseFindicatorSeries(macro35.filter(r => r.nameId === id));
+  const byNameId = (id) => parseFindicatorSeries(macro35.filter(r => r.name_id === id));
   const usdVndRows = Array.isArray(blockA.usd_vnd) ? blockA.usd_vnd : [];
 
   // Chart 1: Bông CBOT (98) và Xơ bông TQ (168) — dual axis
@@ -116,6 +119,10 @@ function renderBlockA(blockA) {
 function renderBlockB(blockB) {
   const container = document.getElementById('block-b-charts');
 
+  // Build country id → name map from overview
+  const countryMap = {};
+  ((blockB.overview || {}).country || []).forEach(c => { countryMap[c.id] = c.country; });
+
   // Chart 1: XK dệt may VN monthly (value + YoY)
   container.insertAdjacentHTML('beforeend', `
     <div class="chart-card" data-year-options="1Y,3Y,5Y">
@@ -159,74 +166,65 @@ function renderBlockB(blockB) {
   initYearButtons(card1, renderExport);
   renderExport('1Y');
 
-  // Chart 2: XK theo thị trường (Mỹ/EU/TQ)
+  // Chart 2: XK theo thị trường — bar chart với % tỷ trọng (dữ liệu 2023)
+  // xk_country: [{importedCountryId, value (0-1), nameId: 44}]
   container.insertAdjacentHTML('beforeend', `
-    <div class="chart-card" data-year-options="1Y,3Y,5Y">
+    <div class="chart-card">
       <div class="chart-header">
-        <span class="chart-title">XK dệt may theo thị trường</span>
-        <div class="year-btns"></div>
+        <span class="chart-title">XK dệt may theo thị trường (% tỷ trọng 2023)</span>
       </div>
       <div class="chart-container" id="chart-export-country"></div>
     </div>
   `);
 
-  const card2 = container.lastElementChild;
-  const xkCountry = blockB.xk_country;
-  if (!xkCountry || (Array.isArray(xkCountry) && !xkCountry.length)) {
+  const destRows = (blockB.xk_country || []).filter(r => r.nameId === 44);
+  if (!destRows.length) {
     showEmpty('chart-export-country');
   } else {
-    const markets = Array.isArray(xkCountry) ? xkCountry : [];
-    const names = [...new Set(markets.map(r => r.market || r.name))];
-
-    function renderExportCountry(year) {
-      const cutoff = yearToCutoff(year);
-      createStockChart('chart-export-country', {
-        series: names.map((name, i) => ({
-          name,
-          color: HC_COLORS[i % HC_COLORS.length],
-          data: parseFindicatorSeries(
-            markets.filter(r => (r.market || r.name) === name),
-            'date', 'value'
-          ).filter(p => p[0] >= cutoff),
-        })),
-      });
-    }
-    initYearButtons(card2, renderExportCountry);
-    renderExportCountry('1Y');
+    const sorted = [...destRows].sort((a, b) => b.value - a.value);
+    const cats = sorted.map(r => countryMap[r.importedCountryId] || `ID ${r.importedCountryId}`);
+    const vals = sorted.map(r => +(r.value * 100).toFixed(1));
+    createChart('chart-export-country', {
+      chart: { type: 'bar' },
+      xAxis: { categories: cats },
+      yAxis: { title: { text: '% tổng XK' }, labels: { format: '{value}%' } },
+      series: [{ name: 'Tỷ trọng XK (2023)', data: vals, color: HC_COLORS[0] }],
+      tooltip: { valueSuffix: '%' },
+    });
   }
 
-  // Chart 3: So sánh XK đối thủ (Bangladesh / TQ / Ấn Độ / Thổ Nhĩ Kỳ)
+  // Chart 3: Thị phần XK dệt may toàn cầu — bar chart (textileExportOverall nameId=697)
   container.insertAdjacentHTML('beforeend', `
-    <div class="chart-card" data-year-options="1Y,3Y,5Y">
+    <div class="chart-card">
       <div class="chart-header">
-        <span class="chart-title">XK dệt may đối thủ (Bangladesh / TQ / Ấn Độ / Thổ Nhĩ Kỳ)</span>
-        <div class="year-btns"></div>
+        <span class="chart-title">Thị phần XK dệt may toàn cầu (%)</span>
       </div>
       <div class="chart-container" id="chart-competitors"></div>
     </div>
   `);
 
-  const card3 = container.lastElementChild;
-  const bdRows = parseFindicatorSeries(Array.isArray(blockB.xk_bangladesh) ? blockB.xk_bangladesh : [], 'date', 'value');
-  const cnRows = parseFindicatorSeries(Array.isArray(blockB.xk_china) ? blockB.xk_china : [], 'date', 'value');
-  const inRows = parseFindicatorSeries(Array.isArray(blockB.xk_india) ? blockB.xk_india : [], 'date', 'value');
-  const trRows = parseFindicatorSeries(Array.isArray(blockB.xk_turkey) ? blockB.xk_turkey : [], 'date', 'value');
+  const globalShare = ((blockB.overview || {}).textileExportOverall || [])
+    .filter(r => r.nameId === 697)
+    .sort((a, b) => b.value - a.value);
 
-  function renderCompetitors(year) {
-    const cutoff = yearToCutoff(year);
-    createStockChart('chart-competitors', {
-      series: [
-        { name: 'Bangladesh', data: bdRows.filter(p => p[0] >= cutoff), color: HC_COLORS[0] },
-        { name: 'Trung Quốc', data: cnRows.filter(p => p[0] >= cutoff), color: HC_COLORS[1] },
-        { name: 'Ấn Độ', data: inRows.filter(p => p[0] >= cutoff), color: HC_COLORS[2] },
-        { name: 'Thổ Nhĩ Kỳ', data: trRows.filter(p => p[0] >= cutoff), color: HC_COLORS[3] },
-      ],
+  if (!globalShare.length) {
+    showEmpty('chart-competitors');
+  } else {
+    const gCats = globalShare.map(r => countryMap[r.exportedCountryId] || `ID ${r.exportedCountryId}`);
+    const gVals = globalShare.map((r, i) => ({
+      y: +(r.value * 100).toFixed(1),
+      color: r.exportedCountryId === 7 ? HC_COLORS[4] : HC_COLORS[0],
+    }));
+    createChart('chart-competitors', {
+      chart: { type: 'bar' },
+      xAxis: { categories: gCats },
+      yAxis: { title: { text: '% thị phần toàn cầu' }, labels: { format: '{value}%' } },
+      series: [{ name: 'Thị phần XK dệt may', data: gVals, colorByPoint: true }],
+      tooltip: { valueSuffix: '%', pointFormat: '<b>{point.y}%</b>' },
     });
   }
-  initYearButtons(card3, renderCompetitors);
-  renderCompetitors('1Y');
 
-  // Chart 4: PMI SX EU/US/Nhật (demand signal) — nameId: 36=DE, 44=US, 40=JP, 49=Euro
+  // Chart 4: PMI SX EU/Mỹ/Nhật (tín hiệu đơn hàng) — FIX: unwrap pmi_global[0].data + nameId
   container.insertAdjacentHTML('beforeend', `
     <div class="chart-card" data-year-options="1Y,3Y,5Y">
       <div class="chart-header">
@@ -238,7 +236,8 @@ function renderBlockB(blockB) {
   `);
 
   const card4 = container.lastElementChild;
-  const pmiRows = Array.isArray(blockB.pmi_global) ? blockB.pmi_global : [];
+  const pmiRaw = blockB.pmi_global;
+  const pmiRows = (pmiRaw && Array.isArray(pmiRaw.data)) ? pmiRaw.data : [];
 
   function renderPmi(year) {
     const cutoff = yearToCutoff(year);
@@ -285,102 +284,234 @@ function renderBlockB(blockB) {
   }
   initYearButtons(card5, renderUsApparel);
   renderUsApparel('1Y');
+
+  // Chart 6: FDI vào dệt may (Triệu USD)
+  const fdiRows = parseFindicatorSeries(
+    Array.isArray(blockB.fdi) ? blockB.fdi : [], 'date', 'value'
+  );
+  if (fdiRows.length) {
+    container.insertAdjacentHTML('beforeend', `
+      <div class="chart-card" data-year-options="1Y,3Y,5Y">
+        <div class="chart-header">
+          <span class="chart-title">FDI thực hiện VN (Tr USD)</span>
+          <div class="year-btns"></div>
+        </div>
+        <div class="chart-container" id="chart-fdi-textile"></div>
+      </div>
+    `);
+    const card6 = container.lastElementChild;
+    function renderFdi(year) {
+      const cutoff = yearToCutoff(year);
+      createStockChart('chart-fdi-textile', {
+        series: [{ name: 'FDI thực hiện VN (Tr USD)', data: fdiRows.filter(p => p[0] >= cutoff), color: HC_COLORS[3] }],
+      });
+    }
+    initYearButtons(card6, renderFdi);
+    renderFdi('1Y');
+  }
+}
+
+
+function renderBlockC(blockB) {
+  const container = document.getElementById('block-c-charts');
+  const overview = blockB.overview || {};
+  const countryMap = {};
+  (overview.country || []).forEach(c => { countryMap[c.id] = c.country; });
+
+  // Chart 1: Cơ cấu sản phẩm XK dệt may (textileApplication)
+  const appRows = Array.isArray(overview.textileApplication) ? overview.textileApplication : [];
+  container.insertAdjacentHTML('beforeend', `
+    <div class="chart-card">
+      <div class="chart-header">
+        <span class="chart-title">Cơ cấu sản phẩm XK dệt may (%)</span>
+      </div>
+      <div class="chart-container" id="chart-product-mix"></div>
+    </div>
+  `);
+  if (!appRows.length) {
+    showEmpty('chart-product-mix');
+  } else {
+    const sorted = [...appRows].sort((a, b) => b.value - a.value);
+    createChart('chart-product-mix', {
+      chart: { type: 'bar' },
+      xAxis: { categories: sorted.map(r => r.name) },
+      yAxis: { title: { text: '% cơ cấu' }, labels: { format: '{value}%' } },
+      series: [{
+        name: 'Tỷ trọng sản phẩm',
+        data: sorted.map(r => +(r.value * 100).toFixed(1)),
+        color: HC_COLORS[2],
+      }],
+      tooltip: { valueSuffix: '%' },
+    });
+  }
+
+  // Chart 2: Tiêu thụ bông toàn cầu top-country (textileExportOverall nameId=102, đơn vị Tấn)
+  const cottonRows = (overview.textileExportOverall || [])
+    .filter(r => r.nameId === 102)
+    .sort((a, b) => b.value - a.value);
+  container.insertAdjacentHTML('beforeend', `
+    <div class="chart-card">
+      <div class="chart-header">
+        <span class="chart-title">Tiêu thụ bông toàn cầu theo quốc gia (Nghìn tấn)</span>
+      </div>
+      <div class="chart-container" id="chart-cotton-consumption"></div>
+    </div>
+  `);
+  if (!cottonRows.length) {
+    showEmpty('chart-cotton-consumption');
+  } else {
+    const ccCats = cottonRows.map(r => countryMap[r.exportedCountryId] || `ID ${r.exportedCountryId}`);
+    const ccVals = cottonRows.map(r => +(r.value / 1000).toFixed(0));
+    createChart('chart-cotton-consumption', {
+      chart: { type: 'bar' },
+      xAxis: { categories: ccCats },
+      yAxis: { title: { text: 'Nghìn tấn' } },
+      series: [{
+        name: 'Tiêu thụ bông (Nghìn tấn)',
+        data: ccVals.map((v, i) => ({
+          y: v,
+          color: cottonRows[i].exportedCountryId === 7 ? HC_COLORS[4] : HC_COLORS[0],
+        })),
+        colorByPoint: true,
+      }],
+    });
+  }
+}
+
+
+function renderBlockD(blockF) {
+  const container = document.getElementById('block-d-charts');
+  const TICKERS_F = ['TCM', 'TNG', 'MSH', 'VGT'];
+
+  // Thu thập dữ liệu từng ticker
+  const label = r => `${r.year}Q${r.quarter}`;
+  const allQ = new Set();
+  const byTicker = {};
+
+  TICKERS_F.forEach(t => {
+    const rows = getTickerRows(blockF, t);
+    const byQ = {};
+    rows.forEach(r => {
+      const q = label(r);
+      allQ.add(q);
+      if (!byQ[q]) byQ[q] = {};
+      byQ[q][r.accountId] = r.value;
+    });
+    byTicker[t] = byQ;
+  });
+
+  const sortedQ = [...allQ].sort().slice(-10);
+
+  // Chart 1: Biên gộp % so sánh DN (accountId 28/24 * 100)
+  container.insertAdjacentHTML('beforeend', `
+    <div class="chart-card">
+      <div class="chart-header">
+        <span class="chart-title">Biên gộp % so sánh DN (Gross Margin)</span>
+      </div>
+      <div class="chart-container" id="chart-gross-margin"></div>
+    </div>
+  `);
+
+  const grossSeries = TICKERS_F.map((t, i) => ({
+    name: t,
+    color: HC_COLORS[i],
+    data: sortedQ.map(q => {
+      const d = byTicker[t]?.[q];
+      if (!d || !d[24] || d[28] == null) return null;
+      return +(d[28] / d[24] * 100).toFixed(1);
+    }),
+  })).filter(s => s.data.some(v => v != null));
+
+  if (!grossSeries.length) {
+    showEmpty('chart-gross-margin');
+  } else {
+    createChart('chart-gross-margin', {
+      chart: { type: 'line' },
+      xAxis: { categories: sortedQ },
+      yAxis: [{ title: { text: 'Biên gộp %' }, labels: { format: '{value}%' } }],
+      tooltip: { valueSuffix: '%' },
+      series: grossSeries,
+    });
+  }
+
+  // Chart 2: Biên ròng % so sánh DN (accountId 43/24 * 100 = LNST/Doanh thu)
+  container.insertAdjacentHTML('beforeend', `
+    <div class="chart-card">
+      <div class="chart-header">
+        <span class="chart-title">Biên ròng % so sánh DN (Net Margin)</span>
+      </div>
+      <div class="chart-container" id="chart-net-margin"></div>
+    </div>
+  `);
+
+  const netSeries = TICKERS_F.map((t, i) => ({
+    name: t,
+    color: HC_COLORS[i],
+    data: sortedQ.map(q => {
+      const d = byTicker[t]?.[q];
+      if (!d || !d[24] || d[43] == null) return null;
+      return +(d[43] / d[24] * 100).toFixed(1);
+    }),
+  })).filter(s => s.data.some(v => v != null));
+
+  if (!netSeries.length) {
+    showEmpty('chart-net-margin');
+  } else {
+    createChart('chart-net-margin', {
+      chart: { type: 'line' },
+      xAxis: { categories: sortedQ },
+      yAxis: [{ title: { text: 'Biên ròng %' }, labels: { format: '{value}%' } }],
+      tooltip: { valueSuffix: '%' },
+      series: netSeries,
+    });
+  }
+
+  // Chart 3: Doanh thu so sánh DN (Tỷ VNĐ per quarter)
+  container.insertAdjacentHTML('beforeend', `
+    <div class="chart-card">
+      <div class="chart-header">
+        <span class="chart-title">Doanh thu theo quý so sánh DN (Tỷ VNĐ)</span>
+      </div>
+      <div class="chart-container" id="chart-revenue-compare"></div>
+    </div>
+  `);
+
+  const revSeries = TICKERS_F.map((t, i) => ({
+    name: t,
+    color: HC_COLORS[i],
+    data: sortedQ.map(q => {
+      const d = byTicker[t]?.[q];
+      if (!d || d[24] == null) return null;
+      return +(d[24] / 1e9).toFixed(1);
+    }),
+  })).filter(s => s.data.some(v => v != null));
+
+  if (!revSeries.length) {
+    showEmpty('chart-revenue-compare');
+  } else {
+    createChart('chart-revenue-compare', {
+      chart: { type: 'column' },
+      xAxis: { categories: sortedQ },
+      yAxis: [{ title: { text: 'Tỷ VNĐ' } }],
+      series: revSeries,
+    });
+  }
 }
 
 
 function renderBlockE(blockE) {
-  const container = document.getElementById('block-e-table');
-  const tickers = Object.keys(blockE);
-  if (!tickers.length) { container.innerHTML = '<p class="text-muted">Không có dữ liệu</p>'; return; }
-
-  const rows = tickers.map(t => {
-    const tr = blockE[t]?.trailing;
-    const tickerData = tr?.[t] || (Array.isArray(tr) ? tr : []);
-    const get = (id) => tickerData.find?.(r => r.accountId === id)?.value;
-    const analyst = blockE[t]?.analyst;
-    const rec = Array.isArray(analyst) ? analyst[0] : analyst;
-    return {
-      ticker: t,
-      marketCap: get(35), pe: get(39), pb: get(40),
-      grossMargin: get(2), roe: get(8), dtGrowth: get(163),
-      recommendation: rec?.recommend, upside: rec?.upside, targetPrice: rec?.targetPrice,
-    };
-  });
-
-  const recTag = (r) => {
-    if (!r) return '—';
-    const map = { BUY: 'tag-buy', HOLD: 'tag-hold', SELL: 'tag-sell' };
-    return `<span class="${map[r] || ''}">${r}</span>`;
-  };
-  const pct = v => v != null ? `<span class="${v >= 0 ? 'num-up' : 'num-down'}">${(v * 100).toFixed(1)}%</span>` : '—';
-  const num = (v, dp = 1) => v != null ? Highcharts.numberFormat(v, dp) : '—';
-
-  container.innerHTML = `
-    <table class="stock-table">
-      <thead>
-        <tr>
-          <th>Ticker</th><th>Vốn hóa (tỷ)</th><th>PE</th><th>PB</th>
-          <th>Biên gộp</th><th>ROE</th><th>DT YoY</th>
-          <th>Recommend</th><th>Upside</th><th>Target</th>
-        </tr>
-      </thead>
-      <tbody>
-        ${rows.map(r => `
-          <tr>
-            <td>${r.ticker}</td>
-            <td>${num(r.marketCap, 0)}</td>
-            <td>${num(r.pe)}</td>
-            <td>${num(r.pb)}</td>
-            <td>${pct(r.grossMargin)}</td>
-            <td>${pct(r.roe)}</td>
-            <td>${pct(r.dtGrowth)}</td>
-            <td>${recTag(r.recommendation)}</td>
-            <td>${r.upside != null ? pct(r.upside / 100) : '—'}</td>
-            <td>${r.targetPrice ? num(r.targetPrice, 0) : '—'}</td>
-          </tr>
-        `).join('')}
-      </tbody>
-    </table>
-  `;
+  renderValuationTable('block-e-table', blockE);
 }
-
 
 function renderBlockF(blockF) {
   const container = document.getElementById('block-f-charts');
-  const tickers = Object.keys(blockF);
-
-  tickers.forEach(ticker => {
+  Object.keys(blockF || {}).forEach(ticker => {
     container.insertAdjacentHTML('beforeend', `
       <div class="chart-card">
         <div class="chart-header"><span class="chart-title">BCTC ${ticker} — 8 quý</span></div>
         <div class="chart-container chart-lg" id="chart-bctc-${ticker}"></div>
       </div>
     `);
-
-    const tickerData = blockF[ticker];
-    const rows = tickerData?.[ticker] || (Array.isArray(tickerData) ? tickerData : []);
-    if (!rows?.length) { showEmpty(`chart-bctc-${ticker}`); return; }
-
-    const quarters = [...new Set(rows.map(r => r.period || `${r.year}Q${r.quarter}`))].sort().slice(-8);
-    const getQ = (accId) => quarters.map(q => {
-      const r = rows.find(x => (x.period || `${x.year}Q${x.quarter}`) === q && x.accountId === accId);
-      return r?.value ?? null;
-    });
-
-    createChart(`chart-bctc-${ticker}`, {
-      chart: { type: 'column' },
-      xAxis: { categories: quarters },
-      yAxis: [
-        { title: { text: 'Tỷ VNĐ' } },
-        { title: { text: 'Biên gộp %' }, opposite: true, labels: { format: '{value}%' } },
-      ],
-      series: [
-        { name: 'Doanh thu', type: 'column', data: getQ(24), color: HC_COLORS[0] },
-        { name: 'LN gộp', type: 'column', data: getQ(28), color: HC_COLORS[2] },
-        { name: 'LNST', type: 'column', data: getQ(43), color: HC_COLORS[3] },
-        { name: 'Biên gộp %', type: 'line', data: getQ(2), color: HC_COLORS[1], yAxis: 1,
-          tooltip: { valueSuffix: '%' } },
-      ],
-    });
+    renderBctcChart(`chart-bctc-${ticker}`, ticker, blockF);
   });
 }

@@ -20,10 +20,11 @@
 
   renderBlockA(data.block_a);
   renderBlockB(data.block_b);
-  renderBlockC(data.block_c);
+  renderBlockC(data.block_b);
   renderBlockD(data.block_a, data.block_b);
   renderBlockE(data.block_e);
   renderBlockF(data.block_f);
+  renderBlockG(data.block_g, data.tickers, {});
 })();
 
 
@@ -45,7 +46,7 @@ function renderBlockA(blockA) {
   `);
 
   const card1 = container.lastElementChild;
-  const wichart = blockA?.wichart_lua;
+  const wichart = blockA?.lua_price;
   const luaData = parseWiChartSeries(wichart?.data || [], yearToCutoff('MAX'));
 
   if (wichart?.stale) {
@@ -73,9 +74,9 @@ function renderBlockA(blockA) {
   `);
 
   const card2 = container.lastElementChild;
-  const macro35 = blockA?.macro_35 || [];
-  const urea12 = parseFindicatorSeries(macro35.filter(r => r.nameId === 12));
-  const urea13 = parseFindicatorSeries(macro35.filter(r => r.nameId === 13));
+  const macro35 = blockA?.inputs || [];
+  const urea12 = parseFindicatorSeries(macro35.filter(r => r.name_id === 12));
+  const urea13 = parseFindicatorSeries(macro35.filter(r => r.name_id === 13));
 
   function renderUrea(year) {
     const cutoff = yearToCutoff(year);
@@ -102,7 +103,7 @@ function renderBlockA(blockA) {
 
   const card3 = container.lastElementChild;
   const usdvnd = parseFindicatorSeries(blockA?.usd_vnd);
-  const brent  = parseFindicatorSeries(macro35.filter(r => r.nameId === 65));
+  const brent  = parseFindicatorSeries(macro35.filter(r => r.name_id === 65));
 
   function renderUsdBrent(year) {
     const cutoff = yearToCutoff(year);
@@ -137,9 +138,9 @@ function renderBlockB(blockB) {
   `);
 
   const card = container.lastElementChild;
-  const xk = blockB?.export_rice || [];
-  const xkVal = parseFindicatorSeries(xk.filter(r => !r.valueType || r.valueType === 'value'));
-  const xkVol = parseFindicatorSeries(xk.filter(r => r.valueType === 'volume'));
+  const xk = blockB?.xk_rice || [];
+  const xkVal = parseFindicatorSeries(xk);
+  const xkVol = parseFindicatorSeries(xk, 'date', 'volume');
 
   function renderExport(year) {
     const cutoff = yearToCutoff(year);
@@ -169,7 +170,7 @@ function renderBlockB(blockB) {
   `);
 
   const cardYoy = container.lastElementChild;
-  const xkYoy = parseFindicatorSeries(xk.filter(r => r.valueType === 'yoy'));
+  const xkYoy = parseFindicatorSeries(blockB?.xk_rice_yoy || []);
 
   function renderYoy(year) {
     const cutoff = yearToCutoff(year);
@@ -179,92 +180,124 @@ function renderBlockB(blockB) {
   }
   initYearButtons(cardYoy, renderYoy);
   renderYoy('1Y');
+
+  // Chart: PMI sản xuất Trung Quốc (proxy nhu cầu nhập khẩu gạo)
+  const pmiData = parseFindicatorSeries(blockB?.pmi_china);
+  if (pmiData.length) {
+    container.insertAdjacentHTML('beforeend', `
+      <div class="chart-card" data-year-options="1Y,3Y,5Y">
+        <div class="chart-header">
+          <span class="chart-title">PMI Sản xuất Trung Quốc</span>
+          <div class="year-btns"></div>
+        </div>
+        <div class="chart-container chart-sm" id="chart-pmi-china"></div>
+      </div>
+    `);
+    const cardPmi = container.lastElementChild;
+    function renderPmi(year) {
+      const cutoff = yearToCutoff(year);
+      createStockChart('chart-pmi-china', {
+        yAxis: [{ plotLines: [{ value: 50, color: '#888', width: 1, dashStyle: 'Dash' }] }],
+        series: [{ name: 'PMI TQ', data: pmiData.filter(p => p[0] >= cutoff), color: HC_COLORS[2] }],
+      });
+    }
+    initYearButtons(cardPmi, renderPmi);
+    renderPmi('1Y');
+  }
 }
 
 
-function renderBlockC(blockC) {
+function renderBlockC(blockB) {
   const container = document.getElementById('block-c-charts');
   container.insertAdjacentHTML('beforeend', `
-    <div class="chart-card">
-      <div class="chart-header"><span class="chart-title">ASP xuất khẩu — xem Khối D</span></div>
-      <div class="chart-container chart-sm" id="chart-rice-c"></div>
+    <div class="chart-card" data-year-options="1Y,3Y,5Y">
+      <div class="chart-header">
+        <span class="chart-title">ASP XK gạo VN (USD/Tấn)</span>
+        <div class="year-btns"></div>
+      </div>
+      <div class="chart-container" id="chart-rice-c"></div>
     </div>
   `);
-  showEmpty('chart-rice-c', 'Verify 04/2026: 513.9 Tr USD / 1107 kT = 464 USD/T');
+  const card = container.lastElementChild;
+  const aspPts = parseFindicatorSeries(blockB?.xk_rice || [], 'date', 'price');
+  if (!aspPts.length) { showEmpty('chart-rice-c', 'Không có dữ liệu ASP'); return; }
+
+  function render(year) {
+    const cut = yearToCutoff(year);
+    createStockChart('chart-rice-c', {
+      series: [{ name: 'ASP XK gạo (USD/Tấn)', data: aspPts.filter(p => p[0] >= cut), color: HC_COLORS[3] }],
+    });
+  }
+  initYearButtons(card, render);
+  render('1Y');
 }
 
 
 function renderBlockD(blockA, blockB) {
   const container = document.getElementById('block-d-charts');
   container.insertAdjacentHTML('beforeend', `
-    <div class="chart-card">
-      <div class="chart-header"><span class="chart-title">Spread ASP XK − Giá lúa nguyên liệu VN</span></div>
+    <div class="chart-card" data-year-options="1Y,3Y,5Y">
+      <div class="chart-header">
+        <span class="chart-title">Spread ASP XK − Giá lúa VN (VNĐ/kg)</span>
+        <div class="year-btns"></div>
+      </div>
       <div class="chart-container" id="chart-rice-spread"></div>
     </div>
   `);
-  showEmpty('chart-rice-spread', 'Spread = ASP XK (Tr USD / Nghìn tấn × tỷ giá) − Giá lúa VN (nghìn đ/kg)');
+  const card = container.lastElementChild;
+
+  const luaVnd = parseWiChartSeries(blockA?.lua_price?.data || []);
+  const luaMap = new Map(luaVnd.map(([ts, v]) => {
+    const d = new Date(ts);
+    return [`${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}`, v];
+  }));
+
+  const usdByMonth = {};
+  (blockA?.usd_vnd || []).forEach(r => {
+    const d = new Date(r.date);
+    const k = `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}`;
+    if (!usdByMonth[k]) usdByMonth[k] = { s: 0, n: 0 };
+    usdByMonth[k].s += parseFloat(r.value); usdByMonth[k].n++;
+  });
+  const usdMap = new Map(Object.entries(usdByMonth).map(([k, v]) => [k, v.s / v.n]));
+
+  const spreadPts = [];
+  (blockB?.xk_rice || []).forEach(r => {
+    if (!r.price) return;
+    const d = new Date(r.date);
+    const k = `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}`;
+    const usd = usdMap.get(k);
+    const lua = luaMap.get(k);
+    if (!usd || !lua) return;
+    const aspVnd = r.price * usd / 1000; // USD/T → VNĐ/kg
+    spreadPts.push([d.getTime(), Math.round(aspVnd - lua)]);
+  });
+  spreadPts.sort((a, b) => a[0] - b[0]);
+
+  if (!spreadPts.length) {
+    showEmpty('chart-rice-spread', 'Không đủ dữ liệu ASP/tỷ giá/giá lúa VN');
+    return;
+  }
+
+  function render(year) {
+    const cut = yearToCutoff(year);
+    createStockChart('chart-rice-spread', {
+      yAxis: [{ title: { text: 'VNĐ/kg' } }],
+      series: [{ name: 'Spread XK (VNĐ/kg)', data: spreadPts.filter(p => p[0] >= cut), color: HC_COLORS[2] }],
+    });
+  }
+  initYearButtons(card, render);
+  render('1Y');
 }
 
 
 function renderBlockE(blockE) {
-  const container = document.getElementById('block-e-table');
-  const tickers = Object.keys(blockE || {});
-  if (!tickers.length) { container.innerHTML = '<p class="text-muted">Không có dữ liệu</p>'; return; }
-
-  const rows = tickers.map(t => {
-    const tr = blockE[t]?.trailing;
-    const tickerData = tr?.[t] || (Array.isArray(tr) ? tr : []);
-    const get = (id) => tickerData.find?.(r => r.accountId === id)?.value;
-    const analyst = blockE[t]?.analyst;
-    const rec = Array.isArray(analyst) ? analyst[0] : analyst;
-    return {
-      ticker: t,
-      marketCap: get(35), pe: get(39), pb: get(40),
-      grossMargin: get(2), roe: get(8), roa: get(9),
-      inventory: get(11),
-      recommendation: rec?.recommend, upside: rec?.upside, targetPrice: rec?.targetPrice,
-    };
+  renderValuationTable('block-e-table', blockE, {
+    accountMap: { marketCap: 35, pe: 39, pb: 40, grossMargin: 2, roe: 8, roa: 9, inventory: 11 },
+    columns: ['marketCap', 'pe', 'pb', 'grossMargin', 'roe', 'roa', 'inventory'],
+    pctFields: ['grossMargin', 'roe', 'roa'],
   });
-
-  const recTag = (r) => {
-    if (!r) return '—';
-    const map = { BUY: 'tag-buy', HOLD: 'tag-hold', SELL: 'tag-sell' };
-    return `<span class="${map[r] || ''}">${r}</span>`;
-  };
-  const pct = v => v != null ? `<span class="${v >= 0 ? 'num-up' : 'num-down'}">${(v * 100).toFixed(1)}%</span>` : '—';
-  const num = (v, dp = 1) => v != null ? Highcharts.numberFormat(v, dp) : '—';
-
-  container.innerHTML = `
-    <table class="stock-table">
-      <thead>
-        <tr>
-          <th>Ticker</th><th>Vốn hóa (tỷ)</th><th>PE</th><th>PB</th>
-          <th>Biên gộp</th><th>ROE</th><th>ROA</th><th>V.quay HTK</th>
-          <th>Recommend</th><th>Upside</th><th>Target</th>
-        </tr>
-      </thead>
-      <tbody>
-        ${rows.map(r => `
-          <tr>
-            <td>${r.ticker}</td>
-            <td>${num(r.marketCap, 0)}</td>
-            <td>${num(r.pe)}</td>
-            <td>${num(r.pb)}</td>
-            <td>${pct(r.grossMargin)}</td>
-            <td>${pct(r.roe)}</td>
-            <td>${pct(r.roa)}</td>
-            <td>${num(r.inventory)}</td>
-            <td>${recTag(r.recommendation)}</td>
-            <td>${r.upside != null ? pct(r.upside / 100) : '—'}</td>
-            <td>${r.targetPrice ? num(r.targetPrice, 0) : '—'}</td>
-          </tr>
-        `).join('')}
-      </tbody>
-    </table>
-  `;
 }
-
-
 function renderBlockF(blockF) {
   const container = document.getElementById('block-f-charts');
   Object.keys(blockF || {}).forEach(ticker => {
@@ -274,31 +307,6 @@ function renderBlockF(blockF) {
         <div class="chart-container chart-lg" id="chart-bctc-${ticker}"></div>
       </div>
     `);
-
-    const tickerData = blockF[ticker];
-    const rows = tickerData?.[ticker] || (Array.isArray(tickerData) ? tickerData : []);
-    if (!rows?.length) { showEmpty(`chart-bctc-${ticker}`); return; }
-
-    const quarters = [...new Set(rows.map(r => r.period || `${r.year}Q${r.quarter}`))].sort().slice(-8);
-    const getQ = (accId) => quarters.map(q => {
-      const r = rows.find(x => (x.period || `${x.year}Q${x.quarter}`) === q && x.accountId === accId);
-      return r?.value ?? null;
-    });
-
-    createChart(`chart-bctc-${ticker}`, {
-      chart: { type: 'column' },
-      xAxis: { categories: quarters },
-      yAxis: [
-        { title: { text: 'Tỷ VNĐ' } },
-        { title: { text: 'Biên gộp %' }, opposite: true, labels: { format: '{value}%' } },
-      ],
-      series: [
-        { name: 'Doanh thu', type: 'column', data: getQ(24), color: HC_COLORS[0] },
-        { name: 'LN gộp', type: 'column', data: getQ(28), color: HC_COLORS[2] },
-        { name: 'LNST', type: 'column', data: getQ(43), color: HC_COLORS[3] },
-        { name: 'Biên gộp %', type: 'line', data: getQ(2), color: HC_COLORS[1], yAxis: 1,
-          tooltip: { valueSuffix: '%' } },
-      ],
-    });
+    renderBctcChart(`chart-bctc-${ticker}`, ticker, blockF);
   });
 }
