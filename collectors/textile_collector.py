@@ -55,6 +55,7 @@ async def collect():
             "block_g": block_g,
     }
 
+    cache = transform_keys(cache)
     CACHE_FILE.write_text(json.dumps(cache, ensure_ascii=False, indent=2), encoding="utf-8")
     print(f"[textile] cache saved → {CACHE_FILE}")
     return cache

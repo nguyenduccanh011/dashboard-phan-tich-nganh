@@ -190,10 +190,7 @@ function renderBlockB(blockB) {
       series: exportSeriesIds.map((s, i) => ({
         name: s.name,
         color: HC_COLORS[i],
-        data: parseFindicatorSeries(
-          exportData.find(r => r.name_id === s.nameId)?.data || [],
-          'date', 'quantity'
-        ).filter(p => p[0] >= cutoff),
+        data: parseFindicatorSeries(exportData.filter(r => r.nameId === s.nameId)).filter(p => p[0] >= cutoff),
       })),
     });
   }

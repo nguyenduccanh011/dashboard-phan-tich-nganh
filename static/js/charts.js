@@ -234,8 +234,9 @@ function formatVN(value, unit = '') {
  */
 function parseFindicatorSeries(rows, dateField = 'date', valueField = 'value') {
   if (!rows || !rows.length) return [];
-  const flat = Array.isArray(rows[0]) ? rows.flat() : rows;
-  return flat
+  const flatRows = rows.flat ? rows.flat(Infinity) : rows;
+  return flatRows
+    .filter(row => row && typeof row === 'object' && !Array.isArray(row))
     .map(row => {
       const d = new Date(row[dateField]);
       const v = row[valueField];

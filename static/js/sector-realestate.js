@@ -215,6 +215,73 @@ function renderBlockC(blockC) {
       </tbody>
     </table>
   `;
+
+  renderProjectTable(container, blockC.projects || {});
+}
+
+
+function renderProjectTable(container, projects) {
+  container.insertAdjacentHTML('beforeend', `
+    <div class="chart-card">
+      <div class="chart-header"><span class="chart-title">Danh sach du an BDS theo doanh nghiep</span></div>
+      <div id="project-table" style="overflow-x:auto;max-height:420px;"></div>
+    </div>
+  `);
+
+  const rows = Object.entries(projects).flatMap(([ticker, items]) =>
+    (Array.isArray(items) ? items : []).map(project => ({
+      ticker,
+      name: project.project_name || project.name || '',
+      ownership: project.ownership || '',
+      area: project.area,
+      type: project.project_type || '',
+      volume: project.volume || '',
+      commercialArea: project.commercial_area,
+      location: project.location || '',
+      status: project.status || '',
+    }))
+  );
+
+  const target = document.getElementById('project-table');
+  if (!rows.length) {
+    target.innerHTML = '<p class="text-muted">Khong co du lieu du an</p>';
+    return;
+  }
+
+  const num = (v, dp = 1) => {
+    if (v == null || v === '' || isNaN(Number(v))) return '---';
+    return Highcharts.numberFormat(Number(v), dp);
+  };
+  const short = (text, max = 180) => {
+    if (!text) return '---';
+    return text.length > max ? `${text.slice(0, max)}...` : text;
+  };
+
+  target.innerHTML = `
+    <table class="stock-table">
+      <thead>
+        <tr>
+          <th>Ticker</th><th>Du an</th><th>So huu</th><th>Dien tich (ha)</th>
+          <th>Loai</th><th>Quy mo</th><th>TM (m2)</th><th>Vi tri</th><th>Trang thai</th>
+        </tr>
+      </thead>
+      <tbody>
+        ${rows.map(r => `
+          <tr>
+            <td>${r.ticker}</td>
+            <td>${r.name || '---'}</td>
+            <td>${r.ownership || '---'}</td>
+            <td>${num(r.area)}</td>
+            <td>${r.type || '---'}</td>
+            <td>${r.volume || '---'}</td>
+            <td>${num(r.commercialArea, 0)}</td>
+            <td>${short(r.location, 90)}</td>
+            <td>${short(r.status)}</td>
+          </tr>
+        `).join('')}
+      </tbody>
+    </table>
+  `;
 }
 
 

@@ -7,7 +7,7 @@ import asyncio
 import json
 from pathlib import Path
 from datetime import datetime
-from collectors.base import findicator, wichart
+from collectors.base import findicator, wichart, transform_keys
 
 CACHE_FILE = Path("cache/sector_electricity.json")
 TICKERS = ["POW", "NT2", "PC1", "REE", "HND", "GEG", "QTP", "HDG", "ASM"]
@@ -42,6 +42,7 @@ async def collect():
             "block_g": block_g,
     }
 
+    cache = transform_keys(cache)
     CACHE_FILE.write_text(json.dumps(cache, ensure_ascii=False, indent=2), encoding="utf-8")
     print(f"[electricity] cache saved → {CACHE_FILE}")
     return cache
@@ -131,13 +132,14 @@ async def _collect_block_b():
         for i, rid in enumerate(RESOURCE_IDS)
     }
 
-    # ENSO forecast: dùng date từ enso-nearest-date (trả về list hoặc dict)
+    # ENSO forecast: enso-nearest-date can return a list or dict
     enso_forecast = None
     enso_date = None
     if isinstance(enso_nearest, list) and enso_nearest:
         enso_date = enso_nearest[0]
     elif isinstance(enso_nearest, dict):
         enso_date = enso_nearest.get("date") or enso_nearest.get("nearestDate")
+
     if enso_date:
         try:
             enso_forecast = await findicator.get(

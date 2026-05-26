@@ -1,0 +1,2619 @@
+[
+  {
+    "sector": "steel",
+    "path": "enterprise/overview-dividend",
+    "params": {
+      "ticket": "HPG",
+      "year": "All"
+    },
+    "ok": true,
+    "status": 200,
+    "kind": "list",
+    "n": 34,
+    "empty": false,
+    "keys": [
+      "year",
+      "type",
+      "value"
+    ]
+  },
+  {
+    "sector": "steel",
+    "path": "enterprise/report-data-prediction",
+    "params": {
+      "ticket": "HPG"
+    },
+    "ok": true,
+    "status": 200,
+    "kind": "dict",
+    "n": 2,
+    "empty": false,
+    "keys": [
+      "realData",
+      "predictData"
+    ],
+    "len.realData": 747
+  },
+  {
+    "sector": "steel",
+    "path": "enterprise/manufactoring-revenue",
+    "params": {
+      "ticket": "HPG",
+      "period": "quarter",
+      "year": "All"
+    },
+    "ok": true,
+    "status": 200,
+    "kind": "list",
+    "n": 77,
+    "empty": false,
+    "keys": [
+      "year",
+      "quarter",
+      "date",
+      "type",
+      "value"
+    ]
+  },
+  {
+    "sector": "steel",
+    "path": "enterprise/manufactoring-profit-after-tax",
+    "params": {
+      "ticket": "HPG",
+      "period": "quarter",
+      "year": "All"
+    },
+    "ok": true,
+    "status": 200,
+    "kind": "list",
+    "n": 77,
+    "empty": false,
+    "keys": [
+      "year",
+      "quarter",
+      "date",
+      "type",
+      "value"
+    ]
+  },
+  {
+    "sector": "steel",
+    "path": "enterprise/manufactoring-revenue-to-profit-ratio-metadata",
+    "params": {
+      "ticket": "HPG"
+    },
+    "ok": true,
+    "status": 200,
+    "kind": "dict",
+    "n": 2,
+    "empty": false,
+    "keys": [
+      "yearList",
+      "quarterList"
+    ],
+    "len.yearList": 22,
+    "len.quarterList": 20
+  },
+  {
+    "sector": "bank",
+    "path": "enterprise/overview-dividend",
+    "params": {
+      "ticket": "VCB",
+      "year": "All"
+    },
+    "ok": true,
+    "status": 200,
+    "kind": "list",
+    "n": 34,
+    "empty": false,
+    "keys": [
+      "year",
+      "type",
+      "value"
+    ]
+  },
+  {
+    "sector": "bank",
+    "path": "enterprise/report-data-prediction",
+    "params": {
+      "ticket": "VCB"
+    },
+    "ok": true,
+    "status": 200,
+    "kind": "dict",
+    "n": 2,
+    "empty": false,
+    "keys": [
+      "realData",
+      "predictData"
+    ],
+    "len.realData": 747
+  },
+  {
+    "sector": "bank",
+    "path": "enterprise/manufactoring-revenue",
+    "params": {
+      "ticket": "VCB",
+      "period": "quarter",
+      "year": "All"
+    },
+    "ok": true,
+    "status": 200,
+    "kind": "list",
+    "n": 0,
+    "empty": true
+  },
+  {
+    "sector": "bank",
+    "path": "enterprise/manufactoring-profit-after-tax",
+    "params": {
+      "ticket": "VCB",
+      "period": "quarter",
+      "year": "All"
+    },
+    "ok": true,
+    "status": 200,
+    "kind": "list",
+    "n": 0,
+    "empty": true
+  },
+  {
+    "sector": "bank",
+    "path": "enterprise/manufactoring-revenue-to-profit-ratio-metadata",
+    "params": {
+      "ticket": "VCB"
+    },
+    "ok": true,
+    "status": 200,
+    "kind": "dict",
+    "n": 2,
+    "empty": false,
+    "keys": [
+      "yearList",
+      "quarterList"
+    ],
+    "len.yearList": 0,
+    "len.quarterList": 0
+  },
+  {
+    "sector": "cement",
+    "path": "enterprise/overview-dividend",
+    "params": {
+      "ticket": "HT1",
+      "year": "All"
+    },
+    "ok": true,
+    "status": 200,
+    "kind": "list",
+    "n": 34,
+    "empty": false,
+    "keys": [
+      "year",
+      "type",
+      "value"
+    ]
+  },
+  {
+    "sector": "cement",
+    "path": "enterprise/report-data-prediction",
+    "params": {
+      "ticket": "HT1"
+    },
+    "ok": true,
+    "status": 200,
+    "kind": "dict",
+    "n": 2,
+    "empty": false,
+    "keys": [
+      "realData",
+      "predictData"
+    ],
+    "len.realData": 747
+  },
+  {
+    "sector": "cement",
+    "path": "enterprise/manufactoring-revenue",
+    "params": {
+      "ticket": "HT1",
+      "period": "quarter",
+      "year": "All"
+    },
+    "ok": true,
+    "status": 200,
+    "kind": "list",
+    "n": 77,
+    "empty": false,
+    "keys": [
+      "year",
+      "quarter",
+      "date",
+      "type",
+      "value"
+    ]
+  },
+  {
+    "sector": "cement",
+    "path": "enterprise/manufactoring-profit-after-tax",
+    "params": {
+      "ticket": "HT1",
+      "period": "quarter",
+      "year": "All"
+    },
+    "ok": true,
+    "status": 200,
+    "kind": "list",
+    "n": 77,
+    "empty": false,
+    "keys": [
+      "year",
+      "quarter",
+      "date",
+      "type",
+      "value"
+    ]
+  },
+  {
+    "sector": "cement",
+    "path": "enterprise/manufactoring-revenue-to-profit-ratio-metadata",
+    "params": {
+      "ticket": "HT1"
+    },
+    "ok": true,
+    "status": 200,
+    "kind": "dict",
+    "n": 2,
+    "empty": false,
+    "keys": [
+      "yearList",
+      "quarterList"
+    ],
+    "len.yearList": 24,
+    "len.quarterList": 20
+  },
+  {
+    "sector": "pangasius",
+    "path": "enterprise/overview-dividend",
+    "params": {
+      "ticket": "VHC",
+      "year": "All"
+    },
+    "ok": true,
+    "status": 200,
+    "kind": "list",
+    "n": 34,
+    "empty": false,
+    "keys": [
+      "year",
+      "type",
+      "value"
+    ]
+  },
+  {
+    "sector": "pangasius",
+    "path": "enterprise/report-data-prediction",
+    "params": {
+      "ticket": "VHC"
+    },
+    "ok": true,
+    "status": 200,
+    "kind": "dict",
+    "n": 2,
+    "empty": false,
+    "keys": [
+      "realData",
+      "predictData"
+    ],
+    "len.realData": 747
+  },
+  {
+    "sector": "pangasius",
+    "path": "enterprise/manufactoring-revenue",
+    "params": {
+      "ticket": "VHC",
+      "period": "quarter",
+      "year": "All"
+    },
+    "ok": true,
+    "status": 200,
+    "kind": "list",
+    "n": 75,
+    "empty": false,
+    "keys": [
+      "year",
+      "quarter",
+      "date",
+      "type",
+      "value"
+    ]
+  },
+  {
+    "sector": "pangasius",
+    "path": "enterprise/manufactoring-profit-after-tax",
+    "params": {
+      "ticket": "VHC",
+      "period": "quarter",
+      "year": "All"
+    },
+    "ok": true,
+    "status": 200,
+    "kind": "list",
+    "n": 75,
+    "empty": false,
+    "keys": [
+      "year",
+      "quarter",
+      "date",
+      "type",
+      "value"
+    ]
+  },
+  {
+    "sector": "pangasius",
+    "path": "enterprise/manufactoring-revenue-to-profit-ratio-metadata",
+    "params": {
+      "ticket": "VHC"
+    },
+    "ok": true,
+    "status": 200,
+    "kind": "dict",
+    "n": 2,
+    "empty": false,
+    "keys": [
+      "yearList",
+      "quarterList"
+    ],
+    "len.yearList": 19,
+    "len.quarterList": 20
+  },
+  {
+    "sector": "shrimp",
+    "path": "enterprise/overview-dividend",
+    "params": {
+      "ticket": "FMC",
+      "year": "All"
+    },
+    "ok": true,
+    "status": 200,
+    "kind": "list",
+    "n": 34,
+    "empty": false,
+    "keys": [
+      "year",
+      "type",
+      "value"
+    ]
+  },
+  {
+    "sector": "shrimp",
+    "path": "enterprise/report-data-prediction",
+    "params": {
+      "ticket": "FMC"
+    },
+    "ok": true,
+    "status": 200,
+    "kind": "dict",
+    "n": 2,
+    "empty": false,
+    "keys": [
+      "realData",
+      "predictData"
+    ],
+    "len.realData": 747
+  },
+  {
+    "sector": "shrimp",
+    "path": "enterprise/manufactoring-revenue",
+    "params": {
+      "ticket": "FMC",
+      "period": "quarter",
+      "year": "All"
+    },
+    "ok": true,
+    "status": 200,
+    "kind": "list",
+    "n": 81,
+    "empty": false,
+    "keys": [
+      "year",
+      "quarter",
+      "date",
+      "type",
+      "value"
+    ]
+  },
+  {
+    "sector": "shrimp",
+    "path": "enterprise/manufactoring-profit-after-tax",
+    "params": {
+      "ticket": "FMC",
+      "period": "quarter",
+      "year": "All"
+    },
+    "ok": true,
+    "status": 200,
+    "kind": "list",
+    "n": 81,
+    "empty": false,
+    "keys": [
+      "year",
+      "quarter",
+      "date",
+      "type",
+      "value"
+    ]
+  },
+  {
+    "sector": "shrimp",
+    "path": "enterprise/manufactoring-revenue-to-profit-ratio-metadata",
+    "params": {
+      "ticket": "FMC"
+    },
+    "ok": true,
+    "status": 200,
+    "kind": "dict",
+    "n": 2,
+    "empty": false,
+    "keys": [
+      "yearList",
+      "quarterList"
+    ],
+    "len.yearList": 22,
+    "len.quarterList": 21
+  },
+  {
+    "sector": "aviation",
+    "path": "enterprise/overview-dividend",
+    "params": {
+      "ticket": "HVN",
+      "year": "All"
+    },
+    "ok": true,
+    "status": 200,
+    "kind": "list",
+    "n": 20,
+    "empty": false,
+    "keys": [
+      "year",
+      "type",
+      "value"
+    ]
+  },
+  {
+    "sector": "aviation",
+    "path": "enterprise/report-data-prediction",
+    "params": {
+      "ticket": "HVN"
+    },
+    "ok": true,
+    "status": 200,
+    "kind": "dict",
+    "n": 2,
+    "empty": false,
+    "keys": [
+      "realData",
+      "predictData"
+    ],
+    "len.realData": 747
+  },
+  {
+    "sector": "aviation",
+    "path": "enterprise/manufactoring-revenue",
+    "params": {
+      "ticket": "HVN",
+      "period": "quarter",
+      "year": "All"
+    },
+    "ok": true,
+    "status": 200,
+    "kind": "list",
+    "n": 44,
+    "empty": false,
+    "keys": [
+      "year",
+      "quarter",
+      "date",
+      "type",
+      "value"
+    ]
+  },
+  {
+    "sector": "aviation",
+    "path": "enterprise/manufactoring-profit-after-tax",
+    "params": {
+      "ticket": "HVN",
+      "period": "quarter",
+      "year": "All"
+    },
+    "ok": true,
+    "status": 200,
+    "kind": "list",
+    "n": 44,
+    "empty": false,
+    "keys": [
+      "year",
+      "quarter",
+      "date",
+      "type",
+      "value"
+    ]
+  },
+  {
+    "sector": "aviation",
+    "path": "enterprise/manufactoring-revenue-to-profit-ratio-metadata",
+    "params": {
+      "ticket": "HVN"
+    },
+    "ok": true,
+    "status": 200,
+    "kind": "dict",
+    "n": 2,
+    "empty": false,
+    "keys": [
+      "yearList",
+      "quarterList"
+    ],
+    "len.yearList": 13,
+    "len.quarterList": 12
+  },
+  {
+    "sector": "rubber",
+    "path": "enterprise/overview-dividend",
+    "params": {
+      "ticket": "DPR",
+      "year": "All"
+    },
+    "ok": true,
+    "status": 200,
+    "kind": "list",
+    "n": 34,
+    "empty": false,
+    "keys": [
+      "year",
+      "type",
+      "value"
+    ]
+  },
+  {
+    "sector": "rubber",
+    "path": "enterprise/report-data-prediction",
+    "params": {
+      "ticket": "DPR"
+    },
+    "ok": true,
+    "status": 200,
+    "kind": "dict",
+    "n": 2,
+    "empty": false,
+    "keys": [
+      "realData",
+      "predictData"
+    ],
+    "len.realData": 747
+  },
+  {
+    "sector": "rubber",
+    "path": "enterprise/manufactoring-revenue",
+    "params": {
+      "ticket": "DPR",
+      "period": "quarter",
+      "year": "All"
+    },
+    "ok": true,
+    "status": 200,
+    "kind": "list",
+    "n": 77,
+    "empty": false,
+    "keys": [
+      "year",
+      "quarter",
+      "date",
+      "type",
+      "value"
+    ]
+  },
+  {
+    "sector": "rubber",
+    "path": "enterprise/manufactoring-profit-after-tax",
+    "params": {
+      "ticket": "DPR",
+      "period": "quarter",
+      "year": "All"
+    },
+    "ok": true,
+    "status": 200,
+    "kind": "list",
+    "n": 77,
+    "empty": false,
+    "keys": [
+      "year",
+      "quarter",
+      "date",
+      "type",
+      "value"
+    ]
+  },
+  {
+    "sector": "rubber",
+    "path": "enterprise/manufactoring-revenue-to-profit-ratio-metadata",
+    "params": {
+      "ticket": "DPR"
+    },
+    "ok": true,
+    "status": 200,
+    "kind": "dict",
+    "n": 2,
+    "empty": false,
+    "keys": [
+      "yearList",
+      "quarterList"
+    ],
+    "len.yearList": 22,
+    "len.quarterList": 20
+  },
+  {
+    "sector": "pig",
+    "path": "enterprise/overview-dividend",
+    "params": {
+      "ticket": "DBC",
+      "year": "All"
+    },
+    "ok": true,
+    "status": 200,
+    "kind": "list",
+    "n": 32,
+    "empty": false,
+    "keys": [
+      "year",
+      "type",
+      "value"
+    ]
+  },
+  {
+    "sector": "pig",
+    "path": "enterprise/report-data-prediction",
+    "params": {
+      "ticket": "DBC"
+    },
+    "ok": true,
+    "status": 200,
+    "kind": "dict",
+    "n": 2,
+    "empty": false,
+    "keys": [
+      "realData",
+      "predictData"
+    ],
+    "len.realData": 747
+  },
+  {
+    "sector": "pig",
+    "path": "enterprise/manufactoring-revenue",
+    "params": {
+      "ticket": "DBC",
+      "period": "quarter",
+      "year": "All"
+    },
+    "ok": true,
+    "status": 200,
+    "kind": "list",
+    "n": 73,
+    "empty": false,
+    "keys": [
+      "year",
+      "quarter",
+      "date",
+      "type",
+      "value"
+    ]
+  },
+  {
+    "sector": "pig",
+    "path": "enterprise/manufactoring-profit-after-tax",
+    "params": {
+      "ticket": "DBC",
+      "period": "quarter",
+      "year": "All"
+    },
+    "ok": true,
+    "status": 200,
+    "kind": "list",
+    "n": 73,
+    "empty": false,
+    "keys": [
+      "year",
+      "quarter",
+      "date",
+      "type",
+      "value"
+    ]
+  },
+  {
+    "sector": "pig",
+    "path": "enterprise/manufactoring-revenue-to-profit-ratio-metadata",
+    "params": {
+      "ticket": "DBC"
+    },
+    "ok": true,
+    "status": 200,
+    "kind": "dict",
+    "n": 2,
+    "empty": false,
+    "keys": [
+      "yearList",
+      "quarterList"
+    ],
+    "len.yearList": 20,
+    "len.quarterList": 19
+  },
+  {
+    "sector": "chemistry",
+    "path": "enterprise/overview-dividend",
+    "params": {
+      "ticket": "DGC",
+      "year": "All"
+    },
+    "ok": true,
+    "status": 200,
+    "kind": "list",
+    "n": 24,
+    "empty": false,
+    "keys": [
+      "year",
+      "type",
+      "value"
+    ]
+  },
+  {
+    "sector": "chemistry",
+    "path": "enterprise/report-data-prediction",
+    "params": {
+      "ticket": "DGC"
+    },
+    "ok": true,
+    "status": 200,
+    "kind": "dict",
+    "n": 2,
+    "empty": false,
+    "keys": [
+      "realData",
+      "predictData"
+    ],
+    "len.realData": 747
+  },
+  {
+    "sector": "chemistry",
+    "path": "enterprise/manufactoring-revenue",
+    "params": {
+      "ticket": "DGC",
+      "period": "quarter",
+      "year": "All"
+    },
+    "ok": true,
+    "status": 200,
+    "kind": "list",
+    "n": 52,
+    "empty": false,
+    "keys": [
+      "year",
+      "quarter",
+      "date",
+      "type",
+      "value"
+    ]
+  },
+  {
+    "sector": "chemistry",
+    "path": "enterprise/manufactoring-profit-after-tax",
+    "params": {
+      "ticket": "DGC",
+      "period": "quarter",
+      "year": "All"
+    },
+    "ok": true,
+    "status": 200,
+    "kind": "list",
+    "n": 52,
+    "empty": false,
+    "keys": [
+      "year",
+      "quarter",
+      "date",
+      "type",
+      "value"
+    ]
+  },
+  {
+    "sector": "chemistry",
+    "path": "enterprise/manufactoring-revenue-to-profit-ratio-metadata",
+    "params": {
+      "ticket": "DGC"
+    },
+    "ok": true,
+    "status": 200,
+    "kind": "dict",
+    "n": 2,
+    "empty": false,
+    "keys": [
+      "yearList",
+      "quarterList"
+    ],
+    "len.yearList": 19,
+    "len.quarterList": 15
+  },
+  {
+    "sector": "textile",
+    "path": "enterprise/overview-dividend",
+    "params": {
+      "ticket": "TCM",
+      "year": "All"
+    },
+    "ok": true,
+    "status": 200,
+    "kind": "list",
+    "n": 34,
+    "empty": false,
+    "keys": [
+      "year",
+      "type",
+      "value"
+    ]
+  },
+  {
+    "sector": "textile",
+    "path": "enterprise/report-data-prediction",
+    "params": {
+      "ticket": "TCM"
+    },
+    "ok": true,
+    "status": 200,
+    "kind": "dict",
+    "n": 2,
+    "empty": false,
+    "keys": [
+      "realData",
+      "predictData"
+    ],
+    "len.realData": 751
+  },
+  {
+    "sector": "textile",
+    "path": "enterprise/manufactoring-revenue",
+    "params": {
+      "ticket": "TCM",
+      "period": "quarter",
+      "year": "All"
+    },
+    "ok": true,
+    "status": 200,
+    "kind": "list",
+    "n": 75,
+    "empty": false,
+    "keys": [
+      "year",
+      "quarter",
+      "date",
+      "type",
+      "value"
+    ]
+  },
+  {
+    "sector": "textile",
+    "path": "enterprise/manufactoring-profit-after-tax",
+    "params": {
+      "ticket": "TCM",
+      "period": "quarter",
+      "year": "All"
+    },
+    "ok": true,
+    "status": 200,
+    "kind": "list",
+    "n": 75,
+    "empty": false,
+    "keys": [
+      "year",
+      "quarter",
+      "date",
+      "type",
+      "value"
+    ]
+  },
+  {
+    "sector": "textile",
+    "path": "enterprise/manufactoring-revenue-to-profit-ratio-metadata",
+    "params": {
+      "ticket": "TCM"
+    },
+    "ok": true,
+    "status": 200,
+    "kind": "dict",
+    "n": 2,
+    "empty": false,
+    "keys": [
+      "yearList",
+      "quarterList"
+    ],
+    "len.yearList": 22,
+    "len.quarterList": 21
+  },
+  {
+    "sector": "industry",
+    "path": "enterprise/overview-dividend",
+    "params": {
+      "ticket": "BCM",
+      "year": "All"
+    },
+    "ok": true,
+    "status": 200,
+    "kind": "list",
+    "n": 20,
+    "empty": false,
+    "keys": [
+      "year",
+      "type",
+      "value"
+    ]
+  },
+  {
+    "sector": "industry",
+    "path": "enterprise/report-data-prediction",
+    "params": {
+      "ticket": "BCM"
+    },
+    "ok": true,
+    "status": 200,
+    "kind": "dict",
+    "n": 2,
+    "empty": false,
+    "keys": [
+      "realData",
+      "predictData"
+    ],
+    "len.realData": 747
+  },
+  {
+    "sector": "industry",
+    "path": "enterprise/manufactoring-revenue",
+    "params": {
+      "ticket": "BCM",
+      "period": "quarter",
+      "year": "All"
+    },
+    "ok": true,
+    "status": 200,
+    "kind": "list",
+    "n": 34,
+    "empty": false,
+    "keys": [
+      "year",
+      "quarter",
+      "date",
+      "type",
+      "value"
+    ]
+  },
+  {
+    "sector": "industry",
+    "path": "enterprise/manufactoring-profit-after-tax",
+    "params": {
+      "ticket": "BCM",
+      "period": "quarter",
+      "year": "All"
+    },
+    "ok": true,
+    "status": 200,
+    "kind": "list",
+    "n": 34,
+    "empty": false,
+    "keys": [
+      "year",
+      "quarter",
+      "date",
+      "type",
+      "value"
+    ]
+  },
+  {
+    "sector": "industry",
+    "path": "enterprise/manufactoring-revenue-to-profit-ratio-metadata",
+    "params": {
+      "ticket": "BCM"
+    },
+    "ok": true,
+    "status": 200,
+    "kind": "dict",
+    "n": 2,
+    "empty": false,
+    "keys": [
+      "yearList",
+      "quarterList"
+    ],
+    "len.yearList": 11,
+    "len.quarterList": 10
+  },
+  {
+    "sector": "realestate",
+    "path": "enterprise/overview-dividend",
+    "params": {
+      "ticket": "VHM",
+      "year": "All"
+    },
+    "ok": true,
+    "status": 200,
+    "kind": "list",
+    "n": 20,
+    "empty": false,
+    "keys": [
+      "year",
+      "type",
+      "value"
+    ]
+  },
+  {
+    "sector": "realestate",
+    "path": "enterprise/report-data-prediction",
+    "params": {
+      "ticket": "VHM"
+    },
+    "ok": true,
+    "status": 200,
+    "kind": "dict",
+    "n": 2,
+    "empty": false,
+    "keys": [
+      "realData",
+      "predictData"
+    ],
+    "len.realData": 734
+  },
+  {
+    "sector": "realestate",
+    "path": "enterprise/manufactoring-revenue",
+    "params": {
+      "ticket": "VHM",
+      "period": "quarter",
+      "year": "All"
+    },
+    "ok": true,
+    "status": 200,
+    "kind": "list",
+    "n": 34,
+    "empty": false,
+    "keys": [
+      "year",
+      "quarter",
+      "date",
+      "type",
+      "value"
+    ]
+  },
+  {
+    "sector": "realestate",
+    "path": "enterprise/manufactoring-profit-after-tax",
+    "params": {
+      "ticket": "VHM",
+      "period": "quarter",
+      "year": "All"
+    },
+    "ok": true,
+    "status": 200,
+    "kind": "list",
+    "n": 34,
+    "empty": false,
+    "keys": [
+      "year",
+      "quarter",
+      "date",
+      "type",
+      "value"
+    ]
+  },
+  {
+    "sector": "realestate",
+    "path": "enterprise/manufactoring-revenue-to-profit-ratio-metadata",
+    "params": {
+      "ticket": "VHM"
+    },
+    "ok": true,
+    "status": 200,
+    "kind": "dict",
+    "n": 2,
+    "empty": false,
+    "keys": [
+      "yearList",
+      "quarterList"
+    ],
+    "len.yearList": 10,
+    "len.quarterList": 10
+  },
+  {
+    "sector": "transport",
+    "path": "enterprise/overview-dividend",
+    "params": {
+      "ticket": "HAH",
+      "year": "All"
+    },
+    "ok": true,
+    "status": 200,
+    "kind": "list",
+    "n": 24,
+    "empty": false,
+    "keys": [
+      "year",
+      "type",
+      "value"
+    ]
+  },
+  {
+    "sector": "transport",
+    "path": "enterprise/report-data-prediction",
+    "params": {
+      "ticket": "HAH"
+    },
+    "ok": true,
+    "status": 200,
+    "kind": "dict",
+    "n": 2,
+    "empty": false,
+    "keys": [
+      "realData",
+      "predictData"
+    ],
+    "len.realData": 747
+  },
+  {
+    "sector": "transport",
+    "path": "enterprise/manufactoring-revenue",
+    "params": {
+      "ticket": "HAH",
+      "period": "quarter",
+      "year": "All"
+    },
+    "ok": true,
+    "status": 200,
+    "kind": "list",
+    "n": 51,
+    "empty": false,
+    "keys": [
+      "year",
+      "quarter",
+      "date",
+      "type",
+      "value"
+    ]
+  },
+  {
+    "sector": "transport",
+    "path": "enterprise/manufactoring-profit-after-tax",
+    "params": {
+      "ticket": "HAH",
+      "period": "quarter",
+      "year": "All"
+    },
+    "ok": true,
+    "status": 200,
+    "kind": "list",
+    "n": 51,
+    "empty": false,
+    "keys": [
+      "year",
+      "quarter",
+      "date",
+      "type",
+      "value"
+    ]
+  },
+  {
+    "sector": "transport",
+    "path": "enterprise/manufactoring-revenue-to-profit-ratio-metadata",
+    "params": {
+      "ticket": "HAH"
+    },
+    "ok": true,
+    "status": 200,
+    "kind": "dict",
+    "n": 2,
+    "empty": false,
+    "keys": [
+      "yearList",
+      "quarterList"
+    ],
+    "len.yearList": 15,
+    "len.quarterList": 14
+  },
+  {
+    "sector": "securities",
+    "path": "enterprise/overview-dividend",
+    "params": {
+      "ticket": "SSI",
+      "year": "All"
+    },
+    "ok": true,
+    "status": 200,
+    "kind": "list",
+    "n": 34,
+    "empty": false,
+    "keys": [
+      "year",
+      "type",
+      "value"
+    ]
+  },
+  {
+    "sector": "securities",
+    "path": "enterprise/report-data-prediction",
+    "params": {
+      "ticket": "SSI"
+    },
+    "ok": true,
+    "status": 200,
+    "kind": "dict",
+    "n": 2,
+    "empty": false,
+    "keys": [
+      "realData",
+      "predictData"
+    ],
+    "len.realData": 747
+  },
+  {
+    "sector": "securities",
+    "path": "enterprise/manufactoring-revenue",
+    "params": {
+      "ticket": "SSI",
+      "period": "quarter",
+      "year": "All"
+    },
+    "ok": true,
+    "status": 200,
+    "kind": "list",
+    "n": 0,
+    "empty": true
+  },
+  {
+    "sector": "securities",
+    "path": "enterprise/manufactoring-profit-after-tax",
+    "params": {
+      "ticket": "SSI",
+      "period": "quarter",
+      "year": "All"
+    },
+    "ok": true,
+    "status": 200,
+    "kind": "list",
+    "n": 0,
+    "empty": true
+  },
+  {
+    "sector": "securities",
+    "path": "enterprise/manufactoring-revenue-to-profit-ratio-metadata",
+    "params": {
+      "ticket": "SSI"
+    },
+    "ok": true,
+    "status": 200,
+    "kind": "dict",
+    "n": 2,
+    "empty": false,
+    "keys": [
+      "yearList",
+      "quarterList"
+    ],
+    "len.yearList": 0,
+    "len.quarterList": 0
+  },
+  {
+    "sector": "food-beverage",
+    "path": "enterprise/overview-dividend",
+    "params": {
+      "ticket": "VNM",
+      "year": "All"
+    },
+    "ok": true,
+    "status": 200,
+    "kind": "list",
+    "n": 34,
+    "empty": false,
+    "keys": [
+      "year",
+      "type",
+      "value"
+    ]
+  },
+  {
+    "sector": "food-beverage",
+    "path": "enterprise/report-data-prediction",
+    "params": {
+      "ticket": "VNM"
+    },
+    "ok": true,
+    "status": 200,
+    "kind": "dict",
+    "n": 2,
+    "empty": false,
+    "keys": [
+      "realData",
+      "predictData"
+    ],
+    "len.realData": 747
+  },
+  {
+    "sector": "food-beverage",
+    "path": "enterprise/manufactoring-revenue",
+    "params": {
+      "ticket": "VNM",
+      "period": "quarter",
+      "year": "All"
+    },
+    "ok": true,
+    "status": 200,
+    "kind": "list",
+    "n": 85,
+    "empty": false,
+    "keys": [
+      "year",
+      "quarter",
+      "date",
+      "type",
+      "value"
+    ]
+  },
+  {
+    "sector": "food-beverage",
+    "path": "enterprise/manufactoring-profit-after-tax",
+    "params": {
+      "ticket": "VNM",
+      "period": "quarter",
+      "year": "All"
+    },
+    "ok": true,
+    "status": 200,
+    "kind": "list",
+    "n": 85,
+    "empty": false,
+    "keys": [
+      "year",
+      "quarter",
+      "date",
+      "type",
+      "value"
+    ]
+  },
+  {
+    "sector": "food-beverage",
+    "path": "enterprise/manufactoring-revenue-to-profit-ratio-metadata",
+    "params": {
+      "ticket": "VNM"
+    },
+    "ok": true,
+    "status": 200,
+    "kind": "dict",
+    "n": 2,
+    "empty": false,
+    "keys": [
+      "yearList",
+      "quarterList"
+    ],
+    "len.yearList": 23,
+    "len.quarterList": 23
+  },
+  {
+    "sector": "electricity",
+    "path": "enterprise/overview-dividend",
+    "params": {
+      "ticket": "POW",
+      "year": "All"
+    },
+    "ok": true,
+    "status": 200,
+    "kind": "list",
+    "n": 20,
+    "empty": false,
+    "keys": [
+      "year",
+      "type",
+      "value"
+    ]
+  },
+  {
+    "sector": "electricity",
+    "path": "enterprise/report-data-prediction",
+    "params": {
+      "ticket": "POW"
+    },
+    "ok": true,
+    "status": 200,
+    "kind": "dict",
+    "n": 2,
+    "empty": false,
+    "keys": [
+      "realData",
+      "predictData"
+    ],
+    "len.realData": 747
+  },
+  {
+    "sector": "electricity",
+    "path": "enterprise/manufactoring-revenue",
+    "params": {
+      "ticket": "POW",
+      "period": "quarter",
+      "year": "All"
+    },
+    "ok": true,
+    "status": 200,
+    "kind": "list",
+    "n": 37,
+    "empty": false,
+    "keys": [
+      "year",
+      "quarter",
+      "date",
+      "type",
+      "value"
+    ]
+  },
+  {
+    "sector": "electricity",
+    "path": "enterprise/manufactoring-profit-after-tax",
+    "params": {
+      "ticket": "POW",
+      "period": "quarter",
+      "year": "All"
+    },
+    "ok": true,
+    "status": 200,
+    "kind": "list",
+    "n": 37,
+    "empty": false,
+    "keys": [
+      "year",
+      "quarter",
+      "date",
+      "type",
+      "value"
+    ]
+  },
+  {
+    "sector": "electricity",
+    "path": "enterprise/manufactoring-revenue-to-profit-ratio-metadata",
+    "params": {
+      "ticket": "POW"
+    },
+    "ok": true,
+    "status": 200,
+    "kind": "dict",
+    "n": 2,
+    "empty": false,
+    "keys": [
+      "yearList",
+      "quarterList"
+    ],
+    "len.yearList": 12,
+    "len.quarterList": 10
+  },
+  {
+    "sector": "plastics",
+    "path": "enterprise/overview-dividend",
+    "params": {
+      "ticket": "BMP",
+      "year": "All"
+    },
+    "ok": true,
+    "status": 200,
+    "kind": "list",
+    "n": 34,
+    "empty": false,
+    "keys": [
+      "year",
+      "type",
+      "value"
+    ]
+  },
+  {
+    "sector": "plastics",
+    "path": "enterprise/report-data-prediction",
+    "params": {
+      "ticket": "BMP"
+    },
+    "ok": true,
+    "status": 200,
+    "kind": "dict",
+    "n": 2,
+    "empty": false,
+    "keys": [
+      "realData",
+      "predictData"
+    ],
+    "len.realData": 747
+  },
+  {
+    "sector": "plastics",
+    "path": "enterprise/manufactoring-revenue",
+    "params": {
+      "ticket": "BMP",
+      "period": "quarter",
+      "year": "All"
+    },
+    "ok": true,
+    "status": 200,
+    "kind": "list",
+    "n": 85,
+    "empty": false,
+    "keys": [
+      "year",
+      "quarter",
+      "date",
+      "type",
+      "value"
+    ]
+  },
+  {
+    "sector": "plastics",
+    "path": "enterprise/manufactoring-profit-after-tax",
+    "params": {
+      "ticket": "BMP",
+      "period": "quarter",
+      "year": "All"
+    },
+    "ok": true,
+    "status": 200,
+    "kind": "list",
+    "n": 85,
+    "empty": false,
+    "keys": [
+      "year",
+      "quarter",
+      "date",
+      "type",
+      "value"
+    ]
+  },
+  {
+    "sector": "plastics",
+    "path": "enterprise/manufactoring-revenue-to-profit-ratio-metadata",
+    "params": {
+      "ticket": "BMP"
+    },
+    "ok": true,
+    "status": 200,
+    "kind": "dict",
+    "n": 2,
+    "empty": false,
+    "keys": [
+      "yearList",
+      "quarterList"
+    ],
+    "len.yearList": 22,
+    "len.quarterList": 22
+  },
+  {
+    "sector": "insurance",
+    "path": "enterprise/overview-dividend",
+    "params": {
+      "ticket": "BVH",
+      "year": "All"
+    },
+    "ok": true,
+    "status": 200,
+    "kind": "list",
+    "n": 34,
+    "empty": false,
+    "keys": [
+      "year",
+      "type",
+      "value"
+    ]
+  },
+  {
+    "sector": "insurance",
+    "path": "enterprise/report-data-prediction",
+    "params": {
+      "ticket": "BVH"
+    },
+    "ok": true,
+    "status": 200,
+    "kind": "dict",
+    "n": 2,
+    "empty": false,
+    "keys": [
+      "realData",
+      "predictData"
+    ],
+    "len.realData": 747
+  },
+  {
+    "sector": "insurance",
+    "path": "enterprise/manufactoring-revenue",
+    "params": {
+      "ticket": "BVH",
+      "period": "quarter",
+      "year": "All"
+    },
+    "ok": true,
+    "status": 200,
+    "kind": "list",
+    "n": 0,
+    "empty": true
+  },
+  {
+    "sector": "insurance",
+    "path": "enterprise/manufactoring-profit-after-tax",
+    "params": {
+      "ticket": "BVH",
+      "period": "quarter",
+      "year": "All"
+    },
+    "ok": true,
+    "status": 200,
+    "kind": "list",
+    "n": 0,
+    "empty": true
+  },
+  {
+    "sector": "insurance",
+    "path": "enterprise/manufactoring-revenue-to-profit-ratio-metadata",
+    "params": {
+      "ticket": "BVH"
+    },
+    "ok": true,
+    "status": 200,
+    "kind": "dict",
+    "n": 2,
+    "empty": false,
+    "keys": [
+      "yearList",
+      "quarterList"
+    ],
+    "len.yearList": 0,
+    "len.quarterList": 0
+  },
+  {
+    "sector": "oilgas",
+    "path": "enterprise/overview-dividend",
+    "params": {
+      "ticket": "GAS",
+      "year": "All"
+    },
+    "ok": true,
+    "status": 200,
+    "kind": "list",
+    "n": 30,
+    "empty": false,
+    "keys": [
+      "year",
+      "type",
+      "value"
+    ]
+  },
+  {
+    "sector": "oilgas",
+    "path": "enterprise/report-data-prediction",
+    "params": {
+      "ticket": "GAS"
+    },
+    "ok": true,
+    "status": 200,
+    "kind": "dict",
+    "n": 2,
+    "empty": false,
+    "keys": [
+      "realData",
+      "predictData"
+    ],
+    "len.realData": 747
+  },
+  {
+    "sector": "oilgas",
+    "path": "enterprise/manufactoring-revenue",
+    "params": {
+      "ticket": "GAS",
+      "period": "quarter",
+      "year": "All"
+    },
+    "ok": true,
+    "status": 200,
+    "kind": "list",
+    "n": 59,
+    "empty": false,
+    "keys": [
+      "year",
+      "quarter",
+      "date",
+      "type",
+      "value"
+    ]
+  },
+  {
+    "sector": "oilgas",
+    "path": "enterprise/manufactoring-profit-after-tax",
+    "params": {
+      "ticket": "GAS",
+      "period": "quarter",
+      "year": "All"
+    },
+    "ok": true,
+    "status": 200,
+    "kind": "list",
+    "n": 59,
+    "empty": false,
+    "keys": [
+      "year",
+      "quarter",
+      "date",
+      "type",
+      "value"
+    ]
+  },
+  {
+    "sector": "oilgas",
+    "path": "enterprise/manufactoring-revenue-to-profit-ratio-metadata",
+    "params": {
+      "ticket": "GAS"
+    },
+    "ok": true,
+    "status": 200,
+    "kind": "dict",
+    "n": 2,
+    "empty": false,
+    "keys": [
+      "yearList",
+      "quarterList"
+    ],
+    "len.yearList": 17,
+    "len.quarterList": 16
+  },
+  {
+    "sector": "gold",
+    "path": "enterprise/overview-dividend",
+    "params": {
+      "ticket": "PNJ",
+      "year": "All"
+    },
+    "ok": true,
+    "status": 200,
+    "kind": "list",
+    "n": 34,
+    "empty": false,
+    "keys": [
+      "year",
+      "type",
+      "value"
+    ]
+  },
+  {
+    "sector": "gold",
+    "path": "enterprise/report-data-prediction",
+    "params": {
+      "ticket": "PNJ"
+    },
+    "ok": true,
+    "status": 200,
+    "kind": "dict",
+    "n": 2,
+    "empty": false,
+    "keys": [
+      "realData",
+      "predictData"
+    ],
+    "len.realData": 747
+  },
+  {
+    "sector": "gold",
+    "path": "enterprise/manufactoring-revenue",
+    "params": {
+      "ticket": "PNJ",
+      "period": "quarter",
+      "year": "All"
+    },
+    "ok": true,
+    "status": 200,
+    "kind": "list",
+    "n": 74,
+    "empty": false,
+    "keys": [
+      "year",
+      "quarter",
+      "date",
+      "type",
+      "value"
+    ]
+  },
+  {
+    "sector": "gold",
+    "path": "enterprise/manufactoring-profit-after-tax",
+    "params": {
+      "ticket": "PNJ",
+      "period": "quarter",
+      "year": "All"
+    },
+    "ok": true,
+    "status": 200,
+    "kind": "list",
+    "n": 74,
+    "empty": false,
+    "keys": [
+      "year",
+      "quarter",
+      "date",
+      "type",
+      "value"
+    ]
+  },
+  {
+    "sector": "gold",
+    "path": "enterprise/manufactoring-revenue-to-profit-ratio-metadata",
+    "params": {
+      "ticket": "PNJ"
+    },
+    "ok": true,
+    "status": 200,
+    "kind": "dict",
+    "n": 2,
+    "empty": false,
+    "keys": [
+      "yearList",
+      "quarterList"
+    ],
+    "len.yearList": 21,
+    "len.quarterList": 20
+  },
+  {
+    "sector": "coffee",
+    "path": "enterprise/overview-dividend",
+    "params": {
+      "ticket": "VCF",
+      "year": "All"
+    },
+    "ok": true,
+    "status": 200,
+    "kind": "list",
+    "n": 32,
+    "empty": false,
+    "keys": [
+      "year",
+      "type",
+      "value"
+    ]
+  },
+  {
+    "sector": "coffee",
+    "path": "enterprise/report-data-prediction",
+    "params": {
+      "ticket": "VCF"
+    },
+    "ok": true,
+    "status": 200,
+    "kind": "dict",
+    "n": 2,
+    "empty": false,
+    "keys": [
+      "realData",
+      "predictData"
+    ],
+    "len.realData": 718
+  },
+  {
+    "sector": "coffee",
+    "path": "enterprise/manufactoring-revenue",
+    "params": {
+      "ticket": "VCF",
+      "period": "quarter",
+      "year": "All"
+    },
+    "ok": true,
+    "status": 200,
+    "kind": "list",
+    "n": 67,
+    "empty": false,
+    "keys": [
+      "year",
+      "quarter",
+      "date",
+      "type",
+      "value"
+    ]
+  },
+  {
+    "sector": "coffee",
+    "path": "enterprise/manufactoring-profit-after-tax",
+    "params": {
+      "ticket": "VCF",
+      "period": "quarter",
+      "year": "All"
+    },
+    "ok": true,
+    "status": 200,
+    "kind": "list",
+    "n": 67,
+    "empty": false,
+    "keys": [
+      "year",
+      "quarter",
+      "date",
+      "type",
+      "value"
+    ]
+  },
+  {
+    "sector": "coffee",
+    "path": "enterprise/manufactoring-revenue-to-profit-ratio-metadata",
+    "params": {
+      "ticket": "VCF"
+    },
+    "ok": true,
+    "status": 200,
+    "kind": "dict",
+    "n": 2,
+    "empty": false,
+    "keys": [
+      "yearList",
+      "quarterList"
+    ],
+    "len.yearList": 20,
+    "len.quarterList": 18
+  },
+  {
+    "sector": "wood",
+    "path": "enterprise/overview-dividend",
+    "params": {
+      "ticket": "PTB",
+      "year": "All"
+    },
+    "ok": true,
+    "status": 200,
+    "kind": "list",
+    "n": 32,
+    "empty": false,
+    "keys": [
+      "year",
+      "type",
+      "value"
+    ]
+  },
+  {
+    "sector": "wood",
+    "path": "enterprise/report-data-prediction",
+    "params": {
+      "ticket": "PTB"
+    },
+    "ok": true,
+    "status": 200,
+    "kind": "dict",
+    "n": 2,
+    "empty": false,
+    "keys": [
+      "realData",
+      "predictData"
+    ],
+    "len.realData": 747
+  },
+  {
+    "sector": "wood",
+    "path": "enterprise/manufactoring-revenue",
+    "params": {
+      "ticket": "PTB",
+      "period": "quarter",
+      "year": "All"
+    },
+    "ok": true,
+    "status": 200,
+    "kind": "list",
+    "n": 66,
+    "empty": false,
+    "keys": [
+      "year",
+      "quarter",
+      "date",
+      "type",
+      "value"
+    ]
+  },
+  {
+    "sector": "wood",
+    "path": "enterprise/manufactoring-profit-after-tax",
+    "params": {
+      "ticket": "PTB",
+      "period": "quarter",
+      "year": "All"
+    },
+    "ok": true,
+    "status": 200,
+    "kind": "list",
+    "n": 66,
+    "empty": false,
+    "keys": [
+      "year",
+      "quarter",
+      "date",
+      "type",
+      "value"
+    ]
+  },
+  {
+    "sector": "wood",
+    "path": "enterprise/manufactoring-revenue-to-profit-ratio-metadata",
+    "params": {
+      "ticket": "PTB"
+    },
+    "ok": true,
+    "status": 200,
+    "kind": "dict",
+    "n": 2,
+    "empty": false,
+    "keys": [
+      "yearList",
+      "quarterList"
+    ],
+    "len.yearList": 19,
+    "len.quarterList": 18
+  },
+  {
+    "sector": "pharma",
+    "path": "enterprise/overview-dividend",
+    "params": {
+      "ticket": "DHG",
+      "year": "All"
+    },
+    "ok": true,
+    "status": 200,
+    "kind": "list",
+    "n": 34,
+    "empty": false,
+    "keys": [
+      "year",
+      "type",
+      "value"
+    ]
+  },
+  {
+    "sector": "pharma",
+    "path": "enterprise/report-data-prediction",
+    "params": {
+      "ticket": "DHG"
+    },
+    "ok": true,
+    "status": 200,
+    "kind": "dict",
+    "n": 2,
+    "empty": false,
+    "keys": [
+      "realData",
+      "predictData"
+    ],
+    "len.realData": 747
+  },
+  {
+    "sector": "pharma",
+    "path": "enterprise/manufactoring-revenue",
+    "params": {
+      "ticket": "DHG",
+      "period": "quarter",
+      "year": "All"
+    },
+    "ok": true,
+    "status": 200,
+    "kind": "list",
+    "n": 82,
+    "empty": false,
+    "keys": [
+      "year",
+      "quarter",
+      "date",
+      "type",
+      "value"
+    ]
+  },
+  {
+    "sector": "pharma",
+    "path": "enterprise/manufactoring-profit-after-tax",
+    "params": {
+      "ticket": "DHG",
+      "period": "quarter",
+      "year": "All"
+    },
+    "ok": true,
+    "status": 200,
+    "kind": "list",
+    "n": 82,
+    "empty": false,
+    "keys": [
+      "year",
+      "quarter",
+      "date",
+      "type",
+      "value"
+    ]
+  },
+  {
+    "sector": "pharma",
+    "path": "enterprise/manufactoring-revenue-to-profit-ratio-metadata",
+    "params": {
+      "ticket": "DHG"
+    },
+    "ok": true,
+    "status": 200,
+    "kind": "dict",
+    "n": 2,
+    "empty": false,
+    "keys": [
+      "yearList",
+      "quarterList"
+    ],
+    "len.yearList": 22,
+    "len.quarterList": 22
+  },
+  {
+    "sector": "logistics",
+    "path": "enterprise/overview-dividend",
+    "params": {
+      "ticket": "GMD",
+      "year": "All"
+    },
+    "ok": true,
+    "status": 200,
+    "kind": "list",
+    "n": 30,
+    "empty": false,
+    "keys": [
+      "year",
+      "type",
+      "value"
+    ]
+  },
+  {
+    "sector": "logistics",
+    "path": "enterprise/report-data-prediction",
+    "params": {
+      "ticket": "GMD"
+    },
+    "ok": true,
+    "status": 200,
+    "kind": "dict",
+    "n": 2,
+    "empty": false,
+    "keys": [
+      "realData",
+      "predictData"
+    ],
+    "len.realData": 751
+  },
+  {
+    "sector": "logistics",
+    "path": "enterprise/manufactoring-revenue",
+    "params": {
+      "ticket": "GMD",
+      "period": "quarter",
+      "year": "All"
+    },
+    "ok": true,
+    "status": 200,
+    "kind": "list",
+    "n": 78,
+    "empty": false,
+    "keys": [
+      "year",
+      "quarter",
+      "date",
+      "type",
+      "value"
+    ]
+  },
+  {
+    "sector": "logistics",
+    "path": "enterprise/manufactoring-profit-after-tax",
+    "params": {
+      "ticket": "GMD",
+      "period": "quarter",
+      "year": "All"
+    },
+    "ok": true,
+    "status": 200,
+    "kind": "list",
+    "n": 78,
+    "empty": false,
+    "keys": [
+      "year",
+      "quarter",
+      "date",
+      "type",
+      "value"
+    ]
+  },
+  {
+    "sector": "logistics",
+    "path": "enterprise/manufactoring-revenue-to-profit-ratio-metadata",
+    "params": {
+      "ticket": "GMD"
+    },
+    "ok": true,
+    "status": 200,
+    "kind": "dict",
+    "n": 2,
+    "empty": false,
+    "keys": [
+      "yearList",
+      "quarterList"
+    ],
+    "len.yearList": 22,
+    "len.quarterList": 21
+  },
+  {
+    "sector": "rice",
+    "path": "enterprise/overview-dividend",
+    "params": {
+      "ticket": "LTG",
+      "year": "All"
+    },
+    "ok": true,
+    "status": 200,
+    "kind": "list",
+    "n": 20,
+    "empty": false,
+    "keys": [
+      "year",
+      "type",
+      "value"
+    ]
+  },
+  {
+    "sector": "rice",
+    "path": "enterprise/report-data-prediction",
+    "params": {
+      "ticket": "LTG"
+    },
+    "ok": true,
+    "status": 200,
+    "kind": "dict",
+    "n": 2,
+    "empty": false,
+    "keys": [
+      "realData",
+      "predictData"
+    ],
+    "len.realData": 458
+  },
+  {
+    "sector": "rice",
+    "path": "enterprise/manufactoring-revenue",
+    "params": {
+      "ticket": "LTG",
+      "period": "quarter",
+      "year": "All"
+    },
+    "ok": true,
+    "status": 200,
+    "kind": "list",
+    "n": 31,
+    "empty": false,
+    "keys": [
+      "year",
+      "quarter",
+      "date",
+      "type",
+      "value"
+    ]
+  },
+  {
+    "sector": "rice",
+    "path": "enterprise/manufactoring-profit-after-tax",
+    "params": {
+      "ticket": "LTG",
+      "period": "quarter",
+      "year": "All"
+    },
+    "ok": true,
+    "status": 200,
+    "kind": "list",
+    "n": 31,
+    "empty": false,
+    "keys": [
+      "year",
+      "quarter",
+      "date",
+      "type",
+      "value"
+    ]
+  },
+  {
+    "sector": "rice",
+    "path": "enterprise/manufactoring-revenue-to-profit-ratio-metadata",
+    "params": {
+      "ticket": "LTG"
+    },
+    "ok": true,
+    "status": 200,
+    "kind": "dict",
+    "n": 2,
+    "empty": false,
+    "keys": [
+      "yearList",
+      "quarterList"
+    ],
+    "len.yearList": 10,
+    "len.quarterList": 9
+  },
+  {
+    "sector": "technology",
+    "path": "enterprise/overview-dividend",
+    "params": {
+      "ticket": "FPT",
+      "year": "All"
+    },
+    "ok": true,
+    "status": 200,
+    "kind": "list",
+    "n": 34,
+    "empty": false,
+    "keys": [
+      "year",
+      "type",
+      "value"
+    ]
+  },
+  {
+    "sector": "technology",
+    "path": "enterprise/report-data-prediction",
+    "params": {
+      "ticket": "FPT"
+    },
+    "ok": true,
+    "status": 200,
+    "kind": "dict",
+    "n": 2,
+    "empty": false,
+    "keys": [
+      "realData",
+      "predictData"
+    ],
+    "len.realData": 747
+  },
+  {
+    "sector": "technology",
+    "path": "enterprise/manufactoring-revenue",
+    "params": {
+      "ticket": "FPT",
+      "period": "quarter",
+      "year": "All"
+    },
+    "ok": true,
+    "status": 200,
+    "kind": "list",
+    "n": 80,
+    "empty": false,
+    "keys": [
+      "year",
+      "quarter",
+      "date",
+      "type",
+      "value"
+    ]
+  },
+  {
+    "sector": "technology",
+    "path": "enterprise/manufactoring-profit-after-tax",
+    "params": {
+      "ticket": "FPT",
+      "period": "quarter",
+      "year": "All"
+    },
+    "ok": true,
+    "status": 200,
+    "kind": "list",
+    "n": 80,
+    "empty": false,
+    "keys": [
+      "year",
+      "quarter",
+      "date",
+      "type",
+      "value"
+    ]
+  },
+  {
+    "sector": "technology",
+    "path": "enterprise/manufactoring-revenue-to-profit-ratio-metadata",
+    "params": {
+      "ticket": "FPT"
+    },
+    "ok": true,
+    "status": 200,
+    "kind": "dict",
+    "n": 2,
+    "empty": false,
+    "keys": [
+      "yearList",
+      "quarterList"
+    ],
+    "len.yearList": 24,
+    "len.quarterList": 22
+  },
+  {
+    "sector": "bank",
+    "path": "enterprise/bank-revenue",
+    "params": {
+      "ticket": "VCB",
+      "period": "quarter",
+      "year": "5Y"
+    },
+    "ok": true,
+    "status": 200,
+    "kind": "list",
+    "n": 100,
+    "empty": false,
+    "keys": [
+      "year",
+      "quarter",
+      "date",
+      "type",
+      "value"
+    ]
+  },
+  {
+    "sector": "bank",
+    "path": "enterprise/bank-profit-after-tax",
+    "params": {
+      "ticket": "VCB",
+      "period": "quarter",
+      "year": "5Y"
+    },
+    "ok": true,
+    "status": 200,
+    "kind": "list",
+    "n": 20,
+    "empty": false,
+    "keys": [
+      "year",
+      "quarter",
+      "date",
+      "type",
+      "value"
+    ]
+  },
+  {
+    "sector": "bank",
+    "path": "enterprise/bank-bad-debt-ratio",
+    "params": {
+      "ticket": "VCB",
+      "period": "quarter",
+      "year": "5Y"
+    },
+    "ok": true,
+    "status": 200,
+    "kind": "list",
+    "n": 40,
+    "empty": false,
+    "keys": [
+      "year",
+      "quarter",
+      "date",
+      "type",
+      "value"
+    ]
+  },
+  {
+    "sector": "bank",
+    "path": "enterprise/bank-loan-over-time",
+    "params": {
+      "ticket": "VCB",
+      "period": "quarter",
+      "year": "5Y"
+    },
+    "ok": true,
+    "status": 200,
+    "kind": "list",
+    "n": 40,
+    "empty": false,
+    "keys": [
+      "year",
+      "quarter",
+      "date",
+      "type",
+      "value"
+    ]
+  },
+  {
+    "sector": "bank",
+    "path": "enterprise/bank-client-debt",
+    "params": {
+      "ticket": "VCB",
+      "period": "quarter",
+      "year": "5Y"
+    },
+    "ok": true,
+    "status": 200,
+    "kind": "list",
+    "n": 10,
+    "empty": false,
+    "keys": [
+      "year",
+      "quarter",
+      "date",
+      "type",
+      "value"
+    ]
+  },
+  {
+    "sector": "bank",
+    "path": "enterprise/bank-asset",
+    "params": {
+      "ticket": "VCB",
+      "period": "quarter",
+      "year": "5Y"
+    },
+    "ok": true,
+    "status": 200,
+    "kind": "list",
+    "n": 100,
+    "empty": false,
+    "keys": [
+      "year",
+      "quarter",
+      "date",
+      "type",
+      "value"
+    ]
+  },
+  {
+    "sector": "bank",
+    "path": "enterprise/bank-debt",
+    "params": {
+      "ticket": "VCB",
+      "period": "quarter",
+      "year": "5Y"
+    },
+    "ok": true,
+    "status": 200,
+    "kind": "list",
+    "n": 100,
+    "empty": false,
+    "keys": [
+      "year",
+      "quarter",
+      "date",
+      "type",
+      "value"
+    ]
+  },
+  {
+    "sector": "securities",
+    "path": "enterprise/stock-revenue",
+    "params": {
+      "ticket": "SSI",
+      "period": "quarter",
+      "year": "5Y"
+    },
+    "ok": true,
+    "status": 200,
+    "kind": "list",
+    "n": 100,
+    "empty": false,
+    "keys": [
+      "year",
+      "quarter",
+      "type",
+      "value",
+      "date"
+    ]
+  },
+  {
+    "sector": "insurance",
+    "path": "enterprise/insurance-revenue",
+    "params": {
+      "ticket": "BVH",
+      "period": "quarter",
+      "year": "5Y"
+    },
+    "ok": true,
+    "status": 200,
+    "kind": "list",
+    "n": 20,
+    "empty": false,
+    "keys": [
+      "year",
+      "quarter",
+      "date",
+      "type",
+      "value"
+    ]
+  }
+]
