@@ -42,7 +42,7 @@ function renderBlockA(blockA) {
   `);
 
   const card1 = container.lastElementChild;
-  const macro35 = blockA?.macro_35 || [];
+  const macro35 = blockA?.macro35 || [];
   const brent = parseFindicatorSeries(macro35.filter(r => r.nameId === 65));
   const wti   = parseFindicatorSeries(macro35.filter(r => r.nameId === 67));
 
@@ -93,7 +93,7 @@ function renderBlockA(blockA) {
   `);
 
   const card3 = container.lastElementChild;
-  const usdvnd = parseFindicatorSeries(blockA?.usd_vnd);
+  const usdvnd = parseFindicatorSeries(blockA?.usdVnd);
 
   function renderUsd(year) {
     const cutoff = yearToCutoff(year);
@@ -281,9 +281,9 @@ function renderBlockD(blockA, blockC) {
   `);
   const card = container.lastElementChild;
 
-  const macro35 = blockA?.macro_35 || [];
+  const macro35 = blockA?.macro35 || [];
   const brentRows = macro35.filter(r => r.nameId === 65);
-  const usdRows = blockA?.usd_vnd || [];
+  const usdRows = blockA?.usdVnd || [];
   const ron95Rows = (blockC?.domestic_fuel || []).filter(r => r.nameId === 612);
 
   function monthlyAvg(rows, dateField, valField) {

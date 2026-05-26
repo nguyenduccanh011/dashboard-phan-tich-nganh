@@ -44,8 +44,8 @@ function renderBlockA(blockA) {
     </div>
   `);
   const cardOil = container.lastElementChild;
-  const seriesBrent = parseFindicatorSeries(blockA.macro_35?.filter(r => r.nameId === 65));
-  const seriesWti   = parseFindicatorSeries(blockA.macro_35?.filter(r => r.nameId === 67));
+  const seriesBrent = parseFindicatorSeries(blockA.macro35?.filter(r => r.nameId === 65));
+  const seriesWti   = parseFindicatorSeries(blockA.macro35?.filter(r => r.nameId === 67));
   function renderOil(year) {
     const cutoff = yearToCutoff(year);
     createStockChart('chart-oil', {
@@ -70,7 +70,7 @@ function renderBlockA(blockA) {
     </div>
   `);
   const cardUsd = container.lastElementChild;
-  const usdData = parseFindicatorSeries(blockA.usd_vnd);
+  const usdData = parseFindicatorSeries(blockA.usdVnd);
   function renderUsd(year) {
     const cutoff = yearToCutoff(year);
     createStockChart('chart-usdvnd', {

@@ -42,7 +42,7 @@ function renderBlockA(blockA) {
   `);
 
   const card1 = container.lastElementChild;
-  const usdvnd = parseFindicatorSeries(blockA?.usd_vnd);
+  const usdvnd = parseFindicatorSeries(blockA?.usdVnd);
 
   function renderUsd(year) {
     const cutoff = yearToCutoff(year);
@@ -65,7 +65,7 @@ function renderBlockA(blockA) {
   `);
 
   const card2 = container.lastElementChild;
-  const timber = parseFindicatorSeries(blockA?.timber_price || []);
+  const timber = parseFindicatorSeries(blockA?.timberPrice || []);
 
   function renderTimber(year) {
     const cutoff = yearToCutoff(year);
@@ -88,7 +88,7 @@ function renderBlockA(blockA) {
   `);
 
   const card3 = container.lastElementChild;
-  const iip = parseFindicatorSeries(blockA?.iip_wood);
+  const iip = parseFindicatorSeries(blockA?.iipWood);
 
   function renderIip(year) {
     const cutoff = yearToCutoff(year);
@@ -116,7 +116,7 @@ function renderBlockB(blockB) {
   `);
 
   const cardXk = container.lastElementChild;
-  const xk = parseFindicatorSeries(blockB?.xk_wood);
+  const xk = parseFindicatorSeries(blockB?.xkWood);
 
   function renderXk(year) {
     const cutoff = yearToCutoff(year);
@@ -139,7 +139,7 @@ function renderBlockB(blockB) {
   `);
 
   const cardNk = container.lastElementChild;
-  const nk = parseFindicatorSeries(blockB?.nk_wood);
+  const nk = parseFindicatorSeries(blockB?.nkWood);
 
   function renderNk(year) {
     const cutoff = yearToCutoff(year);
@@ -162,7 +162,7 @@ function renderBlockB(blockB) {
   `);
 
   const cardFdi = container.lastElementChild;
-  const fdi = parseFindicatorSeries(blockB?.fdi_wood);
+  const fdi = parseFindicatorSeries(blockB?.fdiWood);
 
   function renderFdi(year) {
     const cutoff = yearToCutoff(year);

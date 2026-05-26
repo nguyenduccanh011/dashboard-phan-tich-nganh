@@ -30,7 +30,7 @@
 
 function renderBlockA(blockA) {
   const container = document.getElementById('block-a-charts');
-  const macro35 = Array.isArray(blockA.macro_35) ? blockA.macro_35 : [];
+  const macro35 = Array.isArray(blockA.macro35) ? blockA.macro35 : [];
 
   const byNameId = (id) => parseFindicatorSeries(macro35.filter(r => r.nameId === id));
 
@@ -322,7 +322,7 @@ function renderBlockD(blockA, blockC, blockD) {
 
   const card = container.lastElementChild;
 
-  const macro35   = Array.isArray(blockA.macro_35) ? blockA.macro_35 : [];
+  const macro35   = Array.isArray(blockA.macro35) ? blockA.macro35 : [];
   const prices    = Array.isArray(blockC.prices)   ? blockC.prices   : [];
   const usdvndRaw = Array.isArray(blockD?.usdvnd)  ? blockD.usdvnd   : [];
 

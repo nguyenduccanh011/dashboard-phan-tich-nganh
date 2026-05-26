@@ -34,7 +34,7 @@ function renderBlockA(blockA) {
     </div>
   `);
   const card = c.lastElementChild;
-  const tieu = parseWiChartSeries(blockA?.pepper_price?.data || []);
+  const tieu = parseWiChartSeries(blockA?.pepperPrice?.data || []);
 
   function render(year) {
     const cut = yearToCutoff(year);
@@ -55,7 +55,7 @@ function renderBlockA(blockA) {
     </div>
   `);
   const card2 = c.lastElementChild;
-  const usd   = parseFindicatorSeries(blockA?.usd_vnd);
+  const usd   = parseFindicatorSeries(blockA?.usdVnd);
   const brent = parseFindicatorSeries(blockA?.brent || []);
 
   function renderFx(year) {
@@ -85,9 +85,9 @@ function renderBlockB(blockB) {
     </div>
   `);
   const card = c.lastElementChild;
-  const exp = blockB?.xk_pepper || [];
+  const exp = blockB?.xkPepper || [];
   const val = parseFindicatorSeries(exp);
-  const yoy = parseFindicatorSeries(blockB?.xk_pepper_yoy || []);
+  const yoy = parseFindicatorSeries(blockB?.xkPepper_yoy || []);
 
   function render(year) {
     const cut = yearToCutoff(year);
@@ -115,7 +115,7 @@ function renderBlockC(blockB) {
     </div>
   `);
   const card = c.lastElementChild;
-  const aspPts = parseFindicatorSeries(blockB?.xk_pepper || [], 'date', 'price');
+  const aspPts = parseFindicatorSeries(blockB?.xkPepper || [], 'date', 'price');
   if (!aspPts.length) { showEmpty('chart-pepper-asp', 'Không có dữ liệu ASP'); return; }
 
   function render(year) {
@@ -141,14 +141,14 @@ function renderBlockD(blockA, blockB) {
   `);
   const card = c.lastElementChild;
 
-  const pepperVnd = parseWiChartSeries(blockA?.pepper_price?.data || []);
+  const pepperVnd = parseWiChartSeries(blockA?.pepperPrice?.data || []);
   const pepperMap = new Map(pepperVnd.map(([ts, v]) => {
     const d = new Date(ts);
     return [`${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}`, v];
   }));
 
   const usdByMonth = {};
-  (blockA?.usd_vnd || []).forEach(r => {
+  (blockA?.usdVnd || []).forEach(r => {
     const d = new Date(r.date);
     const k = `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}`;
     if (!usdByMonth[k]) usdByMonth[k] = { s: 0, n: 0 };
@@ -157,7 +157,7 @@ function renderBlockD(blockA, blockB) {
   const usdMap = new Map(Object.entries(usdByMonth).map(([k, v]) => [k, v.s / v.n]));
 
   const spreadPts = [];
-  (blockB?.xk_pepper || []).forEach(r => {
+  (blockB?.xkPepper || []).forEach(r => {
     if (!r.price) return;
     const d = new Date(r.date);
     const k = `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}`;

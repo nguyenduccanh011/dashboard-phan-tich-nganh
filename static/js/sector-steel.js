@@ -46,8 +46,8 @@ function renderBlockA(blockA) {
   `);
 
   const card1 = container.lastElementChild;
-  const seriesCme = parseFindicatorSeries(blockA.macro_35?.filter(r => r.nameId === 82));
-  const seriesTq  = parseFindicatorSeries(blockA.macro_35?.filter(r => r.nameId === 243));
+  const seriesCme = parseFindicatorSeries(blockA.macro35?.filter(r => r.nameId === 82));
+  const seriesTq  = parseFindicatorSeries(blockA.macro35?.filter(r => r.nameId === 243));
 
   function renderIronOre(year) {
     const cutoff = yearToCutoff(year);
@@ -77,8 +77,8 @@ function renderBlockA(blockA) {
   `);
 
   const card2 = container.lastElementChild;
-  const seriesCoalSgx = parseFindicatorSeries(blockA.macro_35?.filter(r => r.nameId === 153));
-  const seriesCoalTq  = parseFindicatorSeries(blockA.macro_35?.filter(r => r.nameId === 158));
+  const seriesCoalSgx = parseFindicatorSeries(blockA.macro35?.filter(r => r.nameId === 153));
+  const seriesCoalTq  = parseFindicatorSeries(blockA.macro35?.filter(r => r.nameId === 158));
 
   function renderCoal(year) {
     const cutoff = yearToCutoff(year);
@@ -108,8 +108,8 @@ function renderBlockA(blockA) {
   `);
 
   const card3 = container.lastElementChild;
-  const seriesHrcCme = parseFindicatorSeries(blockA.macro_35?.filter(r => r.nameId === 86));
-  const seriesHrcTq  = parseFindicatorSeries(blockA.macro_35?.filter(r => r.nameId === 161));
+  const seriesHrcCme = parseFindicatorSeries(blockA.macro35?.filter(r => r.nameId === 86));
+  const seriesHrcTq  = parseFindicatorSeries(blockA.macro35?.filter(r => r.nameId === 161));
 
   function renderHrc(year) {
     const cutoff = yearToCutoff(year);
@@ -176,7 +176,7 @@ function renderBlockB(blockB) {
   `);
 
   const cardExport = container.lastElementChild;
-  const exportData = blockB.export_status || [];
+  const exportData = blockB.exportStatus || [];
   const exportSeriesIds = [
     { nameId: 18, name: 'Tổng XK' },
     { nameId: 19, name: 'Thép cuộn' },
@@ -432,14 +432,14 @@ function renderBlockD(blockA, blockC) {
   );
   // Quặng sắt CME: name_id=82, USD/T
   const seriesOre = parseFindicatorSeries(
-    (blockA.macro_35 || []).filter(r => r.nameId === 82)
+    (blockA.macro35 || []).filter(r => r.nameId === 82)
   );
   // Than cốc SGX: name_id=153, USD/T
   const seriesCoal = parseFindicatorSeries(
-    (blockA.macro_35 || []).filter(r => r.nameId === 153)
+    (blockA.macro35 || []).filter(r => r.nameId === 153)
   );
   // USD/VND: name_id=2
-  const seriesUsd = parseFindicatorSeries(blockA.usd_vnd || []);
+  const seriesUsd = parseFindicatorSeries(blockA.usdVnd || []);
 
   // Binary search: tìm giá trị gần nhất trong sorted series
   function nearestValue(sorted, ts) {

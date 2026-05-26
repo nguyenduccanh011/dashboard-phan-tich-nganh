@@ -30,7 +30,7 @@
 
 function renderBlockA(blockA) {
   const container = document.getElementById('block-a-charts');
-  const macro35 = Array.isArray(blockA.macro_35) ? blockA.macro_35 : [];
+  const macro35 = Array.isArray(blockA.macro35) ? blockA.macro35 : [];
   const byNameId = (id) => parseFindicatorSeries(macro35.filter(r => r.nameId === id));
 
   // Chart 1: Đường RS An Khê (685) & Đường ICE (97) & Đường TQ (220)
@@ -312,7 +312,7 @@ function renderBlockB(blockB, blockA) {
   `);
 
   const card4 = container.lastElementChild;
-  const macro35 = Array.isArray(blockA && blockA.macro_35) ? blockA.macro_35 : [];
+  const macro35 = Array.isArray(blockA && blockA.macro35) ? blockA.macro35 : [];
   const sugarRows = parseFindicatorSeries(macro35.filter(r => r.nameId === 685));
   const riceWichart = blockB.rice_price_wichart;
   const riceSeriesRaw = (riceWichart && riceWichart.chart && Array.isArray(riceWichart.chart.series))

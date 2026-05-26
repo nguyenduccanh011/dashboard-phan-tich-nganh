@@ -42,8 +42,8 @@ function renderBlockA(blockA) {
   `);
 
   const card1 = container.lastElementChild;
-  const cpi16 = parseFindicatorSeries((blockA?.cpi_pharma || []).filter(r => r.nameId === 16));
-  const cpi5  = parseFindicatorSeries((blockA?.cpi_pharma || []).filter(r => r.nameId === 5));
+  const cpi16 = parseFindicatorSeries((blockA?.cpiPharma || []).filter(r => r.nameId === 16));
+  const cpi5  = parseFindicatorSeries((blockA?.cpiPharma || []).filter(r => r.nameId === 5));
 
   function renderCpi(year) {
     const cutoff = yearToCutoff(year);
@@ -69,8 +69,8 @@ function renderBlockA(blockA) {
   `);
 
   const card2 = container.lastElementChild;
-  const nkDuoc = parseFindicatorSeries((blockA?.nk_pharma || []).filter(r => r.nameId === 63));
-  const nkNpl  = parseFindicatorSeries((blockA?.nk_pharma || []).filter(r => r.nameId === 62));
+  const nkDuoc = parseFindicatorSeries((blockA?.nkPharma || []).filter(r => r.nameId === 63));
+  const nkNpl  = parseFindicatorSeries((blockA?.nkPharma || []).filter(r => r.nameId === 62));
 
   function renderImport(year) {
     const cutoff = yearToCutoff(year);
@@ -96,7 +96,7 @@ function renderBlockA(blockA) {
   `);
 
   const card3 = container.lastElementChild;
-  const usdvnd = parseFindicatorSeries(blockA?.usd_vnd);
+  const usdvnd = parseFindicatorSeries(blockA?.usdVnd);
 
   function renderUsd(year) {
     const cutoff = yearToCutoff(year);
@@ -124,8 +124,8 @@ function renderBlockB(blockB) {
   `);
 
   const card = container.lastElementChild;
-  const fdi = parseFindicatorSeries(blockB?.fdi_health);
-  const iip = parseFindicatorSeries(blockB?.iip_pharma);
+  const fdi = parseFindicatorSeries(blockB?.fdiHealth);
+  const iip = parseFindicatorSeries(blockB?.iipPharma);
 
   function renderFdiIip(year) {
     const cutoff = yearToCutoff(year);

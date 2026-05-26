@@ -163,7 +163,7 @@ function renderBlockB(blockB) {
 
   const card3 = container.lastElementChild;
   const pmiChinaRows = parseFindicatorSeries(
-    Array.isArray(blockB.pmi_china) ? blockB.pmi_china : []
+    Array.isArray(blockB.pmiChina) ? blockB.pmiChina : []
   );
   // PMI global — CN(34), IN(37), US(44), VN(45); data uses camelCase nameId
   const pmiGlobalRows = blockB.pmi_global?.data || [];

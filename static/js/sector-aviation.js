@@ -91,7 +91,7 @@ function renderBlockA(blockA) {
   `);
 
   const card2 = container.lastElementChild;
-  const usdRows = Array.isArray(blockA.usd_vnd) ? blockA.usd_vnd : [];
+  const usdRows = Array.isArray(blockA.usdVnd) ? blockA.usdVnd : [];
 
   function renderUsd(year) {
     const cutoff = yearToCutoff(year);
@@ -118,7 +118,7 @@ function renderBlockA(blockA) {
   `);
 
   const card3 = container.lastElementChild;
-  const fedRows = Array.isArray(blockA.fed_rate) ? blockA.fed_rate : [];
+  const fedRows = Array.isArray(blockA.fedRate) ? blockA.fedRate : [];
 
   function renderFed(year) {
     const cutoff = yearToCutoff(year);
@@ -358,7 +358,7 @@ function renderBlockD(blockA, blockB, blockF) {
 
   const brentRows = (blockA?.fuel_prices || []).filter(r => r.nameId === 65);
   const brentByQ = avgByQuarter(brentRows, 'date', 'value');
-  const usdByQ = avgByQuarter(blockA?.usd_vnd || [], 'date', 'value');
+  const usdByQ = avgByQuarter(blockA?.usdVnd || [], 'date', 'value');
 
   const flightsData = blockB?.flights || {};
   const tickers = ['VJC', 'HVN', 'BAV'];

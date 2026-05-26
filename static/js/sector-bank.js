@@ -69,7 +69,7 @@ function renderBlockA(blockA) {
     </div>
   `);
   const depCard = container.querySelector('[id="chart-deposit-rate"]').closest('.chart-card');
-  const depRows = blockA.deposit_rate || [];
+  const depRows = blockA.depositRate || [];
   const depNameIds = [...new Set(depRows.map(r => r.nameId))];
   const depSeriesData = depNameIds.map((nid, i) => ({
     name: depRows.find(r => r.nameId === nid)?.name || `Kỳ hạn ${nid}`,
@@ -99,8 +99,8 @@ function renderBlockA(blockA) {
     </div>
   `);
   const fedCard = container.querySelector('[id="chart-fed-usd"]').closest('.chart-card');
-  const fedData = parseFindicatorSeries(blockA.fed_rate || []);
-  const usdData = parseFindicatorSeries(blockA.usd_vnd || []);
+  const fedData = parseFindicatorSeries(blockA.fedRate || []);
+  const usdData = parseFindicatorSeries(blockA.usdVnd || []);
   function renderFedUsd(year) {
     const cutoff = yearToCutoff(year);
     createStockChart('chart-fed-usd', {
@@ -195,7 +195,7 @@ function renderBlockA(blockA) {
   `);
   const fxCard = container.querySelector('[id="chart-forex-reserve"]').closest('.chart-card');
   setStaleBadge(fxCard, 'warn', 'Dữ liệu đến 12/2024');
-  const fxData = parseFindicatorSeries(blockA.forex_reserve || []);
+  const fxData = parseFindicatorSeries(blockA.forexReserve || []);
   function renderForexReserve(year) {
     const cutoff = yearToCutoff(year);
     createStockChart('chart-forex-reserve', {
@@ -250,7 +250,7 @@ function renderBlockB(blockB) {
     </div>
   `);
   const csCard = container.querySelector('[id="chart-credit-system"]').closest('.chart-card');
-  const csRows = blockB.credit_system || [];
+  const csRows = blockB.creditSystem || [];
   const csValue = parseFindicatorSeries(csRows.filter(r => r.valueType === 'value' || !r.valueType));
   const csYoy = parseFindicatorSeries(csRows.filter(r => r.valueType === 'yoy'));
   function renderCreditSystem(year) {
@@ -302,7 +302,7 @@ function renderBlockB(blockB) {
     </div>
   `);
   const bopCard = container.querySelector('[id="chart-bop"]').closest('.chart-card');
-  const bopRows = blockB.balance_of_payments || [];
+  const bopRows = blockB.balanceOfPayments || [];
   if (!bopRows.length) {
     showEmpty('chart-bop', 'Chưa có dữ liệu cán cân thanh toán');
   } else {
@@ -334,8 +334,8 @@ function renderBlockB(blockB) {
   const overviewData = blockB.overview;
   if (!overviewData) { showEmpty('chart-bank-overview'); return; }
   // overview is {casaAndCof: [{ticket,name_legend,value},...], yeaAndNpl: [...], crWRA: [...]}
-  const casaRows = (overviewData.casaAndCof || []).filter(r => r.name_legend === 'CASA');
-  const nplRows  = (overviewData.yeaAndNpl  || []).filter(r => r.name_legend === 'NPL');
+  const casaRows = (overviewData.casaAndCof || []).filter(r => r.nameLegend === 'CASA');
+  const nplRows  = (overviewData.yeaAndNpl  || []).filter(r => r.nameLegend === 'NPL');
   const tickets  = casaRows.map(r => r.ticket);
   if (tickets.length) {
     const getVal = (rows, ticket) => { const r = rows.find(x => x.ticket === ticket); return r ? +(r.value * 100).toFixed(2) : null; };
@@ -465,7 +465,7 @@ function renderBankCharts(bankCharts) {
   if (!bankCharts) return;
 
   // Render credit growth snapshot (bar per bank)
-  const creditGrowth = bankCharts.credit_growth;
+  const creditGrowth = bankCharts.creditGrowth;
   if (creditGrowth) {
     const container = document.getElementById('block-b-charts');
     container.insertAdjacentHTML('beforeend', `

@@ -102,7 +102,7 @@ function renderBlockA(blockA) {
   `);
 
   const card3 = container.lastElementChild;
-  const usdvnd = parseFindicatorSeries(blockA?.usd_vnd);
+  const usdvnd = parseFindicatorSeries(blockA?.usdVnd);
   const brent  = parseFindicatorSeries(macro35.filter(r => r.nameId === 65));
 
   function renderUsdBrent(year) {
@@ -182,7 +182,7 @@ function renderBlockB(blockB) {
   renderYoy('1Y');
 
   // Chart: PMI sản xuất Trung Quốc (proxy nhu cầu nhập khẩu gạo)
-  const pmiData = parseFindicatorSeries(blockB?.pmi_china);
+  const pmiData = parseFindicatorSeries(blockB?.pmiChina);
   if (pmiData.length) {
     container.insertAdjacentHTML('beforeend', `
       <div class="chart-card" data-year-options="1Y,3Y,5Y">
@@ -253,7 +253,7 @@ function renderBlockD(blockA, blockB) {
   }));
 
   const usdByMonth = {};
-  (blockA?.usd_vnd || []).forEach(r => {
+  (blockA?.usdVnd || []).forEach(r => {
     const d = new Date(r.date);
     const k = `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}`;
     if (!usdByMonth[k]) usdByMonth[k] = { s: 0, n: 0 };

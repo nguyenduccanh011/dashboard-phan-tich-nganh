@@ -89,7 +89,7 @@ function renderBlockA(blockA) {
   `);
 
   const card3 = container.lastElementChild;
-  const usdvnd = parseFindicatorSeries(blockA?.usd_vnd);
+  const usdvnd = parseFindicatorSeries(blockA?.usdVnd);
 
   function renderUsd(year) {
     const cutoff = yearToCutoff(year);
@@ -183,7 +183,7 @@ function renderBlockD(blockA, blockB) {
   // coffee_prices nameId=687 (Robusta VN): daily {date: MM/DD/YYYY, value VNĐ/kg}
 
   const usdvndMonthly = {};
-  (blockA.usd_vnd || []).forEach(r => {
+  (blockA.usdVnd || []).forEach(r => {
     const d = new Date(r.date);
     const k = d.getFullYear() * 100 + d.getMonth();
     if (!usdvndMonthly[k]) usdvndMonthly[k] = { sum: 0, n: 0 };

@@ -42,7 +42,7 @@ function renderBlockA(blockA) {
   `);
 
   const card1 = container.lastElementChild;
-  const usdvnd = parseFindicatorSeries(blockA?.usd_vnd);
+  const usdvnd = parseFindicatorSeries(blockA?.usdVnd);
 
   function renderUsd(year) {
     const cutoff = yearToCutoff(year);
@@ -65,8 +65,8 @@ function renderBlockA(blockA) {
   `);
 
   const card2 = container.lastElementChild;
-  const fed     = parseFindicatorSeries(blockA?.fed_rate);
-  const deposit = parseFindicatorSeries(blockA?.deposit_rate);
+  const fed     = parseFindicatorSeries(blockA?.fedRate);
+  const deposit = parseFindicatorSeries(blockA?.depositRate);
 
   function renderRates(year) {
     const cutoff = yearToCutoff(year);
@@ -120,8 +120,8 @@ function renderBlockB(blockB) {
   `);
 
   const card1 = container.lastElementChild;
-  const xkMt  = parseFindicatorSeries(blockB?.xk_computer || []);
-  const xkDt  = parseFindicatorSeries(blockB?.xk_phone || []);
+  const xkMt  = parseFindicatorSeries(blockB?.xkComputer || []);
+  const xkDt  = parseFindicatorSeries(blockB?.xkPhone || []);
 
   function renderExport(year) {
     const cutoff = yearToCutoff(year);
@@ -147,8 +147,8 @@ function renderBlockB(blockB) {
   `);
 
   const card2 = container.lastElementChild;
-  const pmiCn     = parseFindicatorSeries(blockB?.pmi_china);
-  const retailUs  = parseFindicatorSeries(blockB?.us_retail);
+  const pmiCn     = parseFindicatorSeries(blockB?.pmiChina);
+  const retailUs  = parseFindicatorSeries(blockB?.usRetail);
 
   function renderPmiRetail(year) {
     const cutoff = yearToCutoff(year);

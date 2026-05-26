@@ -73,8 +73,8 @@ function renderBlockA(blockA) {
   `);
 
   const card2 = container.lastElementChild;
-  const deposit = parseFindicatorSeries(blockA?.deposit_rate);
-  const fed     = parseFindicatorSeries(blockA?.fed_rate);
+  const deposit = parseFindicatorSeries(blockA?.depositRate);
+  const fed     = parseFindicatorSeries(blockA?.fedRate);
 
   function renderDepositFed(year) {
     const cutoff = yearToCutoff(year);

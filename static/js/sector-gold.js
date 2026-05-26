@@ -95,7 +95,7 @@ function renderBlockA(blockA) {
   `);
 
   const card3 = container.lastElementChild;
-  const usdvnd = parseFindicatorSeries(blockA?.usd_vnd);
+  const usdvnd = parseFindicatorSeries(blockA?.usdVnd);
   const dxy    = parseFindicatorSeries(blockA?.dxy);
 
   function renderUsdDxy(year) {

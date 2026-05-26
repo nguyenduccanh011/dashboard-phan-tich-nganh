@@ -42,9 +42,9 @@ function renderBlockA(blockA) {
     </div>
   `);
   const cardShrimp = container.lastElementChild;
-  const seriesThe50 = parseFindicatorSeries(blockA.macro_35?.filter(r => r.nameId === 23));
-  const seriesThe30 = parseFindicatorSeries(blockA.macro_35?.filter(r => r.nameId === 22));
-  const seriesSu    = parseFindicatorSeries(blockA.macro_35?.filter(r => r.nameId === 21));
+  const seriesThe50 = parseFindicatorSeries(blockA.macro35?.filter(r => r.nameId === 23));
+  const seriesThe30 = parseFindicatorSeries(blockA.macro35?.filter(r => r.nameId === 22));
+  const seriesSu    = parseFindicatorSeries(blockA.macro35?.filter(r => r.nameId === 21));
   function renderShrimpPrice(year) {
     const cutoff = yearToCutoff(year);
     createStockChart('chart-shrimp-price', {
@@ -70,8 +70,8 @@ function renderBlockA(blockA) {
     </div>
   `);
   const cardFeed = container.lastElementChild;
-  const seriesCorn    = parseFindicatorSeries(blockA.macro_35?.filter(r => r.nameId === 108));
-  const seriesSoybean = parseFindicatorSeries(blockA.macro_35?.filter(r => r.nameId === 87));
+  const seriesCorn    = parseFindicatorSeries(blockA.macro35?.filter(r => r.nameId === 108));
+  const seriesSoybean = parseFindicatorSeries(blockA.macro35?.filter(r => r.nameId === 87));
   function renderFeed(year) {
     const cutoff = yearToCutoff(year);
     createStockChart('chart-feed', {
@@ -100,7 +100,7 @@ function renderBlockB(blockB) {
     </div>
   `);
   const cardGlobal = container.lastElementChild;
-  const globalPriceData = parseFindicatorSeries(blockB.global_export_price);
+  const globalPriceData = parseFindicatorSeries(blockB.globalExportPrice);
   function renderGlobalPrice(year) {
     const cutoff = yearToCutoff(year);
     createStockChart('chart-global-price', {
@@ -150,7 +150,7 @@ function renderBlockB(blockB) {
     </div>
   `);
   const cardRetail = container.lastElementChild;
-  const retailData = parseFindicatorSeries(blockB.retail_food_us);
+  const retailData = parseFindicatorSeries(blockB.retailFoodUs);
   function renderRetail(year) {
     const cutoff = yearToCutoff(year);
     createStockChart('chart-us-retail', {
@@ -161,7 +161,7 @@ function renderBlockB(blockB) {
   renderRetail('1Y');
 
   // Chart 4: XK tôm toàn cầu (Tr USD + nghìn tấn) — global_export_yoy flatten
-  const gyoyRaw = blockB.global_export_yoy || [];
+  const gyoyRaw = blockB.globalExportYoy || [];
   const gyoyFlat = gyoyRaw.flat();
   const gyoyTurnover = parseFindicatorSeries(gyoyFlat, 'date', 'turnover');
   const gyoyQty      = parseFindicatorSeries(gyoyFlat, 'date', 'quantity');
@@ -191,7 +191,7 @@ function renderBlockB(blockB) {
   }
 
   // Chart 5: ASP tôm XK theo sản phẩm — tôm thẻ (28) vs tôm sú (29)
-  const gbpRaw = blockB.global_by_product || [];
+  const gbpRaw = blockB.globalByProduct || [];
   const gbpThe = parseFindicatorSeries(gbpRaw.filter(r => r.nameId === 28), 'date', 'price');
   const gbpSu  = parseFindicatorSeries(gbpRaw.filter(r => r.nameId === 29), 'date', 'price');
   if (gbpThe.length || gbpSu.length) {
@@ -223,7 +223,7 @@ function renderBlockB(blockB) {
 function renderBlockC(blockC) {
   const container = document.getElementById('block-c-charts');
 
-  const tickers = Object.keys(blockC.export_price_tom_the || {});
+  const tickers = Object.keys(blockC.exportPriceTomThe || {});
 
   // Helper: render ASP chart per DN — API trả [{country_name, data:[{date, price}]}]
   function renderAspChart(container, ticker, productKey, labelProduct) {
@@ -263,7 +263,7 @@ function renderBlockC(blockC) {
 
   // Kim ngạch + sản lượng XK per DN
   tickers.forEach(ticker => {
-    const statusRaw = (blockC.export_status || {})[ticker] || [];
+    const statusRaw = (blockC.exportStatus || {})[ticker] || [];
     const flat = statusRaw.flat();
     const turnover = parseFindicatorSeries(flat, 'date', 'turnover');
     const qty      = parseFindicatorSeries(flat, 'date', 'quantity');
@@ -306,7 +306,7 @@ function renderBlockD(blockA, blockC) {
   // Tỷ giá USD/VND daily → aggregate sang monthly avg
   // usd_vnd format: {date: 'MM/DD/YYYY', value: '25000.000'}
   const usdvndMonthly = {};
-  (blockA.usd_vnd || []).forEach(r => {
+  (blockA.usdVnd || []).forEach(r => {
     const d = new Date(r.date);
     const key = d.getFullYear() * 100 + d.getMonth(); // 0-indexed
     if (!usdvndMonthly[key]) usdvndMonthly[key] = { sum: 0, n: 0 };
@@ -319,15 +319,15 @@ function renderBlockD(blockA, blockC) {
 
   // Giá tôm NL 50 con/kg (name_id=23) — monthly, format MM/DD/YYYY
   const nlMap = new Map();
-  parseFindicatorSeries((blockA.macro_35 || []).filter(r => r.nameId === 23)).forEach(([ts, v]) => {
+  parseFindicatorSeries((blockA.macro35 || []).filter(r => r.nameId === 23)).forEach(([ts, v]) => {
     const d = new Date(ts);
     nlMap.set(d.getFullYear() * 100 + d.getMonth(), v);
   });
 
   // Spread per ticker: trung bình ASP tất cả thị trường × USD/VND - Giá NL
-  const tickers = Object.keys(blockC.export_price_tom_the || {});
+  const tickers = Object.keys(blockC.exportPriceTomThe || {});
   const spreadSeries = tickers.map((ticker, tIdx) => {
-    const markets = blockC.export_price_tom_the[ticker] || [];
+    const markets = blockC.exportPriceTomThe[ticker] || [];
     const byMonth = {};
     markets.forEach(market => {
       (market.data || []).forEach(r => {

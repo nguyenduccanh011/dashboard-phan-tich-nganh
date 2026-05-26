@@ -43,9 +43,9 @@ function renderBlockA(blockA) {
     </div>
   `);
   const cardCbot = container.lastElementChild;
-  const seriesCorn    = parseFindicatorSeries(blockA.macro_35?.filter(r => r.nameId === 108));
-  const seriesSoybean = parseFindicatorSeries(blockA.macro_35?.filter(r => r.nameId === 87));
-  const seriesWheat   = parseFindicatorSeries(blockA.macro_35?.filter(r => r.nameId === 88));
+  const seriesCorn    = parseFindicatorSeries(blockA.macro35?.filter(r => r.nameId === 108));
+  const seriesSoybean = parseFindicatorSeries(blockA.macro35?.filter(r => r.nameId === 87));
+  const seriesWheat   = parseFindicatorSeries(blockA.macro35?.filter(r => r.nameId === 88));
   function renderFeedCbot(year) {
     const cutoff = yearToCutoff(year);
     createStockChart('chart-feed-cbot', {
@@ -70,7 +70,7 @@ function renderBlockA(blockA) {
     </div>
   `);
   const cardMeal = container.lastElementChild;
-  const seriesMeal = parseFindicatorSeries(blockA.macro_35?.filter(r => r.nameId === 160));
+  const seriesMeal = parseFindicatorSeries(blockA.macro35?.filter(r => r.nameId === 160));
   function renderMeal(year) {
     const cutoff = yearToCutoff(year);
     createStockChart('chart-soybean-meal', {

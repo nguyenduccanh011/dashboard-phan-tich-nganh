@@ -42,8 +42,8 @@ function renderBlockA(blockA) {
     </div>
   `);
   const cardFish = container.lastElementChild;
-  const seriesNguyenLieu = parseFindicatorSeries(blockA.macro_35?.filter(r => r.nameId === 3));
-  const seriesGiong      = parseFindicatorSeries(blockA.macro_35?.filter(r => r.nameId === 2));
+  const seriesNguyenLieu = parseFindicatorSeries(blockA.macro35?.filter(r => r.nameId === 3));
+  const seriesGiong      = parseFindicatorSeries(blockA.macro35?.filter(r => r.nameId === 2));
   function renderFishPrice(year) {
     const cutoff = yearToCutoff(year);
     createStockChart('chart-fish-price', {
@@ -68,8 +68,8 @@ function renderBlockA(blockA) {
     </div>
   `);
   const cardFeed = container.lastElementChild;
-  const seriesCorn     = parseFindicatorSeries(blockA.macro_35?.filter(r => r.nameId === 108));
-  const seriesSoybean  = parseFindicatorSeries(blockA.macro_35?.filter(r => r.nameId === 87));
+  const seriesCorn     = parseFindicatorSeries(blockA.macro35?.filter(r => r.nameId === 108));
+  const seriesSoybean  = parseFindicatorSeries(blockA.macro35?.filter(r => r.nameId === 87));
   function renderFeed(year) {
     const cutoff = yearToCutoff(year);
     createStockChart('chart-feed', {
@@ -93,7 +93,7 @@ function renderBlockA(blockA) {
     </div>
   `);
   const cardRetail = container.lastElementChild;
-  const seriesFood  = parseFindicatorSeries(blockA.retail_food_us);
+  const seriesFood  = parseFindicatorSeries(blockA.retailFoodUs);
   const seriesTotal = parseFindicatorSeries(blockA.retail_total_us);
   function renderRetail(year) {
     const cutoff = yearToCutoff(year);
@@ -174,7 +174,7 @@ function renderBlockB(blockB) {
       <div class="chart-container" id="chart-dn-export"></div>
     </div>
   `);
-  const exportStatus = blockB.export_status || {};
+  const exportStatus = blockB.exportStatus || {};
   const dnSeries = Object.entries(exportStatus)
     .map(([ticker, rows], i) => {
       const flat = Array.isArray(rows) ? rows.flat() : [];
@@ -228,7 +228,7 @@ function renderBlockC(blockC) {
   });
 
   // XK Turnover theo thị trường per-DN (export_status_markets)
-  const smTickers = Object.keys(blockC.export_status_markets || {});
+  const smTickers = Object.keys(blockC.exportStatus_markets || {});
   smTickers.forEach((ticker, tIdx) => {
     container.insertAdjacentHTML('beforeend', `
       <div class="chart-card" data-year-options="1Y,3Y,5Y">
@@ -240,7 +240,7 @@ function renderBlockC(blockC) {
       </div>
     `);
     const card2 = container.lastElementChild;
-    const smData = blockC.export_status_markets[ticker] || [];
+    const smData = blockC.exportStatus_markets[ticker] || [];
 
     function renderTurnMkt(year) {
       const cutoff = yearToCutoff(year);
@@ -276,9 +276,9 @@ function renderBlockD(blockA, blockC) {
   const snapDay = ts => Math.floor(ts / 86400000) * 86400000;
 
   // Giá cá tra NL (name_id=3) từ block_a
-  const seriesNL = parseFindicatorSeries(blockA.macro_35?.filter(r => r.nameId === 3));
+  const seriesNL = parseFindicatorSeries(blockA.macro35?.filter(r => r.nameId === 3));
   // Tỷ giá USD/VND
-  const seriesUsd = parseFindicatorSeries(blockA.usd_vnd);
+  const seriesUsd = parseFindicatorSeries(blockA.usdVnd);
 
   // ASP XK VHC (USD/kg) — gộp trung bình tất cả thị trường
   const vhcPriceData = (blockC.export_price_markets?.VHC) || [];

@@ -42,8 +42,8 @@ function renderBlockA(blockA) {
     </div>
   `);
   const cardCoal = container.lastElementChild;
-  const seriesCoalIce = parseFindicatorSeries(blockA.macro_35?.filter(r => r.nameId === 68));
-  const seriesCoalTq  = parseFindicatorSeries(blockA.macro_35?.filter(r => r.nameId === 196));
+  const seriesCoalIce = parseFindicatorSeries(blockA.macro35?.filter(r => r.nameId === 68));
+  const seriesCoalTq  = parseFindicatorSeries(blockA.macro35?.filter(r => r.nameId === 196));
   function renderCoal(year) {
     const cutoff = yearToCutoff(year);
     createStockChart('chart-coal', {
@@ -71,8 +71,8 @@ function renderBlockA(blockA) {
     </div>
   `);
   const cardGas = container.lastElementChild;
-  const seriesGas   = parseFindicatorSeries(blockA.macro_35?.filter(r => r.nameId === 66));
-  const seriesBrent = parseFindicatorSeries(blockA.macro_35?.filter(r => r.nameId === 65));
+  const seriesGas   = parseFindicatorSeries(blockA.macro35?.filter(r => r.nameId === 66));
+  const seriesBrent = parseFindicatorSeries(blockA.macro35?.filter(r => r.nameId === 65));
   function renderGasBrent(year) {
     const cutoff = yearToCutoff(year);
     createStockChart('chart-gas-brent', {
@@ -384,7 +384,7 @@ function renderBlockC(blockC) {
   `);
   const policyResource = blockC.policy_resource;
   if (policyResource && policyResource.length) {
-    const categories = policyResource.map(r => r.name_legend || r.name || '');
+    const categories = policyResource.map(r => r.nameLegend || r.name || '');
     const values = policyResource.map(r => r.value || r.capacity || 0);
     createChart('chart-policy-resource', {
       chart: { type: 'bar' },
@@ -463,9 +463,9 @@ function renderBlockD(blockA, blockC) {
     ? (Array.isArray(rawPrice[0]) ? rawPrice.flat() : rawPrice)
     : [];
 
-  const macro35 = blockA?.macro_35 || [];
+  const macro35 = blockA?.macro35 || [];
   const coalRows = macro35.filter(r => r.nameId === 68); // Newcastle ICE USD/ton
-  const usdRows = blockA?.usd_vnd || [];
+  const usdRows = blockA?.usdVnd || [];
 
   function monthlyAvg(rows, dateField, valField) {
     const sum = {}, cnt = {};
