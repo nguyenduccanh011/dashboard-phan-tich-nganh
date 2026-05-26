@@ -137,11 +137,23 @@ def _decrypt(ciphertext_b64: str) -> any:
 
 
 def _load_device_creds() -> dict:
-    """Load hoặc tạo mới deviceId + token UUID cố định."""
+    """Load hoặc tạo mới deviceId + token UUID cố định.
+
+    Priority:
+    1. .env FINDICATOR_DEVICE_ID (portable across machines)
+    2. Cached file (data/secrets/findicator_creds.json)
+    3. Generate new (one-time)
+    """
+    # Check if creds file exists
     if _CREDS_FILE.exists():
         return json.loads(_CREDS_FILE.read_text(encoding="utf-8"))
+
+    # Use FINDICATOR_DEVICE_ID from env if provided
+    device_id_from_env = os.getenv("FINDICATOR_DEVICE_ID", "").strip()
+    device_id = device_id_from_env if device_id_from_env else str(uuid.uuid4())
+
     creds = {
-        "deviceId": str(uuid.uuid4()),
+        "deviceId": device_id,
         "token": str(uuid.uuid4()),
         "deviceInfo": json.dumps({
             "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
@@ -332,6 +344,133 @@ class FindicatorClient:
         if 'recommendation' in item and 'recommend' not in item:
             item['recommend'] = item.pop('recommendation')
         return [item] if not isinstance(analyst_raw, list) else analyst_raw
+
+    # === Enterprise Finance Endpoints ===
+    async def get_corp_list(self) -> dict:
+        """GET /enterprise/corp-list — danh sách công ty niêm yết."""
+        return await self.get("enterprise/corp-list")
+
+    async def get_corp_search(self, corp_text: str) -> dict:
+        """GET /enterprise/corp-search — tìm kiếm công ty."""
+        return await self.get("enterprise/corp-search", params={"corpText": corp_text})
+
+    async def get_corp_profile(self, ticket: str) -> dict:
+        """GET /enterprise/corp-profile — profile công ty."""
+        return await self.get("enterprise/corp-profile", params={"ticket": ticket})
+
+    async def get_overview_valuation(self, ticket: str, account_ids: str = None) -> dict:
+        """GET /enterprise/overview-valuation — PE/PB metrics."""
+        params = {"ticket": ticket}
+        if account_ids:
+            params["accountIds"] = account_ids
+        return await self.get("enterprise/overview-valuation", params=params)
+
+    async def get_overview_dividend(self, ticket: str, year: int = None) -> dict:
+        """GET /enterprise/overview-dividend — lịch sử cổ tức."""
+        params = {"ticket": ticket}
+        if year:
+            params["year"] = year
+        return await self.get("enterprise/overview-dividend", params=params)
+
+    async def get_overview_shareholder(self, ticket: str) -> dict:
+        """GET /enterprise/overview-shareholder — cổ đông lớn."""
+        return await self.get("enterprise/overview-shareholder", params={"ticket": ticket})
+
+    async def get_finance_label(self) -> dict:
+        """GET /enterprise/finance-label — 54 TRAILING metrics labels."""
+        return await self.get("enterprise/finance-label")
+
+    async def get_finance_data_range(self, ticket: str, period: str = "quarter", table_name: str = "TRAILING") -> dict:
+        """GET /enterprise/v2/finance-data-range — data range per ticker."""
+        return await self.get("enterprise/v2/finance-data-range", params={
+            "ticket": ticket,
+            "period": period,
+            "tableName": table_name,
+        })
+
+    async def get_finance_ticket_data(self, tickets: list, date: str = None, period: str = "quarter", table_name: str = "TRAILING") -> dict:
+        """GET /enterprise/v2/finance-ticket-data — TRAILING metrics."""
+        params = {
+            "ticket": json.dumps(tickets),
+            "period": period,
+            "tableName": table_name,
+        }
+        if date:
+            params["date"] = date
+        return await self.get("enterprise/v2/finance-ticket-data", params=params)
+
+    async def get_custom_tickets_same_period(self, tickets: list, period: str = "quarter") -> dict:
+        """GET /enterprise/custom-tickets-same-period — so sánh cùng kỳ."""
+        return await self.get("enterprise/custom-tickets-same-period", params={
+            "ticket": json.dumps(tickets),
+            "period": period,
+        })
+
+    async def get_bank_revenue(self, ticket: str = None) -> dict:
+        """GET /enterprise/bank-revenue — doanh thu ngân hàng."""
+        return await self.get("enterprise/bank-revenue", params={"ticket": ticket} if ticket else {})
+
+    async def get_bank_asset(self, ticket: str = None) -> dict:
+        """GET /enterprise/bank-asset — cơ cấu tài sản."""
+        return await self.get("enterprise/bank-asset", params={"ticket": ticket} if ticket else {})
+
+    async def get_bank_bad_debt_ratio(self, ticket: str = None) -> dict:
+        """GET /enterprise/bank-bad-debt-ratio — tỷ lệ NPL."""
+        return await self.get("enterprise/bank-bad-debt-ratio", params={"ticket": ticket} if ticket else {})
+
+    # === Overview & Market Endpoints ===
+    async def get_overview_legend(self) -> dict:
+        """GET /api/overview/legend — 66 live prices + metadata."""
+        return await self.get("overview/legend")
+
+    async def get_overview_data(self, tab_id: str = None, repo: str = None) -> dict:
+        """GET /api/overview/overview-data — 7 tabs (lãi suất/lạm phát/PMI/VN macro/XK/NK)."""
+        params = {}
+        if tab_id:
+            params["tabId"] = tab_id
+        if repo:
+            params["repo"] = repo
+        return await self.get("overview/overview-data", params=params)
+
+    async def get_news(self, ticket: str = None, search: str = None, limit: int = None) -> dict:
+        """GET /api/news — tin tức."""
+        params = {}
+        if ticket:
+            params["ticket"] = ticket
+        if search:
+            params["search"] = search
+        if limit:
+            params["limit"] = limit
+        return await self.get("overview/news", params=params) if params else await self.get("overview/news")
+
+    # === Macro Helper: Get all indicators ===
+    async def get_menu_macro(self) -> dict:
+        """GET /macro/menu-macro — danh sách 105+ chỉ số vĩ mô."""
+        return await self.get("macro/menu-macro")
+
+    async def get_label_v2(self, dim_table: str = None) -> dict:
+        """GET /macro/get-label-v2 — legend tree cho dimension tables."""
+        params = {}
+        if dim_table:
+            params["dimTable"] = dim_table
+        return await self.get("macro/get-label-v2", params=params)
+
+    async def get_metric_data(self, macro_item_id: int, name_id: int = 1, period: str = None, value_type: str = None, filter_: str = "5Y") -> list:
+        """GET /macro/metric-data — fetch metric data."""
+        meta = _MACRO_META.get(macro_item_id)
+        if not meta and not period:
+            return []
+        fact_table, default_period, default_value_type = meta or (None, period, value_type)
+        period = period or default_period
+        value_type = value_type or default_value_type
+
+        return await self.get("macro/metric-data", params={
+            "macroItemId": macro_item_id,
+            "nameId": name_id,
+            "period": period,
+            "valueType": value_type,
+            "filter": filter_,
+        })
 
 
 class WiChartClient:
