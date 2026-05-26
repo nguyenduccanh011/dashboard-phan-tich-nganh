@@ -43,9 +43,9 @@ function renderBlockA(blockA) {
     </div>
   `);
   const cardCbot = container.lastElementChild;
-  const seriesCorn    = parseFindicatorSeries(blockA.macro_35?.filter(r => r.name_id === 108));
-  const seriesSoybean = parseFindicatorSeries(blockA.macro_35?.filter(r => r.name_id === 87));
-  const seriesWheat   = parseFindicatorSeries(blockA.macro_35?.filter(r => r.name_id === 88));
+  const seriesCorn    = parseFindicatorSeries(blockA.macro_35?.filter(r => r.nameId === 108));
+  const seriesSoybean = parseFindicatorSeries(blockA.macro_35?.filter(r => r.nameId === 87));
+  const seriesWheat   = parseFindicatorSeries(blockA.macro_35?.filter(r => r.nameId === 88));
   function renderFeedCbot(year) {
     const cutoff = yearToCutoff(year);
     createStockChart('chart-feed-cbot', {
@@ -70,7 +70,7 @@ function renderBlockA(blockA) {
     </div>
   `);
   const cardMeal = container.lastElementChild;
-  const seriesMeal = parseFindicatorSeries(blockA.macro_35?.filter(r => r.name_id === 160));
+  const seriesMeal = parseFindicatorSeries(blockA.macro_35?.filter(r => r.nameId === 160));
   function renderMeal(year) {
     const cutoff = yearToCutoff(year);
     createStockChart('chart-soybean-meal', {
@@ -120,8 +120,8 @@ function renderBlockB(blockB) {
   const farmingData = blockB.pig_farming || [];
   if (farmingData.length) {
     const herdSeries = [];
-    const sowHerd      = farmingData.filter(r => r.name_id === 3);
-    const slaughterHerd = farmingData.filter(r => r.name_id === 5);
+    const sowHerd      = farmingData.filter(r => r.nameId === 3);
+    const slaughterHerd = farmingData.filter(r => r.nameId === 5);
     if (sowHerd.length) {
       herdSeries.push({ name: 'Số heo nái', data: parseFindicatorSeries(sowHerd), color: HC_COLORS[0] });
     }

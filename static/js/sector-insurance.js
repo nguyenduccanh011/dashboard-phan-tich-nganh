@@ -43,9 +43,9 @@ function renderBlockA(blockA) {
   `);
 
   const card1 = container.lastElementChild;
-  const tpcp5y  = parseFindicatorSeries((blockA?.bond_yields || []).filter(r => r.name_id === 8));
-  const tpcp10y = parseFindicatorSeries((blockA?.bond_yields || []).filter(r => r.name_id === 9));
-  const ust10y  = parseFindicatorSeries((blockA?.bond_yields || []).filter(r => r.name_id === 3));
+  const tpcp5y  = parseFindicatorSeries((blockA?.bond_yields || []).filter(r => r.nameId === 8));
+  const tpcp10y = parseFindicatorSeries((blockA?.bond_yields || []).filter(r => r.nameId === 9));
+  const ust10y  = parseFindicatorSeries((blockA?.bond_yields || []).filter(r => r.nameId === 3));
 
   function renderBondYield(year) {
     const cutoff = yearToCutoff(year);

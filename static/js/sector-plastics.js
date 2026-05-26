@@ -53,7 +53,7 @@ function renderBlockA(blockA) {
   const series1 = Object.entries(nameIdMap).map(([id, name], i) => ({
     name,
     color: HC_COLORS[i],
-    data: parseFindicatorSeries(raw.filter(r => r.name_id === +id)),
+    data: parseFindicatorSeries(raw.filter(r => r.nameId === +id)),
   }));
 
   function renderPlasticsRaw(year) {
@@ -81,8 +81,8 @@ function renderBlockA(blockA) {
   `);
 
   const card2 = container.lastElementChild;
-  const wti  = parseFindicatorSeries(raw.filter(r => r.name_id === 67));
-  const gas  = parseFindicatorSeries(raw.filter(r => r.name_id === 66));
+  const wti  = parseFindicatorSeries(raw.filter(r => r.nameId === 67));
+  const gas  = parseFindicatorSeries(raw.filter(r => r.nameId === 66));
 
   function renderFeedstock(year) {
     const cutoff = yearToCutoff(year);
@@ -141,8 +141,8 @@ function renderBlockB(blockB) {
 
   const cardImp = container.lastElementChild;
   const imp = blockB?.import_plastic || [];
-  const imp22 = parseFindicatorSeries(imp.filter(r => r.name_id === 22 || r.name_id === '22'));
-  const imp23 = parseFindicatorSeries(imp.filter(r => r.name_id === 23 || r.name_id === '23'));
+  const imp22 = parseFindicatorSeries(imp.filter(r => r.nameId === 22 || r.nameId === '22'));
+  const imp23 = parseFindicatorSeries(imp.filter(r => r.nameId === 23 || r.nameId === '23'));
 
   function renderImport(year) {
     const cutoff = yearToCutoff(year);
@@ -254,7 +254,7 @@ function renderBlockD(blockA, blockF) {
   const NVL_IDS = [170, 183, 231];
   const nvlSum = {}, nvlCnt = {};
   for (const r of raw) {
-    if (!NVL_IDS.includes(r.name_id)) continue;
+    if (!NVL_IDS.includes(r.nameId)) continue;
     const parts = r.date.split('/'); // "MM/DD/YYYY"
     const d = new Date(+parts[2], +parts[0] - 1, +parts[1]);
     const q = `${d.getFullYear()}Q${Math.ceil((d.getMonth() + 1) / 3)}`;

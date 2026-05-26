@@ -43,7 +43,7 @@ function renderBlockA(blockA) {
   `);
 
   const card1 = container.lastElementChild;
-  const goldIce = parseFindicatorSeries(macro35.filter(r => r.name_id === 78));
+  const goldIce = parseFindicatorSeries(macro35.filter(r => r.nameId === 78));
 
   function renderGoldIce(year) {
     const cutoff = yearToCutoff(year);
@@ -66,9 +66,9 @@ function renderBlockA(blockA) {
   `);
 
   const card2 = container.lastElementChild;
-  const goldQd   = parseFindicatorSeries(macro35.filter(r => r.name_id === 730));
-  const sjcBuy   = parseFindicatorSeries(macro35.filter(r => r.name_id === 584));
-  const sjcSell  = parseFindicatorSeries(macro35.filter(r => r.name_id === 585));
+  const goldQd   = parseFindicatorSeries(macro35.filter(r => r.nameId === 730));
+  const sjcBuy   = parseFindicatorSeries(macro35.filter(r => r.nameId === 584));
+  const sjcSell  = parseFindicatorSeries(macro35.filter(r => r.nameId === 585));
 
   function renderSjc(year) {
     const cutoff = yearToCutoff(year);
@@ -194,8 +194,8 @@ function renderBlockD(blockA) {
   `);
 
   const card = container.lastElementChild;
-  const goldQdRaw = macro35.filter(r => r.name_id === 730);
-  const sjcSellRaw = macro35.filter(r => r.name_id === 585);
+  const goldQdRaw = macro35.filter(r => r.nameId === 730);
+  const sjcSellRaw = macro35.filter(r => r.nameId === 585);
 
   // Tính spread: (SJC bán - Quy đổi) / Quy đổi * 100
   const qd = parseFindicatorSeries(goldQdRaw);

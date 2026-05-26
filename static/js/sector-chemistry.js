@@ -32,7 +32,7 @@ function renderBlockA(blockA) {
   const container = document.getElementById('block-a-charts');
   const macro35 = Array.isArray(blockA.macro_35) ? blockA.macro_35 : [];
 
-  const byNameId = (id) => parseFindicatorSeries(macro35.filter(r => r.name_id === id));
+  const byNameId = (id) => parseFindicatorSeries(macro35.filter(r => r.nameId === id));
 
   // Chart 1: Khí TN Henry Hub (66) — giá đầu vào chính DPM/DCM
   container.insertAdjacentHTML('beforeend', `
@@ -136,7 +136,7 @@ function renderBlockB(blockB, blockC) {
 
   const card1 = container.lastElementChild;
   const prices = Array.isArray(blockC.prices) ? blockC.prices : [];
-  const byId = (id) => parseFindicatorSeries(prices.filter(r => r.name_id === id));
+  const byId = (id) => parseFindicatorSeries(prices.filter(r => r.nameId === id));
 
   const ureaPM   = byId(12);
   const ureaCM   = byId(13);
@@ -223,7 +223,7 @@ function renderBlockB(blockB, blockC) {
 function renderBlockC(blockC) {
   const container = document.getElementById('block-c-charts');
   const prices = Array.isArray(blockC.prices) ? blockC.prices : [];
-  const byNameId = (id) => parseFindicatorSeries(prices.filter(r => r.name_id === id));
+  const byNameId = (id) => parseFindicatorSeries(prices.filter(r => r.nameId === id));
 
   // Chart 1: Giá Urea (CME USD, TQ USD, Phú Mỹ VNĐ, Cà Mau VNĐ)
   container.insertAdjacentHTML('beforeend', `
@@ -326,8 +326,8 @@ function renderBlockD(blockA, blockC, blockD) {
   const prices    = Array.isArray(blockC.prices)   ? blockC.prices   : [];
   const usdvndRaw = Array.isArray(blockD?.usdvnd)  ? blockD.usdvnd   : [];
 
-  const ureaPMSeries = parseFindicatorSeries(prices.filter(r => r.name_id === 12));
-  const hhSeries     = parseFindicatorSeries(macro35.filter(r => r.name_id === 66));
+  const ureaPMSeries = parseFindicatorSeries(prices.filter(r => r.nameId === 12));
+  const hhSeries     = parseFindicatorSeries(macro35.filter(r => r.nameId === 66));
   const usdvndSeries = parseFindicatorSeries(usdvndRaw);
 
   const hhLookup     = _buildLookup(hhSeries);

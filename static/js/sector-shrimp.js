@@ -42,9 +42,9 @@ function renderBlockA(blockA) {
     </div>
   `);
   const cardShrimp = container.lastElementChild;
-  const seriesThe50 = parseFindicatorSeries(blockA.macro_35?.filter(r => r.name_id === 23));
-  const seriesThe30 = parseFindicatorSeries(blockA.macro_35?.filter(r => r.name_id === 22));
-  const seriesSu    = parseFindicatorSeries(blockA.macro_35?.filter(r => r.name_id === 21));
+  const seriesThe50 = parseFindicatorSeries(blockA.macro_35?.filter(r => r.nameId === 23));
+  const seriesThe30 = parseFindicatorSeries(blockA.macro_35?.filter(r => r.nameId === 22));
+  const seriesSu    = parseFindicatorSeries(blockA.macro_35?.filter(r => r.nameId === 21));
   function renderShrimpPrice(year) {
     const cutoff = yearToCutoff(year);
     createStockChart('chart-shrimp-price', {
@@ -70,8 +70,8 @@ function renderBlockA(blockA) {
     </div>
   `);
   const cardFeed = container.lastElementChild;
-  const seriesCorn    = parseFindicatorSeries(blockA.macro_35?.filter(r => r.name_id === 108));
-  const seriesSoybean = parseFindicatorSeries(blockA.macro_35?.filter(r => r.name_id === 87));
+  const seriesCorn    = parseFindicatorSeries(blockA.macro_35?.filter(r => r.nameId === 108));
+  const seriesSoybean = parseFindicatorSeries(blockA.macro_35?.filter(r => r.nameId === 87));
   function renderFeed(year) {
     const cutoff = yearToCutoff(year);
     createStockChart('chart-feed', {
@@ -192,8 +192,8 @@ function renderBlockB(blockB) {
 
   // Chart 5: ASP tôm XK theo sản phẩm — tôm thẻ (28) vs tôm sú (29)
   const gbpRaw = blockB.global_by_product || [];
-  const gbpThe = parseFindicatorSeries(gbpRaw.filter(r => r.name_id === 28), 'date', 'price');
-  const gbpSu  = parseFindicatorSeries(gbpRaw.filter(r => r.name_id === 29), 'date', 'price');
+  const gbpThe = parseFindicatorSeries(gbpRaw.filter(r => r.nameId === 28), 'date', 'price');
+  const gbpSu  = parseFindicatorSeries(gbpRaw.filter(r => r.nameId === 29), 'date', 'price');
   if (gbpThe.length || gbpSu.length) {
     container.insertAdjacentHTML('beforeend', `
       <div class="chart-card" data-year-options="1Y,3Y">
@@ -319,7 +319,7 @@ function renderBlockD(blockA, blockC) {
 
   // Giá tôm NL 50 con/kg (name_id=23) — monthly, format MM/DD/YYYY
   const nlMap = new Map();
-  parseFindicatorSeries((blockA.macro_35 || []).filter(r => r.name_id === 23)).forEach(([ts, v]) => {
+  parseFindicatorSeries((blockA.macro_35 || []).filter(r => r.nameId === 23)).forEach(([ts, v]) => {
     const d = new Date(ts);
     nlMap.set(d.getFullYear() * 100 + d.getMonth(), v);
   });

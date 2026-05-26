@@ -43,7 +43,7 @@ function renderBlockA(blockA) {
   `);
 
   const card1 = container.lastElementChild;
-  const arabica = parseFindicatorSeries(macro35.filter(r => r.name_id === 95));
+  const arabica = parseFindicatorSeries(macro35.filter(r => r.nameId === 95));
 
   function renderArabica(year) {
     const cutoff = yearToCutoff(year);
@@ -66,7 +66,7 @@ function renderBlockA(blockA) {
   `);
 
   const card2 = container.lastElementChild;
-  const robusta = parseFindicatorSeries(macro35.filter(r => r.name_id === 687));
+  const robusta = parseFindicatorSeries(macro35.filter(r => r.nameId === 687));
 
   function renderRobusta(year) {
     const cutoff = yearToCutoff(year);
@@ -193,7 +193,7 @@ function renderBlockD(blockA, blockB) {
   const usdvndMap = new Map(Object.entries(usdvndMonthly).map(([k, v]) => [+k, v.sum / v.n]));
 
   const robustaMonthly = {};
-  (blockA.coffee_prices || []).filter(r => r.name_id === 687).forEach(r => {
+  (blockA.coffee_prices || []).filter(r => r.nameId === 687).forEach(r => {
     const d = new Date(r.date);
     const k = d.getFullYear() * 100 + d.getMonth();
     if (!robustaMonthly[k]) robustaMonthly[k] = { sum: 0, n: 0 };

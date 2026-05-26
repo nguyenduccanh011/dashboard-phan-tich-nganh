@@ -21,10 +21,10 @@
   renderBlockA(data.block_a);
   renderBlockB(data.block_b);
   renderBlockC(data.block_c);
-  renderBlockD(data.block_c);
+  renderBlockD(data.block_d);
   renderBlockE(data.block_e);
   renderBlockF(data.block_f);
-  window.window.window.renderBlockG(data.block_g, data.tickers, { pe_id: 89, pb_id: 90 });
+  window.renderBlockG(data.block_g, 'bank', data.tickers, { pe_id: 89, pb_id: 90 });
   renderBankCharts(data.bank_charts);
 })();
 
@@ -70,10 +70,10 @@ function renderBlockA(blockA) {
   `);
   const depCard = container.querySelector('[id="chart-deposit-rate"]').closest('.chart-card');
   const depRows = blockA.deposit_rate || [];
-  const depNameIds = [...new Set(depRows.map(r => r.name_id))];
+  const depNameIds = [...new Set(depRows.map(r => r.nameId))];
   const depSeriesData = depNameIds.map((nid, i) => ({
-    name: depRows.find(r => r.name_id === nid)?.name || `Kỳ hạn ${nid}`,
-    data: parseFindicatorSeries(depRows.filter(r => r.name_id === nid)),
+    name: depRows.find(r => r.nameId === nid)?.name || `Kỳ hạn ${nid}`,
+    data: parseFindicatorSeries(depRows.filter(r => r.nameId === nid)),
     color: HC_COLORS[i % HC_COLORS.length],
   }));
   function renderDepositRate(year) {
@@ -137,7 +137,7 @@ function renderBlockA(blockA) {
   ];
   const tpcpSeriesData = tpcpMap.map(t => ({
     name: t.name, color: t.color,
-    data: parseFindicatorSeries(tpcpRows.filter(r => r.name_id === t.id)),
+    data: parseFindicatorSeries(tpcpRows.filter(r => r.nameId === t.id)),
   }));
   function renderTpcp(year) {
     const cutoff = yearToCutoff(year);
@@ -167,10 +167,10 @@ function renderBlockA(blockA) {
     setStaleBadge(omoCard, 'warn', 'Dữ liệu dừng 31/12/2025');
   }
   const omoRows = blockA.omo || [];
-  const omoNameIds = [...new Set(omoRows.map(r => r.name_id))];
+  const omoNameIds = [...new Set(omoRows.map(r => r.nameId))];
   const omoSeriesData = omoNameIds.map((nid, i) => ({
-    name: omoRows.find(r => r.name_id === nid)?.name || `OMO ${nid}`,
-    data: parseFindicatorSeries(omoRows.filter(r => r.name_id === nid)),
+    name: omoRows.find(r => r.nameId === nid)?.name || `OMO ${nid}`,
+    data: parseFindicatorSeries(omoRows.filter(r => r.nameId === nid)),
     color: HC_COLORS[i % HC_COLORS.length],
   }));
   function renderOmo(year) {
@@ -306,8 +306,8 @@ function renderBlockB(blockB) {
   if (!bopRows.length) {
     showEmpty('chart-bop', 'Chưa có dữ liệu cán cân thanh toán');
   } else {
-    const bopVanglai = parseFindicatorSeries(bopRows.filter(r => r.name_id === 1));
-    const bopTongthe = parseFindicatorSeries(bopRows.filter(r => r.name_id === 40));
+    const bopVanglai = parseFindicatorSeries(bopRows.filter(r => r.nameId === 1));
+    const bopTongthe = parseFindicatorSeries(bopRows.filter(r => r.nameId === 40));
     function renderBop(year) {
       const cutoff = yearToCutoff(year);
       createStockChart('chart-bop', {

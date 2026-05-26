@@ -45,10 +45,10 @@ function renderBlockA(blockA) {
   const marketRows = blockA.market_data || [];
   // nameId default (thanh khoản) — lấy nameId=1 hoặc rows không có nameId cụ thể
   const liqData = parseFindicatorSeries(
-    marketRows.filter(r => !r.name_id || r.name_id === 1 || r.name_id === 'liquidity')
+    marketRows.filter(r => !r.nameId || r.nameId === 1 || r.nameId === 'liquidity')
   );
-  const vnidxData = parseFindicatorSeries(marketRows.filter(r => r.name_id === 3));
-  const vn30Data  = parseFindicatorSeries(marketRows.filter(r => r.name_id === 2));
+  const vnidxData = parseFindicatorSeries(marketRows.filter(r => r.nameId === 3));
+  const vn30Data  = parseFindicatorSeries(marketRows.filter(r => r.nameId === 2));
 
   function renderLiquidity(year) {
     const cutoff = yearToCutoff(year);
@@ -79,10 +79,10 @@ function renderBlockA(blockA) {
   `);
   const mrCard = container.querySelector('[id="chart-margin-rate"]').closest('.chart-card');
   const marginRows = blockA.margin_rate || [];
-  const mrNameIds = [...new Set(marginRows.map(r => r.name_id))].slice(0, 4);
+  const mrNameIds = [...new Set(marginRows.map(r => r.nameId))].slice(0, 4);
   const mrSeriesData = mrNameIds.map((nid, i) => ({
-    name: marginRows.find(r => r.name_id === nid)?.name || `Kỳ hạn ${nid}`,
-    data: parseFindicatorSeries(marginRows.filter(r => r.name_id === nid)),
+    name: marginRows.find(r => r.nameId === nid)?.name || `Kỳ hạn ${nid}`,
+    data: parseFindicatorSeries(marginRows.filter(r => r.nameId === nid)),
     color: HC_COLORS[i],
   }));
 
@@ -175,9 +175,9 @@ function renderBlockB(blockB, blockD) {
   `);
   const pepbCard = container.querySelector('[id="chart-market-pe-pb"]').closest('.chart-card');
   const bpRows = blockB.market_breadth_pe || [];
-  const breadthData = parseFindicatorSeries(bpRows.filter(r => r.name_id === 19));
-  const peData = parseFindicatorSeries(bpRows.filter(r => r.name_id === 22));
-  const pbData = parseFindicatorSeries(bpRows.filter(r => r.name_id === 24));
+  const breadthData = parseFindicatorSeries(bpRows.filter(r => r.nameId === 19));
+  const peData = parseFindicatorSeries(bpRows.filter(r => r.nameId === 22));
+  const pbData = parseFindicatorSeries(bpRows.filter(r => r.nameId === 24));
 
   function renderPePb(year) {
     const cutoff = yearToCutoff(year);

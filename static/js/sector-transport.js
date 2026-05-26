@@ -71,8 +71,8 @@ function renderBlockA(blockA) {
     </div>
   `);
   const card = container.querySelector('[id="chart-oil-price"]').closest('.chart-card');
-  const brentData = parseFindicatorSeries(oilRows.filter(r => r.name_id === 65));
-  const wtiData   = parseFindicatorSeries(oilRows.filter(r => r.name_id === 67));
+  const brentData = parseFindicatorSeries(oilRows.filter(r => r.nameId === 65));
+  const wtiData   = parseFindicatorSeries(oilRows.filter(r => r.nameId === 67));
 
   function renderOil(year) {
     const cutoff = yearToCutoff(year);
@@ -125,7 +125,7 @@ function renderBlockB(blockB) {
         const meta = FREIGHT_LABELS[nid];
         return {
           name: meta.name,
-          data: parseFindicatorSeries(freightRows.filter(r => r.name_id === nid)),
+          data: parseFindicatorSeries(freightRows.filter(r => r.nameId === nid)),
           color: meta.color,
         };
       })
@@ -157,7 +157,7 @@ function renderBlockB(blockB) {
   const routeNameIds = [689, 690, 691, 692, 693, 694, 695, 696];
   const routeSeriesData = routeNameIds.map((nid, i) => ({
     name: FREIGHT_LABELS[nid]?.name || `Route ${nid}`,
-    data: parseFindicatorSeries(freightRows.filter(r => r.name_id === nid)),
+    data: parseFindicatorSeries(freightRows.filter(r => r.nameId === nid)),
     color: HC_COLORS[i % HC_COLORS.length],
   })).filter(s => s.data.length > 0);
 

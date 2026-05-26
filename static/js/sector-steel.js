@@ -46,8 +46,8 @@ function renderBlockA(blockA) {
   `);
 
   const card1 = container.lastElementChild;
-  const seriesCme = parseFindicatorSeries(blockA.macro_35?.filter(r => r.name_id === 82));
-  const seriesTq  = parseFindicatorSeries(blockA.macro_35?.filter(r => r.name_id === 243));
+  const seriesCme = parseFindicatorSeries(blockA.macro_35?.filter(r => r.nameId === 82));
+  const seriesTq  = parseFindicatorSeries(blockA.macro_35?.filter(r => r.nameId === 243));
 
   function renderIronOre(year) {
     const cutoff = yearToCutoff(year);
@@ -77,8 +77,8 @@ function renderBlockA(blockA) {
   `);
 
   const card2 = container.lastElementChild;
-  const seriesCoalSgx = parseFindicatorSeries(blockA.macro_35?.filter(r => r.name_id === 153));
-  const seriesCoalTq  = parseFindicatorSeries(blockA.macro_35?.filter(r => r.name_id === 158));
+  const seriesCoalSgx = parseFindicatorSeries(blockA.macro_35?.filter(r => r.nameId === 153));
+  const seriesCoalTq  = parseFindicatorSeries(blockA.macro_35?.filter(r => r.nameId === 158));
 
   function renderCoal(year) {
     const cutoff = yearToCutoff(year);
@@ -108,8 +108,8 @@ function renderBlockA(blockA) {
   `);
 
   const card3 = container.lastElementChild;
-  const seriesHrcCme = parseFindicatorSeries(blockA.macro_35?.filter(r => r.name_id === 86));
-  const seriesHrcTq  = parseFindicatorSeries(blockA.macro_35?.filter(r => r.name_id === 161));
+  const seriesHrcCme = parseFindicatorSeries(blockA.macro_35?.filter(r => r.nameId === 86));
+  const seriesHrcTq  = parseFindicatorSeries(blockA.macro_35?.filter(r => r.nameId === 161));
 
   function renderHrc(year) {
     const cutoff = yearToCutoff(year);
@@ -223,7 +223,7 @@ function renderBlockB(blockB) {
     createStockChart('chart-inventory', {
       yAxis: [{ title: { text: 'Nghìn tấn' } }],
       series: INV_SERIES.map((s, i) => {
-        const bucket = invData.find(r => r.name_id === s.nameId);
+        const bucket = invData.find(r => r.nameId === s.nameId);
         const rows = bucket ? bucket.data : [];
         return {
           name: s.name,
@@ -336,7 +336,7 @@ function renderBlockB(blockB) {
           name: s.name,
           color: HC_COLORS[i],
           data: parseFindicatorSeries(
-            cnData.filter(r => r.name_id === s.nameId), 'date', 'value'
+            cnData.filter(r => r.nameId === s.nameId), 'date', 'value'
           ).filter(p => p[0] >= cutoff),
         })),
       });
@@ -364,7 +364,7 @@ function renderBlockC(blockC) {
   const prices = blockC.sell_prices || [];
 
   // name_id=11 là CB300-D10 nội địa, đơn vị VNĐ/tấn → chia 1000 → VNĐ/kg
-  const cb300Data = parseFindicatorSeries(prices.filter(r => r.name_id === 11))
+  const cb300Data = parseFindicatorSeries(prices.filter(r => r.nameId === 11))
     .map(p => [p[0], p[1] / 1000]);
 
   function renderSellPrice(year) {
@@ -392,7 +392,7 @@ function renderBlockC(blockC) {
   `);
 
   const cardCmp = container.lastElementChild;
-  const rb177Data = parseFindicatorSeries(prices.filter(r => r.name_id === 177)); // CNY/T
+  const rb177Data = parseFindicatorSeries(prices.filter(r => r.nameId === 177)); // CNY/T
 
   function renderRebarCompare(year) {
     const cutoff = yearToCutoff(year);
@@ -428,15 +428,15 @@ function renderBlockD(blockA, blockC) {
 
   // CB300 nội địa: name_id=11, VNĐ/tấn
   const seriesCb300 = parseFindicatorSeries(
-    (blockC.sell_prices || []).filter(r => r.name_id === 11)
+    (blockC.sell_prices || []).filter(r => r.nameId === 11)
   );
   // Quặng sắt CME: name_id=82, USD/T
   const seriesOre = parseFindicatorSeries(
-    (blockA.macro_35 || []).filter(r => r.name_id === 82)
+    (blockA.macro_35 || []).filter(r => r.nameId === 82)
   );
   // Than cốc SGX: name_id=153, USD/T
   const seriesCoal = parseFindicatorSeries(
-    (blockA.macro_35 || []).filter(r => r.name_id === 153)
+    (blockA.macro_35 || []).filter(r => r.nameId === 153)
   );
   // USD/VND: name_id=2
   const seriesUsd = parseFindicatorSeries(blockA.usd_vnd || []);

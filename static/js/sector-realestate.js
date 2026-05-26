@@ -46,7 +46,7 @@ function renderBlockB(blockB) {
   // Average across banks per date to get a single representative line
   const byNameId = (id) => {
     const byDate = {};
-    rateRows.filter(r => r.name_id === id).forEach(r => {
+    rateRows.filter(r => r.nameId === id).forEach(r => {
       const v = parseFloat(r.value);
       if (!isNaN(v)) {
         if (!byDate[r.date]) byDate[r.date] = { sum: 0, n: 0 };

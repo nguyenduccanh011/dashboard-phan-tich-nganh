@@ -42,8 +42,8 @@ function renderBlockA(blockA) {
     </div>
   `);
   const cardFish = container.lastElementChild;
-  const seriesNguyenLieu = parseFindicatorSeries(blockA.macro_35?.filter(r => r.name_id === 3));
-  const seriesGiong      = parseFindicatorSeries(blockA.macro_35?.filter(r => r.name_id === 2));
+  const seriesNguyenLieu = parseFindicatorSeries(blockA.macro_35?.filter(r => r.nameId === 3));
+  const seriesGiong      = parseFindicatorSeries(blockA.macro_35?.filter(r => r.nameId === 2));
   function renderFishPrice(year) {
     const cutoff = yearToCutoff(year);
     createStockChart('chart-fish-price', {
@@ -68,8 +68,8 @@ function renderBlockA(blockA) {
     </div>
   `);
   const cardFeed = container.lastElementChild;
-  const seriesCorn     = parseFindicatorSeries(blockA.macro_35?.filter(r => r.name_id === 108));
-  const seriesSoybean  = parseFindicatorSeries(blockA.macro_35?.filter(r => r.name_id === 87));
+  const seriesCorn     = parseFindicatorSeries(blockA.macro_35?.filter(r => r.nameId === 108));
+  const seriesSoybean  = parseFindicatorSeries(blockA.macro_35?.filter(r => r.nameId === 87));
   function renderFeed(year) {
     const cutoff = yearToCutoff(year);
     createStockChart('chart-feed', {
@@ -276,7 +276,7 @@ function renderBlockD(blockA, blockC) {
   const snapDay = ts => Math.floor(ts / 86400000) * 86400000;
 
   // Giá cá tra NL (name_id=3) từ block_a
-  const seriesNL = parseFindicatorSeries(blockA.macro_35?.filter(r => r.name_id === 3));
+  const seriesNL = parseFindicatorSeries(blockA.macro_35?.filter(r => r.nameId === 3));
   // Tỷ giá USD/VND
   const seriesUsd = parseFindicatorSeries(blockA.usd_vnd);
 

@@ -31,7 +31,7 @@
 function renderBlockA(blockA) {
   const container = document.getElementById('block-a-charts');
   const macro35 = Array.isArray(blockA.macro_35) ? blockA.macro_35 : [];
-  const byNameId = (id) => parseFindicatorSeries(macro35.filter(r => r.name_id === id));
+  const byNameId = (id) => parseFindicatorSeries(macro35.filter(r => r.nameId === id));
   const usdVndRows = Array.isArray(blockA.usd_vnd) ? blockA.usd_vnd : [];
 
   // Chart 1: Bông CBOT (98) và Xơ bông TQ (168) — dual axis

@@ -43,8 +43,8 @@ function renderBlockA(blockA) {
 
   const card1 = container.lastElementChild;
   const macro35 = blockA?.macro_35 || [];
-  const brent = parseFindicatorSeries(macro35.filter(r => r.name_id === 65));
-  const wti   = parseFindicatorSeries(macro35.filter(r => r.name_id === 67));
+  const brent = parseFindicatorSeries(macro35.filter(r => r.nameId === 65));
+  const wti   = parseFindicatorSeries(macro35.filter(r => r.nameId === 67));
 
   function renderOil(year) {
     const cutoff = yearToCutoff(year);
@@ -70,7 +70,7 @@ function renderBlockA(blockA) {
   `);
 
   const card2 = container.lastElementChild;
-  const hh = parseFindicatorSeries(macro35.filter(r => r.name_id === 66));
+  const hh = parseFindicatorSeries(macro35.filter(r => r.nameId === 66));
 
   function renderGas(year) {
     const cutoff = yearToCutoff(year);
@@ -136,7 +136,7 @@ function renderBlockB(blockB) {
   const tankerSeries = tankerMap.map((t, i) => ({
     name: t.name,
     color: HC_COLORS[i % HC_COLORS.length],
-    data: parseFindicatorSeries(macro35.filter(r => r.name_id === t.nameId)),
+    data: parseFindicatorSeries(macro35.filter(r => r.nameId === t.nameId)),
   }));
 
   function renderTanker(year) {
@@ -169,7 +169,7 @@ function renderBlockB(blockB) {
 
   const oilTankerSeries = oilTankerMap.map(t => ({
     name: t.name, color: t.color,
-    data: parseFindicatorSeries(macro35.filter(r => r.name_id === t.nameId)),
+    data: parseFindicatorSeries(macro35.filter(r => r.nameId === t.nameId)),
   }));
 
   function renderOilTanker(year) {
@@ -254,7 +254,7 @@ function renderBlockC(blockC) {
 
   const fuelSeries = fuelMap.map(f => ({
     name: f.name, color: f.color,
-    data: parseFindicatorSeries(macro35.filter(r => r.name_id === f.nameId)),
+    data: parseFindicatorSeries(macro35.filter(r => r.nameId === f.nameId)),
   }));
 
   function renderFuel(year) {
@@ -282,9 +282,9 @@ function renderBlockD(blockA, blockC) {
   const card = container.lastElementChild;
 
   const macro35 = blockA?.macro_35 || [];
-  const brentRows = macro35.filter(r => r.name_id === 65);
+  const brentRows = macro35.filter(r => r.nameId === 65);
   const usdRows = blockA?.usd_vnd || [];
-  const ron95Rows = (blockC?.domestic_fuel || []).filter(r => r.name_id === 612);
+  const ron95Rows = (blockC?.domestic_fuel || []).filter(r => r.nameId === 612);
 
   function monthlyAvg(rows, dateField, valField) {
     const sum = {}, cnt = {};

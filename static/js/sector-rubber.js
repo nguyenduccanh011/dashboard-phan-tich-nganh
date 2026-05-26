@@ -44,8 +44,8 @@ function renderBlockA(blockA) {
     </div>
   `);
   const cardOil = container.lastElementChild;
-  const seriesBrent = parseFindicatorSeries(blockA.macro_35?.filter(r => r.name_id === 65));
-  const seriesWti   = parseFindicatorSeries(blockA.macro_35?.filter(r => r.name_id === 67));
+  const seriesBrent = parseFindicatorSeries(blockA.macro_35?.filter(r => r.nameId === 65));
+  const seriesWti   = parseFindicatorSeries(blockA.macro_35?.filter(r => r.nameId === 67));
   function renderOil(year) {
     const cutoff = yearToCutoff(year);
     createStockChart('chart-oil', {

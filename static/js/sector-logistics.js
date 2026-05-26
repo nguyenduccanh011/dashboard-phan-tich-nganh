@@ -35,8 +35,8 @@ function renderBlockA(blockA) {
   `);
   const card = c.lastElementChild;
   const raw = blockA?.freight_indices || [];
-  const bdi = parseFindicatorSeries(raw.filter(r => r.name_id === 681));
-  const wci = parseFindicatorSeries(raw.filter(r => r.name_id === 688));
+  const bdi = parseFindicatorSeries(raw.filter(r => r.nameId === 681));
+  const wci = parseFindicatorSeries(raw.filter(r => r.nameId === 688));
 
   function render(year) {
     const cut = yearToCutoff(year);
@@ -64,7 +64,7 @@ function renderBlockA(blockA) {
     </div>
   `);
   const card2 = c.lastElementChild;
-  const brent = parseFindicatorSeries(raw.filter(r => r.name_id === 65));
+  const brent = parseFindicatorSeries(raw.filter(r => r.nameId === 65));
   function renderBrent(year) {
     const cut = yearToCutoff(year);
     createStockChart('chart-logistics-brent', {
@@ -285,8 +285,8 @@ function renderBlockD(blockA, blockB) {
   `);
   const card = c.lastElementChild;
   const containerRoutes = blockB?.container_routes || [];
-  const shLa = parseFindicatorSeries(containerRoutes.filter(r => r.name_id === 691));
-  const shNy = parseFindicatorSeries(containerRoutes.filter(r => r.name_id === 692));
+  const shLa = parseFindicatorSeries(containerRoutes.filter(r => r.nameId === 691));
+  const shNy = parseFindicatorSeries(containerRoutes.filter(r => r.nameId === 692));
 
   if (!shLa.length && !shNy.length) {
     showEmpty('chart-logistics-spread', 'Không có dữ liệu container routes');

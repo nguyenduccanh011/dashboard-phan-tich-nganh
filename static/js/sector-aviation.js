@@ -24,7 +24,7 @@
   renderBlockD(data.block_a, data.block_b, data.block_f);
   renderBlockE(data.block_e);
   renderBlockF(data.block_f);
-  window.window.window.window.renderBlockG(data.block_g, data.tickers, {});
+  window.renderBlockG(data.block_g, 'aviation', data.tickers);
 })();
 
 
@@ -356,7 +356,7 @@ function renderBlockD(blockA, blockB, blockF) {
     return out;
   }
 
-  const brentRows = (blockA?.fuel_prices || []).filter(r => r.name_id === 65);
+  const brentRows = (blockA?.fuel_prices || []).filter(r => r.nameId === 65);
   const brentByQ = avgByQuarter(brentRows, 'date', 'value');
   const usdByQ = avgByQuarter(blockA?.usd_vnd || [], 'date', 'value');
 

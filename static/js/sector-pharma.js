@@ -42,8 +42,8 @@ function renderBlockA(blockA) {
   `);
 
   const card1 = container.lastElementChild;
-  const cpi16 = parseFindicatorSeries((blockA?.cpi_pharma || []).filter(r => r.name_id === 16));
-  const cpi5  = parseFindicatorSeries((blockA?.cpi_pharma || []).filter(r => r.name_id === 5));
+  const cpi16 = parseFindicatorSeries((blockA?.cpi_pharma || []).filter(r => r.nameId === 16));
+  const cpi5  = parseFindicatorSeries((blockA?.cpi_pharma || []).filter(r => r.nameId === 5));
 
   function renderCpi(year) {
     const cutoff = yearToCutoff(year);
@@ -69,8 +69,8 @@ function renderBlockA(blockA) {
   `);
 
   const card2 = container.lastElementChild;
-  const nkDuoc = parseFindicatorSeries((blockA?.nk_pharma || []).filter(r => r.name_id === 63));
-  const nkNpl  = parseFindicatorSeries((blockA?.nk_pharma || []).filter(r => r.name_id === 62));
+  const nkDuoc = parseFindicatorSeries((blockA?.nk_pharma || []).filter(r => r.nameId === 63));
+  const nkNpl  = parseFindicatorSeries((blockA?.nk_pharma || []).filter(r => r.nameId === 62));
 
   function renderImport(year) {
     const cutoff = yearToCutoff(year);

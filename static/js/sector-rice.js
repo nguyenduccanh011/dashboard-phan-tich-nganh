@@ -75,8 +75,8 @@ function renderBlockA(blockA) {
 
   const card2 = container.lastElementChild;
   const macro35 = blockA?.inputs || [];
-  const urea12 = parseFindicatorSeries(macro35.filter(r => r.name_id === 12));
-  const urea13 = parseFindicatorSeries(macro35.filter(r => r.name_id === 13));
+  const urea12 = parseFindicatorSeries(macro35.filter(r => r.nameId === 12));
+  const urea13 = parseFindicatorSeries(macro35.filter(r => r.nameId === 13));
 
   function renderUrea(year) {
     const cutoff = yearToCutoff(year);
@@ -103,7 +103,7 @@ function renderBlockA(blockA) {
 
   const card3 = container.lastElementChild;
   const usdvnd = parseFindicatorSeries(blockA?.usd_vnd);
-  const brent  = parseFindicatorSeries(macro35.filter(r => r.name_id === 65));
+  const brent  = parseFindicatorSeries(macro35.filter(r => r.nameId === 65));
 
   function renderUsdBrent(year) {
     const cutoff = yearToCutoff(year);
