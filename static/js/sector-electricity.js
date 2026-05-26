@@ -179,7 +179,7 @@ function renderBlockB(blockB) {
         name: resourceNames[rid] || `Nguồn ${rid}`,
         color: HC_COLORS[i],
         data: periods.map(p => {
-          const row = filtered.find(r => (r.date || r.time) === p && r.name_id === rid);
+          const row = filtered.find(r => (r.date || r.time) === p && (r.resourceId ?? r.nameId) === rid);
           return row?.value ?? null;
         }),
       })),
@@ -269,7 +269,7 @@ function renderBlockB(blockB) {
   if (lakeEntries.length) {
     createStockChart('chart-lake', {
       series: lakeEntries.map(([lakeId, lakeObj], i) => ({
-        name: lakeObj.info?.name || lakeObj.info?.lakeName || `Hồ ${lakeId}`,
+        name: lakeObj.info?.lakename || lakeObj.info?.name || lakeObj.info?.lakeName || `Hồ ${lakeId}`,
         color: HC_COLORS[i],
         data: parseFindicatorSeries(lakeObj.data),
       })),

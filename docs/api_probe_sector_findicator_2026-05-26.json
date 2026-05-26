@@ -1,0 +1,5302 @@
+[
+  {
+    "sector": "steel",
+    "path": "steel/legend",
+    "params": {},
+    "ok": true,
+    "status": 200,
+    "kind": "dict",
+    "n": 4,
+    "empty": false,
+    "keys": [
+      "macroDimComdty",
+      "macroDimComdtyVN",
+      "corpNames",
+      "steelCNDimOverall"
+    ],
+    "len.macroDimComdty": 5,
+    "len.macroDimComdtyVN": 6,
+    "len.corpNames": 1879,
+    "len.steelCNDimOverall": 7,
+    "ms": 1038
+  },
+  {
+    "sector": "steel",
+    "path": "steel/legends",
+    "params": {},
+    "ok": false,
+    "status": 404,
+    "error": "{\"statusCode\":404,\"message\":\"Cannot GET /api/steel/legends\",\"error\":\"Not Found\"}",
+    "ms": 246
+  },
+  {
+    "sector": "steel",
+    "path": "steel/enterprise-corp-name",
+    "params": {},
+    "ok": true,
+    "status": 200,
+    "kind": "list",
+    "n": 4,
+    "empty": false,
+    "keys": [
+      "id",
+      "ticket",
+      "floor",
+      "corp_type_id",
+      "corp_name",
+      "market_cap_tyvnd",
+      "listed_share_vol",
+      "sector",
+      "first_sector_id",
+      "icb_name_vi",
+      "icb_code",
+      "is_listed",
+      "short_name"
+    ],
+    "ms": 236
+  },
+  {
+    "sector": "steel",
+    "path": "steel/overview/steel-data",
+    "params": {},
+    "ok": true,
+    "status": 200,
+    "kind": "dict",
+    "n": 4,
+    "empty": false,
+    "keys": [
+      "steelOverviewDim",
+      "steelOverviewImportValue",
+      "steelManufacturingCountryData",
+      "steelManufacturingCountry"
+    ],
+    "len.steelOverviewDim": 2,
+    "len.steelOverviewImportValue": 22,
+    "len.steelManufacturingCountryData": 666,
+    "len.steelManufacturingCountry": 19,
+    "ms": 662
+  },
+  {
+    "sector": "steel",
+    "path": "steel/values",
+    "params": {
+      "year": "5Y"
+    },
+    "ok": false,
+    "status": 404,
+    "error": "{\"statusCode\":404,\"message\":\"Cannot GET /api/steel/values?year=5Y\",\"error\":\"Not Found\"}",
+    "ms": 231
+  },
+  {
+    "sector": "steel",
+    "path": "steel/values-year-over-year",
+    "params": {
+      "year": "5Y"
+    },
+    "ok": false,
+    "status": 400,
+    "error": "{\"statusCode\":400,\"message\":[\"macroIds must be a string\",\"repo must be a valid enum value\"],\"error\":\"Bad Request\"}",
+    "ms": 230
+  },
+  {
+    "sector": "bank",
+    "path": "bank/legend",
+    "params": {},
+    "ok": false,
+    "status": 404,
+    "error": "{\"statusCode\":404,\"message\":\"Cannot GET /api/bank/legend\",\"error\":\"Not Found\"}",
+    "ms": 528
+  },
+  {
+    "sector": "bank",
+    "path": "bank/legends",
+    "params": {},
+    "ok": true,
+    "status": 200,
+    "kind": "dict",
+    "n": 10,
+    "empty": false,
+    "keys": [
+      "macroGlobalDimUnitedStates",
+      "macroVnDimInterestRateCentralBank",
+      "macroVnDimInterestRateCommercialBank",
+      "macroGlobalDimExchangeRate",
+      "macroVnDimExchangeRateUsd",
+      "macroVnDimOmo",
+      "bankList",
+      "corpDimFinFinancialRatio",
+      "corpDimFinIncomeStatement",
+      "macroUsDimInterestrate"
+    ],
+    "ms": 859
+  },
+  {
+    "sector": "bank",
+    "path": "bank/enterprise-corp-name",
+    "params": {},
+    "ok": false,
+    "status": 404,
+    "error": "{\"statusCode\":404,\"message\":\"Cannot GET /api/bank/enterprise-corp-name\",\"error\":\"Not Found\"}",
+    "ms": 331
+  },
+  {
+    "sector": "bank",
+    "path": "bank/overview/bank-data",
+    "params": {},
+    "ok": true,
+    "status": 200,
+    "kind": "dict",
+    "n": 3,
+    "empty": false,
+    "keys": [
+      "casaAndCof",
+      "yeaAndNpl",
+      "crWRA"
+    ],
+    "len.casaAndCof": 16,
+    "len.yeaAndNpl": 16,
+    "len.crWRA": 8,
+    "ms": 462
+  },
+  {
+    "sector": "bank",
+    "path": "bank/values",
+    "params": {
+      "year": "5Y"
+    },
+    "ok": false,
+    "status": 404,
+    "error": "{\"statusCode\":404,\"message\":\"Cannot GET /api/bank/values?year=5Y\",\"error\":\"Not Found\"}",
+    "ms": 427
+  },
+  {
+    "sector": "bank",
+    "path": "bank/values-year-over-year",
+    "params": {
+      "year": "5Y"
+    },
+    "ok": false,
+    "status": 404,
+    "error": "{\"statusCode\":404,\"message\":\"Cannot GET /api/bank/values-year-over-year?year=5Y\",\"error\":\"Not Found\"}",
+    "ms": 420
+  },
+  {
+    "sector": "cement",
+    "path": "cement/legend",
+    "params": {},
+    "ok": true,
+    "status": 200,
+    "kind": "dict",
+    "n": 4,
+    "empty": false,
+    "keys": [
+      "macroDimComdtyCementLegends",
+      "macroVnDimComdtyCementLegends",
+      "macroVnDimPrdIndustrialProductCementLegends",
+      "macroVnDimEximExcomdtyCementLegends"
+    ],
+    "len.macroDimComdtyCementLegends": 1,
+    "len.macroVnDimComdtyCementLegends": 1,
+    "len.macroVnDimPrdIndustrialProductCementLegends": 1,
+    "len.macroVnDimEximExcomdtyCementLegends": 1,
+    "ms": 156
+  },
+  {
+    "sector": "cement",
+    "path": "cement/legends",
+    "params": {},
+    "ok": false,
+    "status": 404,
+    "error": "{\"statusCode\":404,\"message\":\"Cannot GET /api/cement/legends\",\"error\":\"Not Found\"}",
+    "ms": 101
+  },
+  {
+    "sector": "cement",
+    "path": "cement/enterprise-corp-name",
+    "params": {},
+    "ok": false,
+    "status": 404,
+    "error": "{\"statusCode\":404,\"message\":\"Cannot GET /api/cement/enterprise-corp-name\",\"error\":\"Not Found\"}",
+    "ms": 35
+  },
+  {
+    "sector": "cement",
+    "path": "cement/overview/cement-data",
+    "params": {},
+    "ok": false,
+    "status": 404,
+    "error": "{\"statusCode\":404,\"message\":\"Cannot GET /api/cement/overview/cement-data\",\"error\":\"Not Found\"}",
+    "ms": 20
+  },
+  {
+    "sector": "cement",
+    "path": "cement/values",
+    "params": {
+      "year": "5Y"
+    },
+    "ok": false,
+    "status": 404,
+    "error": "{\"statusCode\":404,\"message\":\"Cannot GET /api/cement/values?year=5Y\",\"error\":\"Not Found\"}",
+    "ms": 29
+  },
+  {
+    "sector": "cement",
+    "path": "cement/values-year-over-year",
+    "params": {
+      "year": "5Y"
+    },
+    "ok": false,
+    "status": 400,
+    "error": "{\"statusCode\":400,\"message\":[\"macroIds must be a string\"],\"error\":\"Bad Request\"}",
+    "ms": 28
+  },
+  {
+    "sector": "pangasius",
+    "path": "pangasius/legend",
+    "params": {},
+    "ok": true,
+    "status": 200,
+    "kind": "list",
+    "n": 7,
+    "empty": false,
+    "keys": [
+      "id",
+      "name",
+      "sortIndex",
+      "levelIndex",
+      "nameLegend",
+      "unit",
+      "sector",
+      "isWatchList",
+      "isBasic"
+    ],
+    "ms": 19
+  },
+  {
+    "sector": "pangasius",
+    "path": "pangasius/legends",
+    "params": {},
+    "ok": false,
+    "status": 404,
+    "error": "{\"statusCode\":404,\"message\":\"Cannot GET /api/pangasius/legends\",\"error\":\"Not Found\"}",
+    "ms": 18
+  },
+  {
+    "sector": "pangasius",
+    "path": "pangasius/enterprise-corp-name",
+    "params": {},
+    "ok": false,
+    "status": 404,
+    "error": "{\"statusCode\":404,\"message\":\"Cannot GET /api/pangasius/enterprise-corp-name\",\"error\":\"Not Found\"}",
+    "ms": 232
+  },
+  {
+    "sector": "pangasius",
+    "path": "pangasius/overview/pangasius-data",
+    "params": {},
+    "ok": true,
+    "status": 200,
+    "kind": "dict",
+    "n": 2,
+    "empty": false,
+    "keys": [
+      "pangasiusCostStructure",
+      "pangasiusMarketStructure"
+    ],
+    "len.pangasiusCostStructure": 5,
+    "len.pangasiusMarketStructure": 2,
+    "ms": 123
+  },
+  {
+    "sector": "pangasius",
+    "path": "pangasius/values",
+    "params": {
+      "year": "5Y"
+    },
+    "ok": false,
+    "status": 404,
+    "error": "{\"statusCode\":404,\"message\":\"Cannot GET /api/pangasius/values?year=5Y\",\"error\":\"Not Found\"}",
+    "ms": 122
+  },
+  {
+    "sector": "pangasius",
+    "path": "pangasius/values-year-over-year",
+    "params": {
+      "year": "5Y"
+    },
+    "ok": false,
+    "status": 404,
+    "error": "{\"statusCode\":404,\"message\":\"Cannot GET /api/pangasius/values-year-over-year?year=5Y\",\"error\":\"Not Found\"}",
+    "ms": 120
+  },
+  {
+    "sector": "shrimp",
+    "path": "shrimp/legend",
+    "params": {},
+    "ok": false,
+    "status": 404,
+    "error": "{\"statusCode\":404,\"message\":\"Cannot GET /api/shrimp/legend\",\"error\":\"Not Found\"}",
+    "ms": 38
+  },
+  {
+    "sector": "shrimp",
+    "path": "shrimp/legends",
+    "params": {},
+    "ok": true,
+    "status": 200,
+    "kind": "dict",
+    "n": 3,
+    "empty": false,
+    "keys": [
+      "macroDimComdty",
+      "macroDimComdtyVN",
+      "countries"
+    ],
+    "len.macroDimComdty": 2,
+    "len.macroDimComdtyVN": 6,
+    "len.countries": 95,
+    "ms": 41
+  },
+  {
+    "sector": "shrimp",
+    "path": "shrimp/enterprise-corp-name",
+    "params": {},
+    "ok": true,
+    "status": 200,
+    "kind": "list",
+    "n": 3,
+    "empty": false,
+    "keys": [
+      "id",
+      "ticket",
+      "floor",
+      "corp_type_id",
+      "corp_name",
+      "market_cap_tyvnd",
+      "listed_share_vol",
+      "sector",
+      "first_sector_id",
+      "icb_name_vi",
+      "icb_code",
+      "is_listed",
+      "short_name"
+    ],
+    "ms": 44
+  },
+  {
+    "sector": "shrimp",
+    "path": "shrimp/overview/shrimp-data",
+    "params": {},
+    "ok": true,
+    "status": 200,
+    "kind": "dict",
+    "n": 8,
+    "empty": false,
+    "keys": [
+      "shrimpFarmingVolumeEcuador",
+      "shrimpFarmingVolumeAsia",
+      "shrimpCostStructure",
+      "shrimpVolumeAreaVietNam",
+      "shrimpVolumeAreaIndia",
+      "shrimpVolumeAreaEcuador",
+      "shrimpConsumptionGlobal",
+      "shrimpTradeFlow"
+    ],
+    "len.shrimpFarmingVolumeEcuador": 41,
+    "len.shrimpFarmingVolumeAsia": 56,
+    "len.shrimpCostStructure": 5,
+    "len.shrimpVolumeAreaVietNam": 14,
+    "len.shrimpVolumeAreaIndia": 18,
+    "len.shrimpVolumeAreaEcuador": 7,
+    "len.shrimpConsumptionGlobal": 10,
+    "len.shrimpTradeFlow": 49,
+    "ms": 128
+  },
+  {
+    "sector": "shrimp",
+    "path": "shrimp/values",
+    "params": {
+      "year": "5Y"
+    },
+    "ok": false,
+    "status": 404,
+    "error": "{\"statusCode\":404,\"message\":\"Cannot GET /api/shrimp/values?year=5Y\",\"error\":\"Not Found\"}",
+    "ms": 36
+  },
+  {
+    "sector": "shrimp",
+    "path": "shrimp/values-year-over-year",
+    "params": {
+      "year": "5Y"
+    },
+    "ok": false,
+    "status": 404,
+    "error": "{\"statusCode\":404,\"message\":\"Cannot GET /api/shrimp/values-year-over-year?year=5Y\",\"error\":\"Not Found\"}",
+    "ms": 37
+  },
+  {
+    "sector": "aviation",
+    "path": "aviation/legend",
+    "params": {},
+    "ok": true,
+    "status": 200,
+    "kind": "dict",
+    "n": 8,
+    "empty": false,
+    "keys": [
+      "macroDimInternationlvisitor",
+      "macroDimTransCarriedPassenger",
+      "macroDimTransTrafficPassenger",
+      "companyFlights",
+      "macroDimTransCarriedFreight",
+      "macroDimTransTrafficFreight",
+      "aviationDimScsComdty",
+      "aviationDimAirport"
+    ],
+    "len.macroDimInternationlvisitor": 4,
+    "len.macroDimTransCarriedPassenger": 1,
+    "len.macroDimTransTrafficPassenger": 1,
+    "len.companyFlights": 7,
+    "len.macroDimTransCarriedFreight": 1,
+    "len.macroDimTransTrafficFreight": 1,
+    "len.aviationDimScsComdty": 4,
+    "len.aviationDimAirport": 17,
+    "ms": 54
+  },
+  {
+    "sector": "aviation",
+    "path": "aviation/legends",
+    "params": {},
+    "ok": false,
+    "status": 404,
+    "error": "{\"statusCode\":404,\"message\":\"Cannot GET /api/aviation/legends\",\"error\":\"Not Found\"}",
+    "ms": 35
+  },
+  {
+    "sector": "aviation",
+    "path": "aviation/enterprise-corp-name",
+    "params": {},
+    "ok": false,
+    "status": 404,
+    "error": "{\"statusCode\":404,\"message\":\"Cannot GET /api/aviation/enterprise-corp-name\",\"error\":\"Not Found\"}",
+    "ms": 53
+  },
+  {
+    "sector": "aviation",
+    "path": "aviation/overview/aviation-data",
+    "params": {},
+    "ok": false,
+    "status": 404,
+    "error": "{\"statusCode\":404,\"message\":\"Cannot GET /api/aviation/overview/aviation-data\",\"error\":\"Not Found\"}",
+    "ms": 53
+  },
+  {
+    "sector": "aviation",
+    "path": "aviation/values",
+    "params": {
+      "year": "5Y"
+    },
+    "ok": false,
+    "status": 404,
+    "error": "{\"statusCode\":404,\"message\":\"Cannot GET /api/aviation/values?year=5Y\",\"error\":\"Not Found\"}",
+    "ms": 52
+  },
+  {
+    "sector": "aviation",
+    "path": "aviation/values-year-over-year",
+    "params": {
+      "year": "5Y"
+    },
+    "ok": false,
+    "status": 400,
+    "error": "{\"statusCode\":400,\"message\":[\"macroIds must be a string\",\"repo must be a valid enum value\",\"period must be a valid enum value\"],\"error\":\"Bad Request\"}",
+    "ms": 52
+  },
+  {
+    "sector": "rubber",
+    "path": "rubber/legend",
+    "params": {},
+    "ok": false,
+    "status": 404,
+    "error": "{\"statusCode\":404,\"message\":\"Cannot GET /api/rubber/legend\",\"error\":\"Not Found\"}",
+    "ms": 51
+  },
+  {
+    "sector": "rubber",
+    "path": "rubber/legends",
+    "params": {},
+    "ok": true,
+    "status": 200,
+    "kind": "dict",
+    "n": 4,
+    "empty": false,
+    "keys": [
+      "macroDimComdty",
+      "macroVnDimEximExcomdty",
+      "macroGlobalDimImportComdty",
+      "macroGlobalDimExportComdty"
+    ],
+    "ms": 49
+  },
+  {
+    "sector": "rubber",
+    "path": "rubber/enterprise-corp-name",
+    "params": {},
+    "ok": false,
+    "status": 404,
+    "error": "{\"statusCode\":404,\"message\":\"Cannot GET /api/rubber/enterprise-corp-name\",\"error\":\"Not Found\"}",
+    "ms": 37
+  },
+  {
+    "sector": "rubber",
+    "path": "rubber/overview/rubber-data",
+    "params": {},
+    "ok": true,
+    "status": 200,
+    "kind": "dict",
+    "n": 4,
+    "empty": false,
+    "keys": [
+      "rubberOverall",
+      "rubberApplication",
+      "country",
+      "rubberFarming"
+    ],
+    "len.rubberOverall": 32,
+    "len.rubberApplication": 9,
+    "len.country": 95,
+    "len.rubberFarming": 20,
+    "ms": 37
+  },
+  {
+    "sector": "rubber",
+    "path": "rubber/values",
+    "params": {
+      "year": "5Y"
+    },
+    "ok": false,
+    "status": 400,
+    "error": "{\"statusCode\":400,\"message\":[\"repo must be a valid enum value\",\"period must be a valid enum value\",\"macroIds must be a string\"],\"error\":\"Bad Request\"}",
+    "ms": 30
+  },
+  {
+    "sector": "rubber",
+    "path": "rubber/values-year-over-year",
+    "params": {
+      "year": "5Y"
+    },
+    "ok": false,
+    "status": 400,
+    "error": "{\"statusCode\":400,\"message\":[\"macroIds must be a string\",\"repo must be a valid enum value\"],\"error\":\"Bad Request\"}",
+    "ms": 36
+  },
+  {
+    "sector": "pig",
+    "path": "pig/legend",
+    "params": {},
+    "ok": true,
+    "status": 200,
+    "kind": "dict",
+    "n": 4,
+    "empty": false,
+    "keys": [
+      "macroDimComdty",
+      "macroDimComdtyVN",
+      "pigDimFarmingGlobal",
+      "macroGlobalDimImportComdty"
+    ],
+    "len.macroDimComdty": 4,
+    "len.macroDimComdtyVN": 3,
+    "len.pigDimFarmingGlobal": 5,
+    "len.macroGlobalDimImportComdty": 1,
+    "ms": 38
+  },
+  {
+    "sector": "pig",
+    "path": "pig/legends",
+    "params": {},
+    "ok": false,
+    "status": 404,
+    "error": "{\"statusCode\":404,\"message\":\"Cannot GET /api/pig/legends\",\"error\":\"Not Found\"}",
+    "ms": 28
+  },
+  {
+    "sector": "pig",
+    "path": "pig/enterprise-corp-name",
+    "params": {},
+    "ok": false,
+    "status": 404,
+    "error": "{\"statusCode\":404,\"message\":\"Cannot GET /api/pig/enterprise-corp-name\",\"error\":\"Not Found\"}",
+    "ms": 36
+  },
+  {
+    "sector": "pig",
+    "path": "pig/overview/pig-data",
+    "params": {},
+    "ok": false,
+    "status": 404,
+    "error": "{\"statusCode\":404,\"message\":\"Cannot GET /api/pig/overview/pig-data\",\"error\":\"Not Found\"}",
+    "ms": 33
+  },
+  {
+    "sector": "pig",
+    "path": "pig/values",
+    "params": {
+      "year": "5Y"
+    },
+    "ok": false,
+    "status": 404,
+    "error": "{\"statusCode\":404,\"message\":\"Cannot GET /api/pig/values?year=5Y\",\"error\":\"Not Found\"}",
+    "ms": 15
+  },
+  {
+    "sector": "pig",
+    "path": "pig/values-year-over-year",
+    "params": {
+      "year": "5Y"
+    },
+    "ok": false,
+    "status": 404,
+    "error": "{\"statusCode\":404,\"message\":\"Cannot GET /api/pig/values-year-over-year?year=5Y\",\"error\":\"Not Found\"}",
+    "ms": 19
+  },
+  {
+    "sector": "chemistry",
+    "path": "chemistry/legend",
+    "params": {},
+    "ok": false,
+    "status": 404,
+    "error": "{\"statusCode\":404,\"message\":\"Cannot GET /api/chemistry/legend\",\"error\":\"Not Found\"}",
+    "ms": 31
+  },
+  {
+    "sector": "chemistry",
+    "path": "chemistry/legends",
+    "params": {},
+    "ok": true,
+    "status": 200,
+    "kind": "dict",
+    "n": 5,
+    "empty": false,
+    "keys": [
+      "macroDimComdty",
+      "macroDimComdtyVN",
+      "macroVnDimPrdIndustrialProduct",
+      "macroVnDimMoitIndustrialProduct",
+      "countries"
+    ],
+    "ms": 49
+  },
+  {
+    "sector": "chemistry",
+    "path": "chemistry/enterprise-corp-name",
+    "params": {},
+    "ok": false,
+    "status": 404,
+    "error": "{\"statusCode\":404,\"message\":\"Cannot GET /api/chemistry/enterprise-corp-name\",\"error\":\"Not Found\"}",
+    "ms": 47
+  },
+  {
+    "sector": "chemistry",
+    "path": "chemistry/overview/chemistry-data",
+    "params": {},
+    "ok": false,
+    "status": 404,
+    "error": "{\"statusCode\":404,\"message\":\"Cannot GET /api/chemistry/overview/chemistry-data\",\"error\":\"Not Found\"}",
+    "ms": 29
+  },
+  {
+    "sector": "chemistry",
+    "path": "chemistry/values",
+    "params": {
+      "year": "5Y"
+    },
+    "ok": false,
+    "status": 404,
+    "error": "{\"statusCode\":404,\"message\":\"Cannot GET /api/chemistry/values?year=5Y\",\"error\":\"Not Found\"}",
+    "ms": 28
+  },
+  {
+    "sector": "chemistry",
+    "path": "chemistry/values-year-over-year",
+    "params": {
+      "year": "5Y"
+    },
+    "ok": false,
+    "status": 404,
+    "error": "{\"statusCode\":404,\"message\":\"Cannot GET /api/chemistry/values-year-over-year?year=5Y\",\"error\":\"Not Found\"}",
+    "ms": 45
+  },
+  {
+    "sector": "textile",
+    "path": "textile/legend",
+    "params": {},
+    "ok": false,
+    "status": 404,
+    "error": "{\"statusCode\":404,\"message\":\"Cannot GET /api/textile/legend\",\"error\":\"Not Found\"}",
+    "ms": 48
+  },
+  {
+    "sector": "textile",
+    "path": "textile/legends",
+    "params": {},
+    "ok": true,
+    "status": 200,
+    "kind": "dict",
+    "n": 7,
+    "empty": false,
+    "keys": [
+      "macroDimComdty",
+      "macroDimComdtyVN",
+      "macroVnDimEximComdty",
+      "macroGlobalDimExportComdty",
+      "macroVnDimLabourIndex",
+      "macroVnDimPrdIip",
+      "countries"
+    ],
+    "ms": 46
+  },
+  {
+    "sector": "textile",
+    "path": "textile/enterprise-corp-name",
+    "params": {},
+    "ok": false,
+    "status": 404,
+    "error": "{\"statusCode\":404,\"message\":\"Cannot GET /api/textile/enterprise-corp-name\",\"error\":\"Not Found\"}",
+    "ms": 25
+  },
+  {
+    "sector": "textile",
+    "path": "textile/overview/textile-data",
+    "params": {},
+    "ok": true,
+    "status": 200,
+    "kind": "dict",
+    "n": 4,
+    "empty": false,
+    "keys": [
+      "country",
+      "textileExportOverall",
+      "textileApplication",
+      "textileExportCountry"
+    ],
+    "len.country": 95,
+    "len.textileExportOverall": 19,
+    "len.textileApplication": 7,
+    "len.textileExportCountry": 9,
+    "ms": 74
+  },
+  {
+    "sector": "textile",
+    "path": "textile/values",
+    "params": {
+      "year": "5Y"
+    },
+    "ok": false,
+    "status": 404,
+    "error": "{\"statusCode\":404,\"message\":\"Cannot GET /api/textile/values?year=5Y\",\"error\":\"Not Found\"}",
+    "ms": 24
+  },
+  {
+    "sector": "textile",
+    "path": "textile/values-year-over-year",
+    "params": {
+      "year": "5Y"
+    },
+    "ok": false,
+    "status": 400,
+    "error": "{\"statusCode\":400,\"message\":[\"repo must be a valid enum value\",\"macroIds must be a string\"],\"error\":\"Bad Request\"}",
+    "ms": 54
+  },
+  {
+    "sector": "industry",
+    "path": "industry/legend",
+    "params": {},
+    "ok": false,
+    "status": 404,
+    "error": "{\"statusCode\":404,\"message\":\"Cannot GET /api/industry/legend\",\"error\":\"Not Found\"}",
+    "ms": 55
+  },
+  {
+    "sector": "industry",
+    "path": "industry/legends",
+    "params": {},
+    "ok": false,
+    "status": 404,
+    "error": "{\"statusCode\":404,\"message\":\"Cannot GET /api/industry/legends\",\"error\":\"Not Found\"}",
+    "ms": 55
+  },
+  {
+    "sector": "industry",
+    "path": "industry/enterprise-corp-name",
+    "params": {},
+    "ok": false,
+    "status": 404,
+    "error": "{\"statusCode\":404,\"message\":\"Cannot GET /api/industry/enterprise-corp-name\",\"error\":\"Not Found\"}",
+    "ms": 54
+  },
+  {
+    "sector": "industry",
+    "path": "industry/overview/industry-data",
+    "params": {},
+    "ok": false,
+    "status": 404,
+    "error": "{\"statusCode\":404,\"message\":\"Cannot GET /api/industry/overview/industry-data\",\"error\":\"Not Found\"}",
+    "ms": 54
+  },
+  {
+    "sector": "industry",
+    "path": "industry/values",
+    "params": {
+      "year": "5Y"
+    },
+    "ok": false,
+    "status": 404,
+    "error": "{\"statusCode\":404,\"message\":\"Cannot GET /api/industry/values?year=5Y\",\"error\":\"Not Found\"}",
+    "ms": 49
+  },
+  {
+    "sector": "industry",
+    "path": "industry/values-year-over-year",
+    "params": {
+      "year": "5Y"
+    },
+    "ok": false,
+    "status": 404,
+    "error": "{\"statusCode\":404,\"message\":\"Cannot GET /api/industry/values-year-over-year?year=5Y\",\"error\":\"Not Found\"}",
+    "ms": 49
+  },
+  {
+    "sector": "realestate",
+    "path": "real-estate/legend",
+    "params": {},
+    "ok": false,
+    "status": 404,
+    "error": "{\"statusCode\":404,\"message\":\"Cannot GET /api/real-estate/legend\",\"error\":\"Not Found\"}",
+    "ms": 62
+  },
+  {
+    "sector": "realestate",
+    "path": "real-estate/legends",
+    "params": {},
+    "ok": true,
+    "status": 200,
+    "kind": "dict",
+    "n": 8,
+    "empty": false,
+    "keys": [
+      "realEstateDimInterestRate",
+      "realEstateDimOpinions",
+      "realEstateDimFunding",
+      "realEstateType",
+      "macroVnDimStateRevenuesTaxation",
+      "enterpriseList",
+      "corpDimFinBalanceSheet",
+      "corpDimFinFinancialRatio"
+    ],
+    "ms": 291
+  },
+  {
+    "sector": "realestate",
+    "path": "real-estate/enterprise-corp-name",
+    "params": {},
+    "ok": false,
+    "status": 404,
+    "error": "{\"statusCode\":404,\"message\":\"Cannot GET /api/real-estate/enterprise-corp-name\",\"error\":\"Not Found\"}",
+    "ms": 62
+  },
+  {
+    "sector": "realestate",
+    "path": "real-estate/overview/real-estate-data",
+    "params": {},
+    "ok": false,
+    "status": 404,
+    "error": "{\"statusCode\":404,\"message\":\"Cannot GET /api/real-estate/overview/real-estate-data\",\"error\":\"Not Found\"}",
+    "ms": 61
+  },
+  {
+    "sector": "realestate",
+    "path": "real-estate/values",
+    "params": {
+      "year": "5Y"
+    },
+    "ok": false,
+    "status": 404,
+    "error": "{\"statusCode\":404,\"message\":\"Cannot GET /api/real-estate/values?year=5Y\",\"error\":\"Not Found\"}",
+    "ms": 60
+  },
+  {
+    "sector": "realestate",
+    "path": "real-estate/values-year-over-year",
+    "params": {
+      "year": "5Y"
+    },
+    "ok": false,
+    "status": 404,
+    "error": "{\"statusCode\":404,\"message\":\"Cannot GET /api/real-estate/values-year-over-year?year=5Y\",\"error\":\"Not Found\"}",
+    "ms": 124
+  },
+  {
+    "sector": "transport",
+    "path": "transport/legend",
+    "params": {},
+    "ok": false,
+    "status": 404,
+    "error": "{\"statusCode\":404,\"message\":\"Cannot GET /api/transport/legend\",\"error\":\"Not Found\"}",
+    "ms": 22
+  },
+  {
+    "sector": "transport",
+    "path": "transport/legends",
+    "params": {},
+    "ok": true,
+    "status": 200,
+    "kind": "dict",
+    "n": 1,
+    "empty": false,
+    "keys": [
+      "macroDimComdty"
+    ],
+    "ms": 42
+  },
+  {
+    "sector": "transport",
+    "path": "transport/enterprise-corp-name",
+    "params": {},
+    "ok": false,
+    "status": 404,
+    "error": "{\"statusCode\":404,\"message\":\"Cannot GET /api/transport/enterprise-corp-name\",\"error\":\"Not Found\"}",
+    "ms": 40
+  },
+  {
+    "sector": "transport",
+    "path": "transport/overview/transport-data",
+    "params": {},
+    "ok": false,
+    "status": 404,
+    "error": "{\"statusCode\":404,\"message\":\"Cannot GET /api/transport/overview/transport-data\",\"error\":\"Not Found\"}",
+    "ms": 39
+  },
+  {
+    "sector": "transport",
+    "path": "transport/values",
+    "params": {
+      "year": "5Y"
+    },
+    "ok": false,
+    "status": 400,
+    "error": "{\"statusCode\":400,\"message\":[\"macroIds must be a string\"],\"error\":\"Bad Request\"}",
+    "ms": 21
+  },
+  {
+    "sector": "transport",
+    "path": "transport/values-year-over-year",
+    "params": {
+      "year": "5Y"
+    },
+    "ok": false,
+    "status": 404,
+    "error": "{\"statusCode\":404,\"message\":\"Cannot GET /api/transport/values-year-over-year?year=5Y\",\"error\":\"Not Found\"}",
+    "ms": 50
+  },
+  {
+    "sector": "securities",
+    "path": "stock/legend",
+    "params": {},
+    "ok": false,
+    "status": 404,
+    "error": "{\"statusCode\":404,\"message\":\"Cannot GET /api/stock/legend\",\"error\":\"Not Found\"}",
+    "ms": 67
+  },
+  {
+    "sector": "securities",
+    "path": "stock/legends",
+    "params": {},
+    "ok": true,
+    "status": 200,
+    "kind": "dict",
+    "n": 12,
+    "empty": false,
+    "keys": [
+      "macroGlobalDimStock",
+      "macroGlobalDimBond",
+      "macroGlobalDimExchangeRate",
+      "macroGlobalDimCrypto",
+      "macroVnDimStock",
+      "macroVnDimInterestRateCommercialBank",
+      "macroVnDimExchangeRateUsd",
+      "macroVnDimExchangeRateOthers",
+      "corpDimFinFootnotes",
+      "corpDimFinBalanceSheet",
+      "securityDimNetFlow",
+      "enterpriseList"
+    ],
+    "ms": 74
+  },
+  {
+    "sector": "securities",
+    "path": "stock/enterprise-corp-name",
+    "params": {},
+    "ok": false,
+    "status": 404,
+    "error": "{\"statusCode\":404,\"message\":\"Cannot GET /api/stock/enterprise-corp-name\",\"error\":\"Not Found\"}",
+    "ms": 49
+  },
+  {
+    "sector": "securities",
+    "path": "stock/overview/stock-data",
+    "params": {},
+    "ok": true,
+    "status": 200,
+    "kind": "dict",
+    "n": 2,
+    "empty": false,
+    "keys": [
+      "securityBondCorporate",
+      "securityGrossProfit"
+    ],
+    "len.securityBondCorporate": 5,
+    "len.securityGrossProfit": 5,
+    "ms": 61
+  },
+  {
+    "sector": "securities",
+    "path": "stock/values",
+    "params": {
+      "year": "5Y"
+    },
+    "ok": false,
+    "status": 404,
+    "error": "{\"statusCode\":404,\"message\":\"Cannot GET /api/stock/values?year=5Y\",\"error\":\"Not Found\"}",
+    "ms": 34
+  },
+  {
+    "sector": "securities",
+    "path": "stock/values-year-over-year",
+    "params": {
+      "year": "5Y"
+    },
+    "ok": false,
+    "status": 404,
+    "error": "{\"statusCode\":404,\"message\":\"Cannot GET /api/stock/values-year-over-year?year=5Y\",\"error\":\"Not Found\"}",
+    "ms": 34
+  },
+  {
+    "sector": "food-beverage",
+    "path": "food-and-beverage/legend",
+    "params": {},
+    "ok": false,
+    "status": 404,
+    "error": "{\"statusCode\":404,\"message\":\"Cannot GET /api/food-and-beverage/legend\",\"error\":\"Not Found\"}",
+    "ms": 33
+  },
+  {
+    "sector": "food-beverage",
+    "path": "food-and-beverage/legends",
+    "params": {},
+    "ok": true,
+    "status": 200,
+    "kind": "dict",
+    "n": 4,
+    "empty": false,
+    "keys": [
+      "macroDimComdty",
+      "macroDimComdtyVN",
+      "macroVnDimPrdIndustrialProduct",
+      "macroVnDimEximComdty"
+    ],
+    "ms": 39
+  },
+  {
+    "sector": "food-beverage",
+    "path": "food-and-beverage/enterprise-corp-name",
+    "params": {},
+    "ok": false,
+    "status": 404,
+    "error": "{\"statusCode\":404,\"message\":\"Cannot GET /api/food-and-beverage/enterprise-corp-name\",\"error\":\"Not Found\"}",
+    "ms": 20
+  },
+  {
+    "sector": "food-beverage",
+    "path": "food-and-beverage/overview/food-and-beverage-data",
+    "params": {},
+    "ok": false,
+    "status": 404,
+    "error": "{\"statusCode\":404,\"message\":\"Cannot GET /api/food-and-beverage/overview/food-and-beverage-data\",\"error\":\"Not Found\"}",
+    "ms": 24
+  },
+  {
+    "sector": "food-beverage",
+    "path": "food-and-beverage/values",
+    "params": {
+      "year": "5Y"
+    },
+    "ok": false,
+    "status": 400,
+    "error": "{\"statusCode\":400,\"message\":[\"repo must be a valid enum value\",\"period must be a valid enum value\",\"macroIds must be a string\"],\"error\":\"Bad Request\"}",
+    "ms": 17
+  },
+  {
+    "sector": "food-beverage",
+    "path": "food-and-beverage/values-year-over-year",
+    "params": {
+      "year": "5Y"
+    },
+    "ok": false,
+    "status": 400,
+    "error": "{\"statusCode\":400,\"message\":[\"repo must be a valid enum value\",\"macroId must be a string\"],\"error\":\"Bad Request\"}",
+    "ms": 25
+  },
+  {
+    "sector": "electricity",
+    "path": "electricity/legend",
+    "params": {},
+    "ok": false,
+    "status": 404,
+    "error": "{\"statusCode\":404,\"message\":\"Cannot GET /api/electricity/legend\",\"error\":\"Not Found\"}",
+    "ms": 23
+  },
+  {
+    "sector": "electricity",
+    "path": "electricity/legends",
+    "params": {},
+    "ok": false,
+    "status": 404,
+    "error": "{\"statusCode\":404,\"message\":\"Cannot GET /api/electricity/legends\",\"error\":\"Not Found\"}",
+    "ms": 19
+  },
+  {
+    "sector": "electricity",
+    "path": "electricity/enterprise-corp-name",
+    "params": {},
+    "ok": false,
+    "status": 404,
+    "error": "{\"statusCode\":404,\"message\":\"Cannot GET /api/electricity/enterprise-corp-name\",\"error\":\"Not Found\"}",
+    "ms": 18
+  },
+  {
+    "sector": "electricity",
+    "path": "electricity/overview/electricity-data",
+    "params": {},
+    "ok": false,
+    "status": 404,
+    "error": "{\"statusCode\":404,\"message\":\"Cannot GET /api/electricity/overview/electricity-data\",\"error\":\"Not Found\"}",
+    "ms": 17
+  },
+  {
+    "sector": "electricity",
+    "path": "electricity/values",
+    "params": {
+      "year": "5Y"
+    },
+    "ok": false,
+    "status": 404,
+    "error": "{\"statusCode\":404,\"message\":\"Cannot GET /api/electricity/values?year=5Y\",\"error\":\"Not Found\"}",
+    "ms": 14
+  },
+  {
+    "sector": "electricity",
+    "path": "electricity/values-year-over-year",
+    "params": {
+      "year": "5Y"
+    },
+    "ok": false,
+    "status": 404,
+    "error": "{\"statusCode\":404,\"message\":\"Cannot GET /api/electricity/values-year-over-year?year=5Y\",\"error\":\"Not Found\"}",
+    "ms": 10
+  },
+  {
+    "sector": "plastics",
+    "path": "plastics/legend",
+    "params": {},
+    "ok": false,
+    "status": 404,
+    "error": "{\"statusCode\":404,\"message\":\"Cannot GET /api/plastics/legend\",\"error\":\"Not Found\"}",
+    "ms": 36
+  },
+  {
+    "sector": "plastics",
+    "path": "plastics/legends",
+    "params": {},
+    "ok": false,
+    "status": 404,
+    "error": "{\"statusCode\":404,\"message\":\"Cannot GET /api/plastics/legends\",\"error\":\"Not Found\"}",
+    "ms": 34
+  },
+  {
+    "sector": "plastics",
+    "path": "plastics/enterprise-corp-name",
+    "params": {},
+    "ok": false,
+    "status": 404,
+    "error": "{\"statusCode\":404,\"message\":\"Cannot GET /api/plastics/enterprise-corp-name\",\"error\":\"Not Found\"}",
+    "ms": 33
+  },
+  {
+    "sector": "plastics",
+    "path": "plastics/overview/plastics-data",
+    "params": {},
+    "ok": false,
+    "status": 404,
+    "error": "{\"statusCode\":404,\"message\":\"Cannot GET /api/plastics/overview/plastics-data\",\"error\":\"Not Found\"}",
+    "ms": 35
+  },
+  {
+    "sector": "plastics",
+    "path": "plastics/values",
+    "params": {
+      "year": "5Y"
+    },
+    "ok": false,
+    "status": 404,
+    "error": "{\"statusCode\":404,\"message\":\"Cannot GET /api/plastics/values?year=5Y\",\"error\":\"Not Found\"}",
+    "ms": 34
+  },
+  {
+    "sector": "plastics",
+    "path": "plastics/values-year-over-year",
+    "params": {
+      "year": "5Y"
+    },
+    "ok": false,
+    "status": 404,
+    "error": "{\"statusCode\":404,\"message\":\"Cannot GET /api/plastics/values-year-over-year?year=5Y\",\"error\":\"Not Found\"}",
+    "ms": 34
+  },
+  {
+    "sector": "insurance",
+    "path": "insurance/legend",
+    "params": {},
+    "ok": false,
+    "status": 404,
+    "error": "{\"statusCode\":404,\"message\":\"Cannot GET /api/insurance/legend\",\"error\":\"Not Found\"}",
+    "ms": 41
+  },
+  {
+    "sector": "insurance",
+    "path": "insurance/legends",
+    "params": {},
+    "ok": false,
+    "status": 404,
+    "error": "{\"statusCode\":404,\"message\":\"Cannot GET /api/insurance/legends\",\"error\":\"Not Found\"}",
+    "ms": 32
+  },
+  {
+    "sector": "insurance",
+    "path": "insurance/enterprise-corp-name",
+    "params": {},
+    "ok": false,
+    "status": 404,
+    "error": "{\"statusCode\":404,\"message\":\"Cannot GET /api/insurance/enterprise-corp-name\",\"error\":\"Not Found\"}",
+    "ms": 48
+  },
+  {
+    "sector": "insurance",
+    "path": "insurance/overview/insurance-data",
+    "params": {},
+    "ok": false,
+    "status": 404,
+    "error": "{\"statusCode\":404,\"message\":\"Cannot GET /api/insurance/overview/insurance-data\",\"error\":\"Not Found\"}",
+    "ms": 48
+  },
+  {
+    "sector": "insurance",
+    "path": "insurance/values",
+    "params": {
+      "year": "5Y"
+    },
+    "ok": false,
+    "status": 404,
+    "error": "{\"statusCode\":404,\"message\":\"Cannot GET /api/insurance/values?year=5Y\",\"error\":\"Not Found\"}",
+    "ms": 47
+  },
+  {
+    "sector": "insurance",
+    "path": "insurance/values-year-over-year",
+    "params": {
+      "year": "5Y"
+    },
+    "ok": false,
+    "status": 404,
+    "error": "{\"statusCode\":404,\"message\":\"Cannot GET /api/insurance/values-year-over-year?year=5Y\",\"error\":\"Not Found\"}",
+    "ms": 46
+  },
+  {
+    "sector": "oilgas",
+    "path": "oilgas/legend",
+    "params": {},
+    "ok": false,
+    "status": 404,
+    "error": "{\"statusCode\":404,\"message\":\"Cannot GET /api/oilgas/legend\",\"error\":\"Not Found\"}",
+    "ms": 47
+  },
+  {
+    "sector": "oilgas",
+    "path": "oilgas/legends",
+    "params": {},
+    "ok": false,
+    "status": 404,
+    "error": "{\"statusCode\":404,\"message\":\"Cannot GET /api/oilgas/legends\",\"error\":\"Not Found\"}",
+    "ms": 46
+  },
+  {
+    "sector": "oilgas",
+    "path": "oilgas/enterprise-corp-name",
+    "params": {},
+    "ok": false,
+    "status": 404,
+    "error": "{\"statusCode\":404,\"message\":\"Cannot GET /api/oilgas/enterprise-corp-name\",\"error\":\"Not Found\"}",
+    "ms": 44
+  },
+  {
+    "sector": "oilgas",
+    "path": "oilgas/overview/oilgas-data",
+    "params": {},
+    "ok": false,
+    "status": 404,
+    "error": "{\"statusCode\":404,\"message\":\"Cannot GET /api/oilgas/overview/oilgas-data\",\"error\":\"Not Found\"}",
+    "ms": 40
+  },
+  {
+    "sector": "oilgas",
+    "path": "oilgas/values",
+    "params": {
+      "year": "5Y"
+    },
+    "ok": false,
+    "status": 404,
+    "error": "{\"statusCode\":404,\"message\":\"Cannot GET /api/oilgas/values?year=5Y\",\"error\":\"Not Found\"}",
+    "ms": 27
+  },
+  {
+    "sector": "oilgas",
+    "path": "oilgas/values-year-over-year",
+    "params": {
+      "year": "5Y"
+    },
+    "ok": false,
+    "status": 404,
+    "error": "{\"statusCode\":404,\"message\":\"Cannot GET /api/oilgas/values-year-over-year?year=5Y\",\"error\":\"Not Found\"}",
+    "ms": 26
+  },
+  {
+    "sector": "gold",
+    "path": "gold/legend",
+    "params": {},
+    "ok": false,
+    "status": 404,
+    "error": "{\"statusCode\":404,\"message\":\"Cannot GET /api/gold/legend\",\"error\":\"Not Found\"}",
+    "ms": 32
+  },
+  {
+    "sector": "gold",
+    "path": "gold/legends",
+    "params": {},
+    "ok": false,
+    "status": 404,
+    "error": "{\"statusCode\":404,\"message\":\"Cannot GET /api/gold/legends\",\"error\":\"Not Found\"}",
+    "ms": 31
+  },
+  {
+    "sector": "gold",
+    "path": "gold/enterprise-corp-name",
+    "params": {},
+    "ok": false,
+    "status": 404,
+    "error": "{\"statusCode\":404,\"message\":\"Cannot GET /api/gold/enterprise-corp-name\",\"error\":\"Not Found\"}",
+    "ms": 25
+  },
+  {
+    "sector": "gold",
+    "path": "gold/overview/gold-data",
+    "params": {},
+    "ok": false,
+    "status": 404,
+    "error": "{\"statusCode\":404,\"message\":\"Cannot GET /api/gold/overview/gold-data\",\"error\":\"Not Found\"}",
+    "ms": 30
+  },
+  {
+    "sector": "gold",
+    "path": "gold/values",
+    "params": {
+      "year": "5Y"
+    },
+    "ok": false,
+    "status": 404,
+    "error": "{\"statusCode\":404,\"message\":\"Cannot GET /api/gold/values?year=5Y\",\"error\":\"Not Found\"}",
+    "ms": 31
+  },
+  {
+    "sector": "gold",
+    "path": "gold/values-year-over-year",
+    "params": {
+      "year": "5Y"
+    },
+    "ok": false,
+    "status": 404,
+    "error": "{\"statusCode\":404,\"message\":\"Cannot GET /api/gold/values-year-over-year?year=5Y\",\"error\":\"Not Found\"}",
+    "ms": 24
+  },
+  {
+    "sector": "coffee",
+    "path": "coffee/legend",
+    "params": {},
+    "ok": false,
+    "status": 404,
+    "error": "{\"statusCode\":404,\"message\":\"Cannot GET /api/coffee/legend\",\"error\":\"Not Found\"}",
+    "ms": 16
+  },
+  {
+    "sector": "coffee",
+    "path": "coffee/legends",
+    "params": {},
+    "ok": false,
+    "status": 404,
+    "error": "{\"statusCode\":404,\"message\":\"Cannot GET /api/coffee/legends\",\"error\":\"Not Found\"}",
+    "ms": 36
+  },
+  {
+    "sector": "coffee",
+    "path": "coffee/enterprise-corp-name",
+    "params": {},
+    "ok": false,
+    "status": 404,
+    "error": "{\"statusCode\":404,\"message\":\"Cannot GET /api/coffee/enterprise-corp-name\",\"error\":\"Not Found\"}",
+    "ms": 36
+  },
+  {
+    "sector": "coffee",
+    "path": "coffee/overview/coffee-data",
+    "params": {},
+    "ok": false,
+    "status": 404,
+    "error": "{\"statusCode\":404,\"message\":\"Cannot GET /api/coffee/overview/coffee-data\",\"error\":\"Not Found\"}",
+    "ms": 35
+  },
+  {
+    "sector": "coffee",
+    "path": "coffee/values",
+    "params": {
+      "year": "5Y"
+    },
+    "ok": false,
+    "status": 404,
+    "error": "{\"statusCode\":404,\"message\":\"Cannot GET /api/coffee/values?year=5Y\",\"error\":\"Not Found\"}",
+    "ms": 34
+  },
+  {
+    "sector": "coffee",
+    "path": "coffee/values-year-over-year",
+    "params": {
+      "year": "5Y"
+    },
+    "ok": false,
+    "status": 404,
+    "error": "{\"statusCode\":404,\"message\":\"Cannot GET /api/coffee/values-year-over-year?year=5Y\",\"error\":\"Not Found\"}",
+    "ms": 35
+  },
+  {
+    "sector": "wood",
+    "path": "wood/legend",
+    "params": {},
+    "ok": false,
+    "status": 404,
+    "error": "{\"statusCode\":404,\"message\":\"Cannot GET /api/wood/legend\",\"error\":\"Not Found\"}",
+    "ms": 34
+  },
+  {
+    "sector": "wood",
+    "path": "wood/legends",
+    "params": {},
+    "ok": false,
+    "status": 404,
+    "error": "{\"statusCode\":404,\"message\":\"Cannot GET /api/wood/legends\",\"error\":\"Not Found\"}",
+    "ms": 33
+  },
+  {
+    "sector": "wood",
+    "path": "wood/enterprise-corp-name",
+    "params": {},
+    "ok": false,
+    "status": 404,
+    "error": "{\"statusCode\":404,\"message\":\"Cannot GET /api/wood/enterprise-corp-name\",\"error\":\"Not Found\"}",
+    "ms": 33
+  },
+  {
+    "sector": "wood",
+    "path": "wood/overview/wood-data",
+    "params": {},
+    "ok": false,
+    "status": 404,
+    "error": "{\"statusCode\":404,\"message\":\"Cannot GET /api/wood/overview/wood-data\",\"error\":\"Not Found\"}",
+    "ms": 21
+  },
+  {
+    "sector": "wood",
+    "path": "wood/values",
+    "params": {
+      "year": "5Y"
+    },
+    "ok": false,
+    "status": 404,
+    "error": "{\"statusCode\":404,\"message\":\"Cannot GET /api/wood/values?year=5Y\",\"error\":\"Not Found\"}",
+    "ms": 20
+  },
+  {
+    "sector": "wood",
+    "path": "wood/values-year-over-year",
+    "params": {
+      "year": "5Y"
+    },
+    "ok": false,
+    "status": 404,
+    "error": "{\"statusCode\":404,\"message\":\"Cannot GET /api/wood/values-year-over-year?year=5Y\",\"error\":\"Not Found\"}",
+    "ms": 31
+  },
+  {
+    "sector": "pharma",
+    "path": "pharma/legend",
+    "params": {},
+    "ok": false,
+    "status": 404,
+    "error": "{\"statusCode\":404,\"message\":\"Cannot GET /api/pharma/legend\",\"error\":\"Not Found\"}",
+    "ms": 27
+  },
+  {
+    "sector": "pharma",
+    "path": "pharma/legends",
+    "params": {},
+    "ok": false,
+    "status": 404,
+    "error": "{\"statusCode\":404,\"message\":\"Cannot GET /api/pharma/legends\",\"error\":\"Not Found\"}",
+    "ms": 22
+  },
+  {
+    "sector": "pharma",
+    "path": "pharma/enterprise-corp-name",
+    "params": {},
+    "ok": false,
+    "status": 404,
+    "error": "{\"statusCode\":404,\"message\":\"Cannot GET /api/pharma/enterprise-corp-name\",\"error\":\"Not Found\"}",
+    "ms": 31
+  },
+  {
+    "sector": "pharma",
+    "path": "pharma/overview/pharma-data",
+    "params": {},
+    "ok": false,
+    "status": 404,
+    "error": "{\"statusCode\":404,\"message\":\"Cannot GET /api/pharma/overview/pharma-data\",\"error\":\"Not Found\"}",
+    "ms": 25
+  },
+  {
+    "sector": "pharma",
+    "path": "pharma/values",
+    "params": {
+      "year": "5Y"
+    },
+    "ok": false,
+    "status": 404,
+    "error": "{\"statusCode\":404,\"message\":\"Cannot GET /api/pharma/values?year=5Y\",\"error\":\"Not Found\"}",
+    "ms": 32
+  },
+  {
+    "sector": "pharma",
+    "path": "pharma/values-year-over-year",
+    "params": {
+      "year": "5Y"
+    },
+    "ok": false,
+    "status": 404,
+    "error": "{\"statusCode\":404,\"message\":\"Cannot GET /api/pharma/values-year-over-year?year=5Y\",\"error\":\"Not Found\"}",
+    "ms": 39
+  },
+  {
+    "sector": "logistics",
+    "path": "logistics/legend",
+    "params": {},
+    "ok": false,
+    "status": 404,
+    "error": "{\"statusCode\":404,\"message\":\"Cannot GET /api/logistics/legend\",\"error\":\"Not Found\"}",
+    "ms": 35
+  },
+  {
+    "sector": "logistics",
+    "path": "logistics/legends",
+    "params": {},
+    "ok": false,
+    "status": 404,
+    "error": "{\"statusCode\":404,\"message\":\"Cannot GET /api/logistics/legends\",\"error\":\"Not Found\"}",
+    "ms": 19
+  },
+  {
+    "sector": "logistics",
+    "path": "logistics/enterprise-corp-name",
+    "params": {},
+    "ok": false,
+    "status": 404,
+    "error": "{\"statusCode\":404,\"message\":\"Cannot GET /api/logistics/enterprise-corp-name\",\"error\":\"Not Found\"}",
+    "ms": 18
+  },
+  {
+    "sector": "logistics",
+    "path": "logistics/overview/logistics-data",
+    "params": {},
+    "ok": false,
+    "status": 404,
+    "error": "{\"statusCode\":404,\"message\":\"Cannot GET /api/logistics/overview/logistics-data\",\"error\":\"Not Found\"}",
+    "ms": 30
+  },
+  {
+    "sector": "logistics",
+    "path": "logistics/values",
+    "params": {
+      "year": "5Y"
+    },
+    "ok": false,
+    "status": 404,
+    "error": "{\"statusCode\":404,\"message\":\"Cannot GET /api/logistics/values?year=5Y\",\"error\":\"Not Found\"}",
+    "ms": 24
+  },
+  {
+    "sector": "logistics",
+    "path": "logistics/values-year-over-year",
+    "params": {
+      "year": "5Y"
+    },
+    "ok": false,
+    "status": 404,
+    "error": "{\"statusCode\":404,\"message\":\"Cannot GET /api/logistics/values-year-over-year?year=5Y\",\"error\":\"Not Found\"}",
+    "ms": 22
+  },
+  {
+    "sector": "rice",
+    "path": "rice/legend",
+    "params": {},
+    "ok": false,
+    "status": 404,
+    "error": "{\"statusCode\":404,\"message\":\"Cannot GET /api/rice/legend\",\"error\":\"Not Found\"}",
+    "ms": 23
+  },
+  {
+    "sector": "rice",
+    "path": "rice/legends",
+    "params": {},
+    "ok": false,
+    "status": 404,
+    "error": "{\"statusCode\":404,\"message\":\"Cannot GET /api/rice/legends\",\"error\":\"Not Found\"}",
+    "ms": 46
+  },
+  {
+    "sector": "rice",
+    "path": "rice/enterprise-corp-name",
+    "params": {},
+    "ok": false,
+    "status": 404,
+    "error": "{\"statusCode\":404,\"message\":\"Cannot GET /api/rice/enterprise-corp-name\",\"error\":\"Not Found\"}",
+    "ms": 47
+  },
+  {
+    "sector": "rice",
+    "path": "rice/overview/rice-data",
+    "params": {},
+    "ok": false,
+    "status": 404,
+    "error": "{\"statusCode\":404,\"message\":\"Cannot GET /api/rice/overview/rice-data\",\"error\":\"Not Found\"}",
+    "ms": 54
+  },
+  {
+    "sector": "rice",
+    "path": "rice/values",
+    "params": {
+      "year": "5Y"
+    },
+    "ok": false,
+    "status": 404,
+    "error": "{\"statusCode\":404,\"message\":\"Cannot GET /api/rice/values?year=5Y\",\"error\":\"Not Found\"}",
+    "ms": 44
+  },
+  {
+    "sector": "rice",
+    "path": "rice/values-year-over-year",
+    "params": {
+      "year": "5Y"
+    },
+    "ok": false,
+    "status": 404,
+    "error": "{\"statusCode\":404,\"message\":\"Cannot GET /api/rice/values-year-over-year?year=5Y\",\"error\":\"Not Found\"}",
+    "ms": 44
+  },
+  {
+    "sector": "pepper",
+    "path": "pepper/legend",
+    "params": {},
+    "ok": false,
+    "status": 404,
+    "error": "{\"statusCode\":404,\"message\":\"Cannot GET /api/pepper/legend\",\"error\":\"Not Found\"}",
+    "ms": 43
+  },
+  {
+    "sector": "pepper",
+    "path": "pepper/legends",
+    "params": {},
+    "ok": false,
+    "status": 404,
+    "error": "{\"statusCode\":404,\"message\":\"Cannot GET /api/pepper/legends\",\"error\":\"Not Found\"}",
+    "ms": 43
+  },
+  {
+    "sector": "pepper",
+    "path": "pepper/enterprise-corp-name",
+    "params": {},
+    "ok": false,
+    "status": 404,
+    "error": "{\"statusCode\":404,\"message\":\"Cannot GET /api/pepper/enterprise-corp-name\",\"error\":\"Not Found\"}",
+    "ms": 33
+  },
+  {
+    "sector": "pepper",
+    "path": "pepper/overview/pepper-data",
+    "params": {},
+    "ok": false,
+    "status": 404,
+    "error": "{\"statusCode\":404,\"message\":\"Cannot GET /api/pepper/overview/pepper-data\",\"error\":\"Not Found\"}",
+    "ms": 22
+  },
+  {
+    "sector": "pepper",
+    "path": "pepper/values",
+    "params": {
+      "year": "5Y"
+    },
+    "ok": false,
+    "status": 404,
+    "error": "{\"statusCode\":404,\"message\":\"Cannot GET /api/pepper/values?year=5Y\",\"error\":\"Not Found\"}",
+    "ms": 31
+  },
+  {
+    "sector": "pepper",
+    "path": "pepper/values-year-over-year",
+    "params": {
+      "year": "5Y"
+    },
+    "ok": false,
+    "status": 404,
+    "error": "{\"statusCode\":404,\"message\":\"Cannot GET /api/pepper/values-year-over-year?year=5Y\",\"error\":\"Not Found\"}",
+    "ms": 31
+  },
+  {
+    "sector": "technology",
+    "path": "technology/legend",
+    "params": {},
+    "ok": false,
+    "status": 404,
+    "error": "{\"statusCode\":404,\"message\":\"Cannot GET /api/technology/legend\",\"error\":\"Not Found\"}",
+    "ms": 37
+  },
+  {
+    "sector": "technology",
+    "path": "technology/legends",
+    "params": {},
+    "ok": false,
+    "status": 404,
+    "error": "{\"statusCode\":404,\"message\":\"Cannot GET /api/technology/legends\",\"error\":\"Not Found\"}",
+    "ms": 37
+  },
+  {
+    "sector": "technology",
+    "path": "technology/enterprise-corp-name",
+    "params": {},
+    "ok": false,
+    "status": 404,
+    "error": "{\"statusCode\":404,\"message\":\"Cannot GET /api/technology/enterprise-corp-name\",\"error\":\"Not Found\"}",
+    "ms": 37
+  },
+  {
+    "sector": "technology",
+    "path": "technology/overview/technology-data",
+    "params": {},
+    "ok": false,
+    "status": 404,
+    "error": "{\"statusCode\":404,\"message\":\"Cannot GET /api/technology/overview/technology-data\",\"error\":\"Not Found\"}",
+    "ms": 24
+  },
+  {
+    "sector": "technology",
+    "path": "technology/values",
+    "params": {
+      "year": "5Y"
+    },
+    "ok": false,
+    "status": 404,
+    "error": "{\"statusCode\":404,\"message\":\"Cannot GET /api/technology/values?year=5Y\",\"error\":\"Not Found\"}",
+    "ms": 30
+  },
+  {
+    "sector": "technology",
+    "path": "technology/values-year-over-year",
+    "params": {
+      "year": "5Y"
+    },
+    "ok": false,
+    "status": 404,
+    "error": "{\"statusCode\":404,\"message\":\"Cannot GET /api/technology/values-year-over-year?year=5Y\",\"error\":\"Not Found\"}",
+    "ms": 21
+  },
+  {
+    "sector": "steel",
+    "path": "steel/domestic-market-share",
+    "params": {
+      "year": "5Y"
+    },
+    "ok": true,
+    "status": 200,
+    "kind": "list",
+    "n": 940,
+    "empty": false,
+    "keys": [
+      "id",
+      "period",
+      "date",
+      "ticket",
+      "name_id",
+      "unit",
+      "value"
+    ],
+    "ms": 168
+  },
+  {
+    "sector": "steel",
+    "path": "steel/enterprise-domestic-market-share",
+    "params": {
+      "ticket": "HPG",
+      "year": "5Y"
+    },
+    "ok": true,
+    "status": 200,
+    "kind": "list",
+    "n": 180,
+    "empty": false,
+    "keys": [
+      "id",
+      "period",
+      "date",
+      "ticket",
+      "name_id",
+      "unit",
+      "value"
+    ],
+    "ms": 151
+  },
+  {
+    "sector": "steel",
+    "path": "steel/enterprise-quantity-structure",
+    "params": {
+      "ticket": "HPG",
+      "year": "5Y"
+    },
+    "ok": true,
+    "status": 200,
+    "kind": "list",
+    "n": 120,
+    "empty": false,
+    "keys": [
+      "id",
+      "period",
+      "date",
+      "ticket",
+      "market",
+      "unit",
+      "value"
+    ],
+    "ms": 110
+  },
+  {
+    "sector": "steel",
+    "path": "steel/enterprise-sale-data",
+    "params": {
+      "ticket": "HPG",
+      "year": "5Y"
+    },
+    "ok": false,
+    "status": 400,
+    "error": "{\"statusCode\":400,\"message\":[\"seriesType must be a valid enum value\"],\"error\":\"Bad Request\"}",
+    "ms": 79
+  },
+  {
+    "sector": "steel",
+    "path": "steel/demand-export-status",
+    "params": {
+      "seriesType": "TIME_SERIES",
+      "year": "5Y"
+    },
+    "ok": true,
+    "status": 200,
+    "kind": "list",
+    "n": 4,
+    "empty": false,
+    "keys": [
+      "name_id",
+      "data"
+    ],
+    "ms": 147
+  },
+  {
+    "sector": "cement",
+    "path": "cement/coal-price",
+    "params": {
+      "year": "5Y"
+    },
+    "ok": true,
+    "status": 200,
+    "kind": "list",
+    "n": 1308,
+    "empty": false,
+    "keys": [
+      "id",
+      "period",
+      "date",
+      "name_id",
+      "value"
+    ],
+    "ms": 248
+  },
+  {
+    "sector": "cement",
+    "path": "cement/clanhke-value",
+    "params": {
+      "year": "5Y"
+    },
+    "ok": false,
+    "status": 400,
+    "error": "{\"statusCode\":400,\"message\":[\"period must be a valid enum value\",\"macroIds must be a string\"],\"error\":\"Bad Request\"}",
+    "ms": 30
+  },
+  {
+    "sector": "cement",
+    "path": "cement/clanhke-year-over-year",
+    "params": {
+      "year": "5Y"
+    },
+    "ok": false,
+    "status": 400,
+    "error": "{\"statusCode\":400,\"message\":[\"macroIds must be a string\"],\"error\":\"Bad Request\"}",
+    "ms": 29
+  },
+  {
+    "sector": "cement",
+    "path": "cement/average-export-price",
+    "params": {
+      "year": "5Y"
+    },
+    "ok": true,
+    "status": 200,
+    "kind": "list",
+    "n": 60,
+    "empty": false,
+    "keys": [
+      "id",
+      "period",
+      "date",
+      "name_id",
+      "unit",
+      "value",
+      "volume",
+      "volume_unit",
+      "price",
+      "price_unit",
+      "value_unit"
+    ],
+    "ms": 92
+  },
+  {
+    "sector": "cement",
+    "path": "cement/internal-cement-price",
+    "params": {
+      "year": "5Y"
+    },
+    "ok": true,
+    "status": 200,
+    "kind": "list",
+    "n": 52,
+    "empty": false,
+    "keys": [
+      "id",
+      "period",
+      "date",
+      "name_id",
+      "value"
+    ],
+    "ms": 58
+  },
+  {
+    "sector": "pangasius",
+    "path": "pangasius/export-year-over-year",
+    "params": {
+      "year": "5Y"
+    },
+    "ok": true,
+    "status": 200,
+    "kind": "list",
+    "n": 3,
+    "empty": false,
+    "nested_len": 12,
+    "keys": [
+      "date",
+      "turnover",
+      "quantity"
+    ],
+    "ms": 74
+  },
+  {
+    "sector": "pangasius",
+    "path": "pangasius/export-quantity-to-markets",
+    "params": {
+      "year": "5Y"
+    },
+    "ok": true,
+    "status": 200,
+    "kind": "list",
+    "n": 4,
+    "empty": false,
+    "keys": [
+      "country_id",
+      "country_name",
+      "data"
+    ],
+    "ms": 116
+  },
+  {
+    "sector": "pangasius",
+    "path": "pangasius/export-status",
+    "params": {
+      "year": "5Y"
+    },
+    "ok": false,
+    "status": 400,
+    "error": "{\"statusCode\":400,\"message\":[\"ticket must be a string\"],\"error\":\"Bad Request\"}",
+    "ms": 62
+  },
+  {
+    "sector": "pangasius",
+    "path": "pangasius/export-price-to-markets",
+    "params": {
+      "year": "5Y"
+    },
+    "ok": false,
+    "status": 400,
+    "error": "{\"statusCode\":400,\"message\":[\"ticket must be a string\"],\"error\":\"Bad Request\"}",
+    "ms": 30
+  },
+  {
+    "sector": "pangasius",
+    "path": "pangasius/export-status-to-markets",
+    "params": {
+      "year": "5Y"
+    },
+    "ok": false,
+    "status": 400,
+    "error": "{\"statusCode\":400,\"message\":[\"ticket must be a string\"],\"error\":\"Bad Request\"}",
+    "ms": 36
+  },
+  {
+    "sector": "shrimp",
+    "path": "shrimp/global-market-export-price",
+    "params": {
+      "year": "5Y"
+    },
+    "ok": false,
+    "status": 400,
+    "error": "{\"statusCode\":400,\"message\":[\"macroId must be a string\"],\"error\":\"Bad Request\"}",
+    "ms": 36
+  },
+  {
+    "sector": "shrimp",
+    "path": "shrimp/global-market-export-price-by-product",
+    "params": {
+      "year": "5Y"
+    },
+    "ok": false,
+    "status": 400,
+    "error": "{\"statusCode\":400,\"message\":[\"countryId must be a string\",\"action must be a string\"],\"error\":\"Bad Request\"}",
+    "ms": 35
+  },
+  {
+    "sector": "shrimp",
+    "path": "shrimp/global-market-export-price-year-over-year",
+    "params": {
+      "year": "5Y"
+    },
+    "ok": false,
+    "status": 400,
+    "error": "{\"statusCode\":400,\"message\":[\"countryId must be a string\",\"action must be a string\",\"macroId must be a string\"],\"error\":\"Bad Request\"}",
+    "ms": 38
+  },
+  {
+    "sector": "shrimp",
+    "path": "shrimp/enterprise-export-status",
+    "params": {
+      "ticket": "FMC",
+      "macroIds": "28",
+      "year": "5Y",
+      "period": "month_value"
+    },
+    "ok": true,
+    "status": 200,
+    "kind": "list",
+    "n": 5,
+    "empty": false,
+    "nested_len": 12,
+    "keys": [
+      "date",
+      "turnover",
+      "quantity"
+    ],
+    "ms": 59
+  },
+  {
+    "sector": "shrimp",
+    "path": "shrimp/enterprise-export-price-to-markets",
+    "params": {
+      "ticket": "FMC",
+      "macroIds": "28",
+      "year": "5Y"
+    },
+    "ok": true,
+    "status": 200,
+    "kind": "list",
+    "n": 4,
+    "empty": false,
+    "keys": [
+      "country_id",
+      "country_name",
+      "data"
+    ],
+    "ms": 96
+  },
+  {
+    "sector": "aviation",
+    "path": "aviation/flight-company-data",
+    "params": {
+      "ticket": "HVN",
+      "year": "5Y"
+    },
+    "ok": false,
+    "status": 400,
+    "error": "{\"statusCode\":400,\"message\":[\"period must be a valid enum value\",\"tickets must be a string\"],\"error\":\"Bad Request\"}",
+    "ms": 43
+  },
+  {
+    "sector": "aviation",
+    "path": "aviation/visitor-come-to-vn",
+    "params": {
+      "year": "5Y"
+    },
+    "ok": false,
+    "status": 400,
+    "error": "{\"statusCode\":400,\"message\":[\"period must be a valid enum value\",\"macroIds must be a string\",\"repo must be a valid enum value\"],\"error\":\"Bad Request\"}",
+    "ms": 29
+  },
+  {
+    "sector": "rubber",
+    "path": "rubber/values",
+    "params": {
+      "repo": "macro_comdty",
+      "macroIds": "41,51,91",
+      "period": "month_value",
+      "year": "5Y"
+    },
+    "ok": true,
+    "status": 200,
+    "kind": "list",
+    "n": 0,
+    "empty": true,
+    "ms": 36
+  },
+  {
+    "sector": "pig",
+    "path": "pig/macro-comdty-vn",
+    "params": {
+      "macroIds": "9",
+      "year": "5Y"
+    },
+    "ok": false,
+    "status": 400,
+    "error": "{\"statusCode\":400,\"message\":[\"period must be a valid enum value\"],\"error\":\"Bad Request\"}",
+    "ms": 17
+  },
+  {
+    "sector": "pig",
+    "path": "pig/macro-comdty",
+    "params": {
+      "macroIds": "254",
+      "year": "5Y"
+    },
+    "ok": false,
+    "status": 400,
+    "error": "{\"statusCode\":400,\"message\":[\"period must be a valid enum value\"],\"error\":\"Bad Request\"}",
+    "ms": 19
+  },
+  {
+    "sector": "pig",
+    "path": "pig/pig_farming_global",
+    "params": {},
+    "ok": false,
+    "status": 400,
+    "error": "{\"statusCode\":400,\"message\":[\"year must be a valid enum value\",\"period must be a valid enum value\",\"macroIds must be a string\"],\"error\":\"Bad Request\"}",
+    "ms": 19
+  },
+  {
+    "sector": "chemistry",
+    "path": "chemistry/overview/fertilizer-data",
+    "params": {},
+    "ok": true,
+    "status": 200,
+    "kind": "dict",
+    "n": 3,
+    "empty": false,
+    "keys": [
+      "ureaCoal",
+      "ureaGas",
+      "phosphate"
+    ],
+    "len.ureaCoal": 4,
+    "len.ureaGas": 4,
+    "len.phosphate": 4,
+    "ms": 31
+  },
+  {
+    "sector": "chemistry",
+    "path": "chemistry/overview/caustic-soda-data",
+    "params": {},
+    "ok": true,
+    "status": 200,
+    "kind": "dict",
+    "n": 2,
+    "empty": false,
+    "keys": [
+      "costStructure",
+      "application"
+    ],
+    "len.costStructure": 3,
+    "len.application": 5,
+    "ms": 53
+  },
+  {
+    "sector": "chemistry",
+    "path": "chemistry/overview/phosphorus-data",
+    "params": {},
+    "ok": true,
+    "status": 200,
+    "kind": "dict",
+    "n": 2,
+    "empty": false,
+    "keys": [
+      "volumeAparitGlobal",
+      "yellowPhosphorus"
+    ],
+    "len.volumeAparitGlobal": 6,
+    "len.yellowPhosphorus": 3,
+    "ms": 50
+  },
+  {
+    "sector": "chemistry",
+    "path": "chemistry/fertilizer-product-price",
+    "params": {
+      "globalMacroIds": "50,190,156",
+      "vnMacroIds": "12,13,29,30",
+      "year": "5Y"
+    },
+    "ok": true,
+    "status": 200,
+    "kind": "list",
+    "n": 4544,
+    "empty": false,
+    "keys": [
+      "id",
+      "period",
+      "date",
+      "name_id",
+      "value"
+    ],
+    "ms": 840
+  },
+  {
+    "sector": "textile",
+    "path": "textile/values-by-macro-ids",
+    "params": {
+      "repo": "MacroVnExportComdty",
+      "macroIds": "10,11",
+      "year": "5Y",
+      "period": "month_value"
+    },
+    "ok": false,
+    "status": 400,
+    "error": "{\"statusCode\":400,\"message\":[\"repo must be a valid enum value\"],\"error\":\"Bad Request\"}",
+    "ms": 40
+  },
+  {
+    "sector": "industry",
+    "path": "industry/prd-pmi",
+    "params": {
+      "year": "5Y"
+    },
+    "ok": true,
+    "status": 200,
+    "kind": "list",
+    "n": 60,
+    "empty": false,
+    "keys": [
+      "date",
+      "unit",
+      "value"
+    ],
+    "ms": 54
+  },
+  {
+    "sector": "industry",
+    "path": "industry/prd-iip",
+    "params": {
+      "year": "5Y"
+    },
+    "ok": true,
+    "status": 200,
+    "kind": "list",
+    "n": 60,
+    "empty": false,
+    "keys": [
+      "date",
+      "unit",
+      "value"
+    ],
+    "ms": 100
+  },
+  {
+    "sector": "industry",
+    "path": "industry/fdi-sector-by-province",
+    "params": {},
+    "ok": true,
+    "status": 200,
+    "kind": "list",
+    "n": 50,
+    "empty": false,
+    "keys": [
+      "date",
+      "label_id",
+      "label_name_legend",
+      "month_yoy_value",
+      "month_yoy_value_unit",
+      "month_value",
+      "month_value_unit"
+    ],
+    "ms": 150
+  },
+  {
+    "sector": "industry",
+    "path": "industry/fdi-status",
+    "params": {
+      "filter_type": "MONTH",
+      "year": "1Y"
+    },
+    "ok": true,
+    "status": 200,
+    "kind": "dict",
+    "n": 2,
+    "empty": false,
+    "keys": [
+      "fdi_realized",
+      "fdi_sector"
+    ],
+    "len.fdi_realized": 12,
+    "len.fdi_sector": 12,
+    "ms": 52
+  },
+  {
+    "sector": "industry",
+    "path": "industry/region-land",
+    "params": {},
+    "ok": true,
+    "status": 200,
+    "kind": "list",
+    "n": 36,
+    "empty": false,
+    "keys": [
+      "id",
+      "period",
+      "date",
+      "region",
+      "price",
+      "occupancy"
+    ],
+    "ms": 71
+  },
+  {
+    "sector": "industry",
+    "path": "industry/province-factory",
+    "params": {},
+    "ok": true,
+    "status": 200,
+    "kind": "list",
+    "n": 16,
+    "empty": false,
+    "keys": [
+      "id",
+      "period",
+      "date",
+      "province",
+      "priceMin",
+      "priceMax"
+    ],
+    "ms": 68
+  },
+  {
+    "sector": "industry",
+    "path": "industry/company-approval",
+    "params": {},
+    "ok": true,
+    "status": 200,
+    "kind": "list",
+    "n": 20,
+    "empty": false,
+    "keys": [
+      "id",
+      "period",
+      "date",
+      "ticket",
+      "type",
+      "unit",
+      "value"
+    ],
+    "ms": 68
+  },
+  {
+    "sector": "industry",
+    "path": "industry/company-land",
+    "params": {},
+    "ok": false,
+    "status": 400,
+    "error": "{\"statusCode\":400,\"message\":[\"ticket must be a string\"],\"error\":\"Bad Request\"}",
+    "ms": 43
+  },
+  {
+    "sector": "industry",
+    "path": "industry/filter-company",
+    "params": {},
+    "ok": false,
+    "status": 400,
+    "error": "{\"statusCode\":400,\"message\":[\"limit must be a string\"],\"error\":\"Bad Request\"}",
+    "ms": 27
+  },
+  {
+    "sector": "realestate",
+    "path": "real-estate/laws",
+    "params": {},
+    "ok": true,
+    "status": 200,
+    "kind": "dict",
+    "n": 19,
+    "empty": false,
+    "keys": [
+      "2006",
+      "2008",
+      "2009",
+      "2010",
+      "2011",
+      "2012",
+      "2013",
+      "2014",
+      "2016",
+      "2017",
+      "2018",
+      "2019",
+      "2020",
+      "2021",
+      "2022",
+      "2023",
+      "2024",
+      "2025",
+      "2026"
+    ],
+    "len.2006": 1,
+    "len.2008": 2,
+    "len.2009": 2,
+    "len.2010": 3,
+    "len.2011": 2,
+    "len.2012": 1,
+    "len.2013": 4,
+    "len.2014": 5,
+    "len.2016": 1,
+    "len.2017": 5,
+    "len.2018": 1,
+    "len.2019": 3,
+    "len.2020": 5,
+    "len.2021": 2,
+    "len.2022": 6,
+    "len.2023": 8,
+    "len.2024": 3,
+    "len.2025": 3,
+    "len.2026": 1,
+    "ms": 108
+  },
+  {
+    "sector": "realestate",
+    "path": "real-estate/core-index-valuation",
+    "params": {
+      "tickets": "VHM"
+    },
+    "ok": true,
+    "status": 200,
+    "kind": "list",
+    "n": 1,
+    "empty": false,
+    "keys": [
+      "ticket",
+      "min",
+      "max",
+      "latest",
+      "latest_date",
+      "median"
+    ],
+    "ms": 71
+  },
+  {
+    "sector": "realestate",
+    "path": "real-estate/company-project",
+    "params": {
+      "tickets": "VHM"
+    },
+    "ok": true,
+    "status": 200,
+    "kind": "list",
+    "n": 14,
+    "empty": false,
+    "keys": [
+      "id",
+      "date",
+      "ticket",
+      "project_name",
+      "ownership",
+      "area",
+      "project_type",
+      "volume",
+      "status",
+      "long",
+      "lat",
+      "commercial_area",
+      "location"
+    ],
+    "ms": 71
+  },
+  {
+    "sector": "transport",
+    "path": "transport/values",
+    "params": {
+      "macroIds": "679,680,681,688,308,309,310,311,339,340,689,690,691,692,693,694,695,696,312,313,314,315,316,317,318,319",
+      "year": "5Y"
+    },
+    "ok": true,
+    "status": 200,
+    "kind": "list",
+    "n": 9235,
+    "empty": false,
+    "keys": [
+      "id",
+      "period",
+      "date",
+      "name_id",
+      "value"
+    ],
+    "ms": 1034
+  },
+  {
+    "sector": "securities",
+    "path": "stock/brokerage-market-share-companies",
+    "params": {},
+    "ok": true,
+    "status": 200,
+    "kind": "list",
+    "n": 35,
+    "empty": false,
+    "keys": [
+      "ticket",
+      "corp_name",
+      "value"
+    ],
+    "ms": 75
+  },
+  {
+    "sector": "securities",
+    "path": "stock/gross-profit-structure",
+    "params": {
+      "tickets": "SSI"
+    },
+    "ok": true,
+    "status": 200,
+    "kind": "list",
+    "n": 5,
+    "empty": false,
+    "keys": [
+      "year",
+      "quarter",
+      "type",
+      "value",
+      "date",
+      "ticket"
+    ],
+    "ms": 85
+  },
+  {
+    "sector": "securities",
+    "path": "stock/enterprise-stock-revenue",
+    "params": {
+      "ticket": "SSI",
+      "year": "5Y"
+    },
+    "ok": true,
+    "status": 200,
+    "kind": "list",
+    "n": 100,
+    "empty": false,
+    "keys": [
+      "year",
+      "quarter",
+      "type",
+      "value",
+      "date"
+    ],
+    "ms": 82
+  },
+  {
+    "sector": "securities",
+    "path": "stock/enterprise-stock-asset",
+    "params": {
+      "ticket": "SSI",
+      "year": "5Y"
+    },
+    "ok": true,
+    "status": 200,
+    "kind": "list",
+    "n": 100,
+    "empty": false,
+    "keys": [
+      "year",
+      "quarter",
+      "date",
+      "type",
+      "value"
+    ],
+    "ms": 471
+  },
+  {
+    "sector": "securities",
+    "path": "stock/enterprise-stock-debt",
+    "params": {
+      "ticket": "SSI",
+      "year": "5Y"
+    },
+    "ok": true,
+    "status": 200,
+    "kind": "list",
+    "n": 60,
+    "empty": false,
+    "keys": [
+      "year",
+      "quarter",
+      "date",
+      "type",
+      "value"
+    ],
+    "ms": 467
+  },
+  {
+    "sector": "securities",
+    "path": "stock/money-flow",
+    "params": {
+      "nameId": "1",
+      "period": "month_value",
+      "year": "1Y"
+    },
+    "ok": true,
+    "status": 200,
+    "kind": "list",
+    "n": 13,
+    "empty": false,
+    "keys": [
+      "name_id",
+      "month",
+      "start_date",
+      "value"
+    ],
+    "ms": 48
+  },
+  {
+    "sector": "food-beverage",
+    "path": "food-and-beverage/overview/beer-data",
+    "params": {},
+    "ok": true,
+    "status": 200,
+    "kind": "dict",
+    "n": 4,
+    "empty": false,
+    "keys": [
+      "beerCostStructure",
+      "beerConsumptionByProduct",
+      "beerConsumptionByCountry",
+      "beerConsumptionByChannel"
+    ],
+    "len.beerCostStructure": 5,
+    "len.beerConsumptionByProduct": 21,
+    "len.beerConsumptionByCountry": 10,
+    "len.beerConsumptionByChannel": 12,
+    "ms": 42
+  },
+  {
+    "sector": "food-beverage",
+    "path": "food-and-beverage/overview/milk-data",
+    "params": {},
+    "ok": true,
+    "status": 200,
+    "kind": "dict",
+    "n": 3,
+    "empty": false,
+    "keys": [
+      "milkDomesticCows",
+      "milkMarketShare",
+      "milkProductStructure"
+    ],
+    "len.milkDomesticCows": 13,
+    "len.milkMarketShare": 6,
+    "len.milkProductStructure": 5,
+    "ms": 34
+  },
+  {
+    "sector": "food-beverage",
+    "path": "food-and-beverage/values",
+    "params": {
+      "repo": "macro_comdty_vn",
+      "year": "5Y"
+    },
+    "ok": false,
+    "status": 400,
+    "error": "{\"statusCode\":400,\"message\":[\"repo must be a valid enum value\",\"period must be a valid enum value\",\"macroIds must be a string\"],\"error\":\"Bad Request\"}",
+    "ms": 28
+  },
+  {
+    "sector": "electricity",
+    "path": "electricity/electric-output-plant",
+    "params": {},
+    "ok": true,
+    "status": 200,
+    "kind": "list",
+    "n": 36,
+    "empty": false,
+    "keys": [
+      "id",
+      "name",
+      "sortIndex",
+      "data"
+    ],
+    "ms": 457
+  },
+  {
+    "sector": "electricity",
+    "path": "electricity/output-resource-by-proportion",
+    "params": {
+      "year": "5Y"
+    },
+    "ok": true,
+    "status": 200,
+    "kind": "list",
+    "n": 406,
+    "empty": false,
+    "keys": [
+      "id",
+      "period",
+      "date",
+      "unit",
+      "value",
+      "name_id"
+    ],
+    "ms": 1876
+  },
+  {
+    "sector": "electricity",
+    "path": "electricity/output-resource-by-value",
+    "params": {
+      "resourceId": "1"
+    },
+    "ok": true,
+    "status": 200,
+    "kind": "list",
+    "n": 3,
+    "empty": false,
+    "nested_len": 12,
+    "keys": [
+      "date",
+      "unit",
+      "value"
+    ],
+    "ms": 1872
+  },
+  {
+    "sector": "electricity",
+    "path": "electricity/lake-name",
+    "params": {},
+    "ok": true,
+    "status": 200,
+    "kind": "list",
+    "n": 40,
+    "empty": false,
+    "keys": [
+      "id",
+      "lakename",
+      "province",
+      "region",
+      "level_avg",
+      "ticket"
+    ],
+    "ms": 1877
+  },
+  {
+    "sector": "electricity",
+    "path": "electricity/policy-resource",
+    "params": {},
+    "ok": true,
+    "status": 200,
+    "kind": "list",
+    "n": 56,
+    "empty": false,
+    "keys": [
+      "id",
+      "period",
+      "date",
+      "unit",
+      "value",
+      "name_id",
+      "name_legend",
+      "sort_index"
+    ],
+    "ms": 1877
+  },
+  {
+    "sector": "electricity",
+    "path": "electricity/output-price",
+    "params": {},
+    "ok": true,
+    "status": 200,
+    "kind": "list",
+    "n": 3,
+    "empty": false,
+    "nested_len": 12,
+    "keys": [
+      "date",
+      "value"
+    ],
+    "ms": 1867
+  },
+  {
+    "sector": "insurance",
+    "path": "enterprise/insurance-revenue",
+    "params": {
+      "ticket": "BVH",
+      "period": "quarter",
+      "year": "5Y"
+    },
+    "ok": false,
+    "status": null,
+    "error": "RuntimeError('Login failed 400: {\"statusCode\":400,\"message\":[\"email must be an email\",\"password must be longer than or equal to 8 characters\",\"password should not be empty\"],\"error\":\"Bad Request\"}')",
+    "ms": 5260
+  },
+  {
+    "sector": "steel",
+    "path": "enterprise/corp-profile",
+    "params": {
+      "ticket": "HPG"
+    },
+    "ok": true,
+    "status": 200,
+    "kind": "dict",
+    "n": 20,
+    "empty": false,
+    "keys": [
+      "id",
+      "tradingDate",
+      "ticket",
+      "closePrice",
+      "priceChange",
+      "perPriceChange",
+      "marketCap",
+      "totalTradedVol",
+      "listedShare",
+      "pe",
+      "pb",
+      "evEbitda",
+      "eps",
+      "bvps",
+      "ebitda",
+      "overview",
+      "updatedAt",
+      "colorId",
+      "website",
+      "cgtContents"
+    ],
+    "len.cgtContents": 0,
+    "ms": 1865
+  },
+  {
+    "sector": "steel",
+    "path": "enterprise/overview-dividend",
+    "params": {
+      "ticket": "HPG",
+      "year": "All"
+    },
+    "ok": false,
+    "status": null,
+    "error": "RuntimeError('Login failed 400: {\"statusCode\":400,\"message\":[\"email must be an email\",\"password must be longer than or equal to 8 characters\",\"password should not be empty\"],\"error\":\"Bad Request\"}')",
+    "ms": 5258
+  },
+  {
+    "sector": "steel",
+    "path": "enterprise/report-data-prediction",
+    "params": {
+      "ticket": "HPG"
+    },
+    "ok": true,
+    "status": 200,
+    "kind": "dict",
+    "n": 2,
+    "empty": false,
+    "keys": [
+      "realData",
+      "predictData"
+    ],
+    "len.realData": 747,
+    "ms": 2106
+  },
+  {
+    "sector": "steel",
+    "path": "enterprise/manufactoring-revenue",
+    "params": {
+      "ticket": "HPG",
+      "period": "quarter",
+      "year": "All"
+    },
+    "ok": false,
+    "status": null,
+    "error": "RuntimeError('Login failed 400: {\"statusCode\":400,\"message\":[\"email must be an email\",\"password must be longer than or equal to 8 characters\",\"password should not be empty\"],\"error\":\"Bad Request\"}')",
+    "ms": 3413
+  },
+  {
+    "sector": "steel",
+    "path": "enterprise/manufactoring-profit-after-tax",
+    "params": {
+      "ticket": "HPG",
+      "period": "quarter",
+      "year": "All"
+    },
+    "ok": false,
+    "status": null,
+    "error": "RuntimeError('Login failed 400: {\"statusCode\":400,\"message\":[\"email must be an email\",\"password must be longer than or equal to 8 characters\",\"password should not be empty\"],\"error\":\"Bad Request\"}')",
+    "ms": 4781
+  },
+  {
+    "sector": "bank",
+    "path": "enterprise/corp-profile",
+    "params": {
+      "ticket": "VCB"
+    },
+    "ok": true,
+    "status": 200,
+    "kind": "dict",
+    "n": 20,
+    "empty": false,
+    "keys": [
+      "id",
+      "tradingDate",
+      "ticket",
+      "closePrice",
+      "priceChange",
+      "perPriceChange",
+      "marketCap",
+      "totalTradedVol",
+      "listedShare",
+      "pe",
+      "pb",
+      "evEbitda",
+      "eps",
+      "bvps",
+      "ebitda",
+      "overview",
+      "updatedAt",
+      "colorId",
+      "website",
+      "cgtContents"
+    ],
+    "len.cgtContents": 0,
+    "ms": 2074
+  },
+  {
+    "sector": "bank",
+    "path": "enterprise/overview-dividend",
+    "params": {
+      "ticket": "VCB",
+      "year": "All"
+    },
+    "ok": false,
+    "status": null,
+    "error": "RuntimeError('Login failed 400: {\"statusCode\":400,\"message\":[\"email must be an email\",\"password must be longer than or equal to 8 characters\",\"password should not be empty\"],\"error\":\"Bad Request\"}')",
+    "ms": 3408
+  },
+  {
+    "sector": "bank",
+    "path": "enterprise/report-data-prediction",
+    "params": {
+      "ticket": "VCB"
+    },
+    "ok": true,
+    "status": 200,
+    "kind": "dict",
+    "n": 2,
+    "empty": false,
+    "keys": [
+      "realData",
+      "predictData"
+    ],
+    "len.realData": 747,
+    "ms": 2093
+  },
+  {
+    "sector": "bank",
+    "path": "enterprise/manufactoring-revenue",
+    "params": {
+      "ticket": "VCB",
+      "period": "quarter",
+      "year": "All"
+    },
+    "ok": false,
+    "status": null,
+    "error": "RuntimeError('Login failed 400: {\"statusCode\":400,\"message\":[\"email must be an email\",\"password must be longer than or equal to 8 characters\",\"password should not be empty\"],\"error\":\"Bad Request\"}')",
+    "ms": 4055
+  },
+  {
+    "sector": "bank",
+    "path": "enterprise/manufactoring-profit-after-tax",
+    "params": {
+      "ticket": "VCB",
+      "period": "quarter",
+      "year": "All"
+    },
+    "ok": false,
+    "status": null,
+    "error": "RuntimeError('Login failed 400: {\"statusCode\":400,\"message\":[\"email must be an email\",\"password must be longer than or equal to 8 characters\",\"password should not be empty\"],\"error\":\"Bad Request\"}')",
+    "ms": 4030
+  },
+  {
+    "sector": "cement",
+    "path": "enterprise/corp-profile",
+    "params": {
+      "ticket": "HT1"
+    },
+    "ok": true,
+    "status": 200,
+    "kind": "dict",
+    "n": 20,
+    "empty": false,
+    "keys": [
+      "id",
+      "tradingDate",
+      "ticket",
+      "closePrice",
+      "priceChange",
+      "perPriceChange",
+      "marketCap",
+      "totalTradedVol",
+      "listedShare",
+      "pe",
+      "pb",
+      "evEbitda",
+      "eps",
+      "bvps",
+      "ebitda",
+      "overview",
+      "updatedAt",
+      "colorId",
+      "website",
+      "cgtContents"
+    ],
+    "len.cgtContents": 0,
+    "ms": 1286
+  },
+  {
+    "sector": "cement",
+    "path": "enterprise/overview-dividend",
+    "params": {
+      "ticket": "HT1",
+      "year": "All"
+    },
+    "ok": false,
+    "status": null,
+    "error": "RuntimeError('Login failed 400: {\"statusCode\":400,\"message\":[\"email must be an email\",\"password must be longer than or equal to 8 characters\",\"password should not be empty\"],\"error\":\"Bad Request\"}')",
+    "ms": 2800
+  },
+  {
+    "sector": "cement",
+    "path": "enterprise/report-data-prediction",
+    "params": {
+      "ticket": "HT1"
+    },
+    "ok": true,
+    "status": 200,
+    "kind": "dict",
+    "n": 2,
+    "empty": false,
+    "keys": [
+      "realData",
+      "predictData"
+    ],
+    "len.realData": 747,
+    "ms": 1402
+  },
+  {
+    "sector": "cement",
+    "path": "enterprise/manufactoring-revenue",
+    "params": {
+      "ticket": "HT1",
+      "period": "quarter",
+      "year": "All"
+    },
+    "ok": false,
+    "status": null,
+    "error": "RuntimeError('Login failed 400: {\"statusCode\":400,\"message\":[\"email must be an email\",\"password must be longer than or equal to 8 characters\",\"password should not be empty\"],\"error\":\"Bad Request\"}')",
+    "ms": 2796
+  },
+  {
+    "sector": "cement",
+    "path": "enterprise/manufactoring-profit-after-tax",
+    "params": {
+      "ticket": "HT1",
+      "period": "quarter",
+      "year": "All"
+    },
+    "ok": false,
+    "status": null,
+    "error": "RuntimeError('Login failed 400: {\"statusCode\":400,\"message\":[\"email must be an email\",\"password must be longer than or equal to 8 characters\",\"password should not be empty\"],\"error\":\"Bad Request\"}')",
+    "ms": 2796
+  },
+  {
+    "sector": "pangasius",
+    "path": "enterprise/corp-profile",
+    "params": {
+      "ticket": "VHC"
+    },
+    "ok": true,
+    "status": 200,
+    "kind": "dict",
+    "n": 20,
+    "empty": false,
+    "keys": [
+      "id",
+      "tradingDate",
+      "ticket",
+      "closePrice",
+      "priceChange",
+      "perPriceChange",
+      "marketCap",
+      "totalTradedVol",
+      "listedShare",
+      "pe",
+      "pb",
+      "evEbitda",
+      "eps",
+      "bvps",
+      "ebitda",
+      "overview",
+      "updatedAt",
+      "colorId",
+      "website",
+      "cgtContents"
+    ],
+    "len.cgtContents": 0,
+    "ms": 2038
+  },
+  {
+    "sector": "pangasius",
+    "path": "enterprise/overview-dividend",
+    "params": {
+      "ticket": "VHC",
+      "year": "All"
+    },
+    "ok": false,
+    "status": null,
+    "error": "RuntimeError('Login failed 400: {\"statusCode\":400,\"message\":[\"email must be an email\",\"password must be longer than or equal to 8 characters\",\"password should not be empty\"],\"error\":\"Bad Request\"}')",
+    "ms": 1437
+  },
+  {
+    "sector": "pangasius",
+    "path": "enterprise/report-data-prediction",
+    "params": {
+      "ticket": "VHC"
+    },
+    "ok": true,
+    "status": 200,
+    "kind": "dict",
+    "n": 2,
+    "empty": false,
+    "keys": [
+      "realData",
+      "predictData"
+    ],
+    "len.realData": 747,
+    "ms": 1356
+  },
+  {
+    "sector": "pangasius",
+    "path": "enterprise/manufactoring-revenue",
+    "params": {
+      "ticket": "VHC",
+      "period": "quarter",
+      "year": "All"
+    },
+    "ok": false,
+    "status": null,
+    "error": "RuntimeError('Login failed 400: {\"statusCode\":400,\"message\":[\"email must be an email\",\"password must be longer than or equal to 8 characters\",\"password should not be empty\"],\"error\":\"Bad Request\"}')",
+    "ms": 5302
+  },
+  {
+    "sector": "pangasius",
+    "path": "enterprise/manufactoring-profit-after-tax",
+    "params": {
+      "ticket": "VHC",
+      "period": "quarter",
+      "year": "All"
+    },
+    "ok": false,
+    "status": null,
+    "error": "RuntimeError('Login failed 400: {\"statusCode\":400,\"message\":[\"email must be an email\",\"password must be longer than or equal to 8 characters\",\"password should not be empty\"],\"error\":\"Bad Request\"}')",
+    "ms": 6037
+  },
+  {
+    "sector": "shrimp",
+    "path": "enterprise/corp-profile",
+    "params": {
+      "ticket": "FMC"
+    },
+    "ok": true,
+    "status": 200,
+    "kind": "dict",
+    "n": 20,
+    "empty": false,
+    "keys": [
+      "id",
+      "tradingDate",
+      "ticket",
+      "closePrice",
+      "priceChange",
+      "perPriceChange",
+      "marketCap",
+      "totalTradedVol",
+      "listedShare",
+      "pe",
+      "pb",
+      "evEbitda",
+      "eps",
+      "bvps",
+      "ebitda",
+      "overview",
+      "updatedAt",
+      "colorId",
+      "website",
+      "cgtContents"
+    ],
+    "len.cgtContents": 0,
+    "ms": 2272
+  },
+  {
+    "sector": "shrimp",
+    "path": "enterprise/overview-dividend",
+    "params": {
+      "ticket": "FMC",
+      "year": "All"
+    },
+    "ok": false,
+    "status": null,
+    "error": "RuntimeError('Login failed 400: {\"statusCode\":400,\"message\":[\"email must be an email\",\"password must be longer than or equal to 8 characters\",\"password should not be empty\"],\"error\":\"Bad Request\"}')",
+    "ms": 6058
+  },
+  {
+    "sector": "shrimp",
+    "path": "enterprise/report-data-prediction",
+    "params": {
+      "ticket": "FMC"
+    },
+    "ok": true,
+    "status": 200,
+    "kind": "dict",
+    "n": 2,
+    "empty": false,
+    "keys": [
+      "realData",
+      "predictData"
+    ],
+    "len.realData": 747,
+    "ms": 2285
+  },
+  {
+    "sector": "shrimp",
+    "path": "enterprise/manufactoring-revenue",
+    "params": {
+      "ticket": "FMC",
+      "period": "quarter",
+      "year": "All"
+    },
+    "ok": false,
+    "status": null,
+    "error": "RuntimeError('Login failed 400: {\"statusCode\":400,\"message\":[\"email must be an email\",\"password must be longer than or equal to 8 characters\",\"password should not be empty\"],\"error\":\"Bad Request\"}')",
+    "ms": 9212
+  },
+  {
+    "sector": "shrimp",
+    "path": "enterprise/manufactoring-profit-after-tax",
+    "params": {
+      "ticket": "FMC",
+      "period": "quarter",
+      "year": "All"
+    },
+    "ok": false,
+    "status": null,
+    "error": "RuntimeError('Login failed 400: {\"statusCode\":400,\"message\":[\"email must be an email\",\"password must be longer than or equal to 8 characters\",\"password should not be empty\"],\"error\":\"Bad Request\"}')",
+    "ms": 10051
+  },
+  {
+    "sector": "aviation",
+    "path": "enterprise/corp-profile",
+    "params": {
+      "ticket": "HVN"
+    },
+    "ok": true,
+    "status": 200,
+    "kind": "dict",
+    "n": 20,
+    "empty": false,
+    "keys": [
+      "id",
+      "tradingDate",
+      "ticket",
+      "closePrice",
+      "priceChange",
+      "perPriceChange",
+      "marketCap",
+      "totalTradedVol",
+      "listedShare",
+      "pe",
+      "pb",
+      "evEbitda",
+      "eps",
+      "bvps",
+      "ebitda",
+      "overview",
+      "updatedAt",
+      "colorId",
+      "website",
+      "cgtContents"
+    ],
+    "len.cgtContents": 0,
+    "ms": 2268
+  },
+  {
+    "sector": "aviation",
+    "path": "enterprise/overview-dividend",
+    "params": {
+      "ticket": "HVN",
+      "year": "All"
+    },
+    "ok": false,
+    "status": null,
+    "error": "RuntimeError('Login failed 400: {\"statusCode\":400,\"message\":[\"email must be an email\",\"password must be longer than or equal to 8 characters\",\"password should not be empty\"],\"error\":\"Bad Request\"}')",
+    "ms": 3785
+  },
+  {
+    "sector": "aviation",
+    "path": "enterprise/report-data-prediction",
+    "params": {
+      "ticket": "HVN"
+    },
+    "ok": true,
+    "status": 200,
+    "kind": "dict",
+    "n": 2,
+    "empty": false,
+    "keys": [
+      "realData",
+      "predictData"
+    ],
+    "len.realData": 747,
+    "ms": 1461
+  },
+  {
+    "sector": "aviation",
+    "path": "enterprise/manufactoring-revenue",
+    "params": {
+      "ticket": "HVN",
+      "period": "quarter",
+      "year": "All"
+    },
+    "ok": false,
+    "status": null,
+    "error": "RuntimeError('Login failed 400: {\"statusCode\":400,\"message\":[\"email must be an email\",\"password must be longer than or equal to 8 characters\",\"password should not be empty\"],\"error\":\"Bad Request\"}')",
+    "ms": 3774
+  },
+  {
+    "sector": "aviation",
+    "path": "enterprise/manufactoring-profit-after-tax",
+    "params": {
+      "ticket": "HVN",
+      "period": "quarter",
+      "year": "All"
+    },
+    "ok": false,
+    "status": null,
+    "error": "RuntimeError('Login failed 400: {\"statusCode\":400,\"message\":[\"email must be an email\",\"password must be longer than or equal to 8 characters\",\"password should not be empty\"],\"error\":\"Bad Request\"}')",
+    "ms": 4699
+  },
+  {
+    "sector": "rubber",
+    "path": "enterprise/corp-profile",
+    "params": {
+      "ticket": "DPR"
+    },
+    "ok": true,
+    "status": 200,
+    "kind": "dict",
+    "n": 20,
+    "empty": false,
+    "keys": [
+      "id",
+      "tradingDate",
+      "ticket",
+      "closePrice",
+      "priceChange",
+      "perPriceChange",
+      "marketCap",
+      "totalTradedVol",
+      "listedShare",
+      "pe",
+      "pb",
+      "evEbitda",
+      "eps",
+      "bvps",
+      "ebitda",
+      "overview",
+      "updatedAt",
+      "colorId",
+      "website",
+      "cgtContents"
+    ],
+    "len.cgtContents": 0,
+    "ms": 758
+  },
+  {
+    "sector": "rubber",
+    "path": "enterprise/overview-dividend",
+    "params": {
+      "ticket": "DPR",
+      "year": "All"
+    },
+    "ok": false,
+    "status": null,
+    "error": "RuntimeError('Login failed 400: {\"statusCode\":400,\"message\":[\"email must be an email\",\"password must be longer than or equal to 8 characters\",\"password should not be empty\"],\"error\":\"Bad Request\"}')",
+    "ms": 4017
+  },
+  {
+    "sector": "rubber",
+    "path": "enterprise/report-data-prediction",
+    "params": {
+      "ticket": "DPR"
+    },
+    "ok": true,
+    "status": 200,
+    "kind": "dict",
+    "n": 2,
+    "empty": false,
+    "keys": [
+      "realData",
+      "predictData"
+    ],
+    "len.realData": 747,
+    "ms": 2392
+  },
+  {
+    "sector": "rubber",
+    "path": "enterprise/manufactoring-revenue",
+    "params": {
+      "ticket": "DPR",
+      "period": "quarter",
+      "year": "All"
+    },
+    "ok": false,
+    "status": null,
+    "error": "RuntimeError('Login failed 400: {\"statusCode\":400,\"message\":[\"email must be an email\",\"password must be longer than or equal to 8 characters\",\"password should not be empty\"],\"error\":\"Bad Request\"}')",
+    "ms": 4827
+  },
+  {
+    "sector": "rubber",
+    "path": "enterprise/manufactoring-profit-after-tax",
+    "params": {
+      "ticket": "DPR",
+      "period": "quarter",
+      "year": "All"
+    },
+    "ok": false,
+    "status": null,
+    "error": "RuntimeError('Login failed 400: {\"statusCode\":400,\"message\":[\"email must be an email\",\"password must be longer than or equal to 8 characters\",\"password should not be empty\"],\"error\":\"Bad Request\"}')",
+    "ms": 4825
+  },
+  {
+    "sector": "pig",
+    "path": "enterprise/corp-profile",
+    "params": {
+      "ticket": "DBC"
+    },
+    "ok": true,
+    "status": 200,
+    "kind": "dict",
+    "n": 20,
+    "empty": false,
+    "keys": [
+      "id",
+      "tradingDate",
+      "ticket",
+      "closePrice",
+      "priceChange",
+      "perPriceChange",
+      "marketCap",
+      "totalTradedVol",
+      "listedShare",
+      "pe",
+      "pb",
+      "evEbitda",
+      "eps",
+      "bvps",
+      "ebitda",
+      "overview",
+      "updatedAt",
+      "colorId",
+      "website",
+      "cgtContents"
+    ],
+    "len.cgtContents": 0,
+    "ms": 28
+  },
+  {
+    "sector": "pig",
+    "path": "enterprise/overview-dividend",
+    "params": {
+      "ticket": "DBC",
+      "year": "All"
+    },
+    "ok": false,
+    "status": null,
+    "error": "RuntimeError('Login failed 400: {\"statusCode\":400,\"message\":[\"email must be an email\",\"password must be longer than or equal to 8 characters\",\"password should not be empty\"],\"error\":\"Bad Request\"}')",
+    "ms": 3945
+  },
+  {
+    "sector": "pig",
+    "path": "enterprise/report-data-prediction",
+    "params": {
+      "ticket": "DBC"
+    },
+    "ok": true,
+    "status": 200,
+    "kind": "dict",
+    "n": 2,
+    "empty": false,
+    "keys": [
+      "realData",
+      "predictData"
+    ],
+    "len.realData": 747,
+    "ms": 1634
+  },
+  {
+    "sector": "pig",
+    "path": "enterprise/manufactoring-revenue",
+    "params": {
+      "ticket": "DBC",
+      "period": "quarter",
+      "year": "All"
+    },
+    "ok": false,
+    "status": null,
+    "error": "RuntimeError('Login failed 400: {\"statusCode\":400,\"message\":[\"email must be an email\",\"password must be longer than or equal to 8 characters\",\"password should not be empty\"],\"error\":\"Bad Request\"}')",
+    "ms": 3148
+  },
+  {
+    "sector": "pig",
+    "path": "enterprise/manufactoring-profit-after-tax",
+    "params": {
+      "ticket": "DBC",
+      "period": "quarter",
+      "year": "All"
+    },
+    "ok": false,
+    "status": null,
+    "error": "RuntimeError('Login failed 400: {\"statusCode\":400,\"message\":[\"email must be an email\",\"password must be longer than or equal to 8 characters\",\"password should not be empty\"],\"error\":\"Bad Request\"}')",
+    "ms": 2386
+  },
+  {
+    "sector": "chemistry",
+    "path": "enterprise/corp-profile",
+    "params": {
+      "ticket": "DGC"
+    },
+    "ok": true,
+    "status": 200,
+    "kind": "dict",
+    "n": 20,
+    "empty": false,
+    "keys": [
+      "id",
+      "tradingDate",
+      "ticket",
+      "closePrice",
+      "priceChange",
+      "perPriceChange",
+      "marketCap",
+      "totalTradedVol",
+      "listedShare",
+      "pe",
+      "pb",
+      "evEbitda",
+      "eps",
+      "bvps",
+      "ebitda",
+      "overview",
+      "updatedAt",
+      "colorId",
+      "website",
+      "cgtContents"
+    ],
+    "len.cgtContents": 0,
+    "ms": 1497
+  },
+  {
+    "sector": "chemistry",
+    "path": "enterprise/overview-dividend",
+    "params": {
+      "ticket": "DGC",
+      "year": "All"
+    },
+    "ok": false,
+    "status": null,
+    "error": "RuntimeError('Login failed 400: {\"statusCode\":400,\"message\":[\"email must be an email\",\"password must be longer than or equal to 8 characters\",\"password should not be empty\"],\"error\":\"Bad Request\"}')",
+    "ms": 1545
+  },
+  {
+    "sector": "chemistry",
+    "path": "enterprise/report-data-prediction",
+    "params": {
+      "ticket": "DGC"
+    },
+    "ok": true,
+    "status": 200,
+    "kind": "dict",
+    "n": 2,
+    "empty": false,
+    "keys": [
+      "realData",
+      "predictData"
+    ],
+    "len.realData": 747,
+    "ms": 2185
+  },
+  {
+    "sector": "chemistry",
+    "path": "enterprise/manufactoring-revenue",
+    "params": {
+      "ticket": "DGC",
+      "period": "quarter",
+      "year": "All"
+    },
+    "ok": false,
+    "status": null,
+    "error": "RuntimeError('Login failed 400: {\"statusCode\":400,\"message\":[\"email must be an email\",\"password must be longer than or equal to 8 characters\",\"password should not be empty\"],\"error\":\"Bad Request\"}')",
+    "ms": 4736
+  },
+  {
+    "sector": "chemistry",
+    "path": "enterprise/manufactoring-profit-after-tax",
+    "params": {
+      "ticket": "DGC",
+      "period": "quarter",
+      "year": "All"
+    },
+    "ok": false,
+    "status": null,
+    "error": "RuntimeError('Login failed 400: {\"statusCode\":400,\"message\":[\"email must be an email\",\"password must be longer than or equal to 8 characters\",\"password should not be empty\"],\"error\":\"Bad Request\"}')",
+    "ms": 6851
+  },
+  {
+    "sector": "textile",
+    "path": "enterprise/corp-profile",
+    "params": {
+      "ticket": "TCM"
+    },
+    "ok": true,
+    "status": 200,
+    "kind": "dict",
+    "n": 20,
+    "empty": false,
+    "keys": [
+      "id",
+      "tradingDate",
+      "ticket",
+      "closePrice",
+      "priceChange",
+      "perPriceChange",
+      "marketCap",
+      "totalTradedVol",
+      "listedShare",
+      "pe",
+      "pb",
+      "evEbitda",
+      "eps",
+      "bvps",
+      "ebitda",
+      "overview",
+      "updatedAt",
+      "colorId",
+      "website",
+      "cgtContents"
+    ],
+    "len.cgtContents": 0,
+    "ms": 3754
+  },
+  {
+    "sector": "textile",
+    "path": "enterprise/overview-dividend",
+    "params": {
+      "ticket": "TCM",
+      "year": "All"
+    },
+    "ok": false,
+    "status": null,
+    "error": "RuntimeError('Login failed 400: {\"statusCode\":400,\"message\":[\"email must be an email\",\"password must be longer than or equal to 8 characters\",\"password should not be empty\"],\"error\":\"Bad Request\"}')",
+    "ms": 4739
+  },
+  {
+    "sector": "textile",
+    "path": "enterprise/report-data-prediction",
+    "params": {
+      "ticket": "TCM"
+    },
+    "ok": true,
+    "status": 200,
+    "kind": "dict",
+    "n": 2,
+    "empty": false,
+    "keys": [
+      "realData",
+      "predictData"
+    ],
+    "len.realData": 751,
+    "ms": 4725
+  },
+  {
+    "sector": "textile",
+    "path": "enterprise/manufactoring-revenue",
+    "params": {
+      "ticket": "TCM",
+      "period": "quarter",
+      "year": "All"
+    },
+    "ok": false,
+    "status": null,
+    "error": "RuntimeError('Login failed 400: {\"statusCode\":400,\"message\":[\"email must be an email\",\"password must be longer than or equal to 8 characters\",\"password should not be empty\"],\"error\":\"Bad Request\"}')",
+    "ms": 6849
+  },
+  {
+    "sector": "textile",
+    "path": "enterprise/manufactoring-profit-after-tax",
+    "params": {
+      "ticket": "TCM",
+      "period": "quarter",
+      "year": "All"
+    },
+    "ok": false,
+    "status": null,
+    "error": "RuntimeError('Login failed 400: {\"statusCode\":400,\"message\":[\"email must be an email\",\"password must be longer than or equal to 8 characters\",\"password should not be empty\"],\"error\":\"Bad Request\"}')",
+    "ms": 4740
+  },
+  {
+    "sector": "industry",
+    "path": "enterprise/corp-profile",
+    "params": {
+      "ticket": "BCM"
+    },
+    "ok": true,
+    "status": 200,
+    "kind": "dict",
+    "n": 20,
+    "empty": false,
+    "keys": [
+      "id",
+      "tradingDate",
+      "ticket",
+      "closePrice",
+      "priceChange",
+      "perPriceChange",
+      "marketCap",
+      "totalTradedVol",
+      "listedShare",
+      "pe",
+      "pb",
+      "evEbitda",
+      "eps",
+      "bvps",
+      "ebitda",
+      "overview",
+      "updatedAt",
+      "colorId",
+      "website",
+      "cgtContents"
+    ],
+    "len.cgtContents": 0,
+    "ms": 1568
+  },
+  {
+    "sector": "industry",
+    "path": "enterprise/overview-dividend",
+    "params": {
+      "ticket": "BCM",
+      "year": "All"
+    },
+    "ok": false,
+    "status": null,
+    "error": "RuntimeError('Login failed 400: {\"statusCode\":400,\"message\":[\"email must be an email\",\"password must be longer than or equal to 8 characters\",\"password should not be empty\"],\"error\":\"Bad Request\"}')",
+    "ms": 5135
+  },
+  {
+    "sector": "industry",
+    "path": "enterprise/report-data-prediction",
+    "params": {
+      "ticket": "BCM"
+    },
+    "ok": true,
+    "status": 200,
+    "kind": "dict",
+    "n": 2,
+    "empty": false,
+    "keys": [
+      "realData",
+      "predictData"
+    ],
+    "len.realData": 747,
+    "ms": 996
+  },
+  {
+    "sector": "industry",
+    "path": "enterprise/manufactoring-revenue",
+    "params": {
+      "ticket": "BCM",
+      "period": "quarter",
+      "year": "All"
+    },
+    "ok": false,
+    "status": null,
+    "error": "RuntimeError('Login failed 400: {\"statusCode\":400,\"message\":[\"email must be an email\",\"password must be longer than or equal to 8 characters\",\"password should not be empty\"],\"error\":\"Bad Request\"}')",
+    "ms": 4255
+  },
+  {
+    "sector": "industry",
+    "path": "enterprise/manufactoring-profit-after-tax",
+    "params": {
+      "ticket": "BCM",
+      "period": "quarter",
+      "year": "All"
+    },
+    "ok": false,
+    "status": null,
+    "error": "RuntimeError('Login failed 400: {\"statusCode\":400,\"message\":[\"email must be an email\",\"password must be longer than or equal to 8 characters\",\"password should not be empty\"],\"error\":\"Bad Request\"}')",
+    "ms": 4257
+  },
+  {
+    "sector": "realestate",
+    "path": "enterprise/corp-profile",
+    "params": {
+      "ticket": "VHM"
+    },
+    "ok": true,
+    "status": 200,
+    "kind": "dict",
+    "n": 20,
+    "empty": false,
+    "keys": [
+      "id",
+      "tradingDate",
+      "ticket",
+      "closePrice",
+      "priceChange",
+      "perPriceChange",
+      "marketCap",
+      "totalTradedVol",
+      "listedShare",
+      "pe",
+      "pb",
+      "evEbitda",
+      "eps",
+      "bvps",
+      "ebitda",
+      "overview",
+      "updatedAt",
+      "colorId",
+      "website",
+      "cgtContents"
+    ],
+    "len.cgtContents": 0,
+    "ms": 719
+  },
+  {
+    "sector": "realestate",
+    "path": "enterprise/overview-dividend",
+    "params": {
+      "ticket": "VHM",
+      "year": "All"
+    },
+    "ok": false,
+    "status": null,
+    "error": "RuntimeError('Login failed 400: {\"statusCode\":400,\"message\":[\"email must be an email\",\"password must be longer than or equal to 8 characters\",\"password should not be empty\"],\"error\":\"Bad Request\"}')",
+    "ms": 4191
+  },
+  {
+    "sector": "realestate",
+    "path": "enterprise/report-data-prediction",
+    "params": {
+      "ticket": "VHM"
+    },
+    "ok": true,
+    "status": 200,
+    "kind": "dict",
+    "n": 2,
+    "empty": false,
+    "keys": [
+      "realData",
+      "predictData"
+    ],
+    "len.realData": 734,
+    "ms": 2110
+  },
+  {
+    "sector": "realestate",
+    "path": "enterprise/manufactoring-revenue",
+    "params": {
+      "ticket": "VHM",
+      "period": "quarter",
+      "year": "All"
+    },
+    "ok": false,
+    "status": null,
+    "error": "RuntimeError('Login failed 400: {\"statusCode\":400,\"message\":[\"email must be an email\",\"password must be longer than or equal to 8 characters\",\"password should not be empty\"],\"error\":\"Bad Request\"}')",
+    "ms": 2146
+  },
+  {
+    "sector": "realestate",
+    "path": "enterprise/manufactoring-profit-after-tax",
+    "params": {
+      "ticket": "VHM",
+      "period": "quarter",
+      "year": "All"
+    },
+    "ok": false,
+    "status": null,
+    "error": "RuntimeError('Login failed 400: {\"statusCode\":400,\"message\":[\"email must be an email\",\"password must be longer than or equal to 8 characters\",\"password should not be empty\"],\"error\":\"Bad Request\"}')",
+    "ms": 3485
+  },
+  {
+    "sector": "transport",
+    "path": "enterprise/corp-profile",
+    "params": {
+      "ticket": "HAH"
+    },
+    "ok": true,
+    "status": 200,
+    "kind": "dict",
+    "n": 20,
+    "empty": false,
+    "keys": [
+      "id",
+      "tradingDate",
+      "ticket",
+      "closePrice",
+      "priceChange",
+      "perPriceChange",
+      "marketCap",
+      "totalTradedVol",
+      "listedShare",
+      "pe",
+      "pb",
+      "evEbitda",
+      "eps",
+      "bvps",
+      "ebitda",
+      "overview",
+      "updatedAt",
+      "colorId",
+      "website",
+      "cgtContents"
+    ],
+    "len.cgtContents": 0,
+    "ms": 1397
+  },
+  {
+    "sector": "transport",
+    "path": "enterprise/overview-dividend",
+    "params": {
+      "ticket": "HAH",
+      "year": "All"
+    },
+    "ok": false,
+    "status": null,
+    "error": "RuntimeError('Login failed 400: {\"statusCode\":400,\"message\":[\"email must be an email\",\"password must be longer than or equal to 8 characters\",\"password should not be empty\"],\"error\":\"Bad Request\"}')",
+    "ms": 3471
+  },
+  {
+    "sector": "transport",
+    "path": "enterprise/report-data-prediction",
+    "params": {
+      "ticket": "HAH"
+    },
+    "ok": true,
+    "status": 200,
+    "kind": "dict",
+    "n": 2,
+    "empty": false,
+    "keys": [
+      "realData",
+      "predictData"
+    ],
+    "len.realData": 747,
+    "ms": 1478
+  },
+  {
+    "sector": "transport",
+    "path": "enterprise/manufactoring-revenue",
+    "params": {
+      "ticket": "HAH",
+      "period": "quarter",
+      "year": "All"
+    },
+    "ok": false,
+    "status": null,
+    "error": "RuntimeError('Login failed 400: {\"statusCode\":400,\"message\":[\"email must be an email\",\"password must be longer than or equal to 8 characters\",\"password should not be empty\"],\"error\":\"Bad Request\"}')",
+    "ms": 1474
+  },
+  {
+    "sector": "transport",
+    "path": "enterprise/manufactoring-profit-after-tax",
+    "params": {
+      "ticket": "HAH",
+      "period": "quarter",
+      "year": "All"
+    },
+    "ok": false,
+    "status": null,
+    "error": "RuntimeError('Login failed 400: {\"statusCode\":400,\"message\":[\"email must be an email\",\"password must be longer than or equal to 8 characters\",\"password should not be empty\"],\"error\":\"Bad Request\"}')",
+    "ms": 1436
+  },
+  {
+    "sector": "securities",
+    "path": "enterprise/corp-profile",
+    "params": {
+      "ticket": "SSI"
+    },
+    "ok": true,
+    "status": 200,
+    "kind": "dict",
+    "n": 20,
+    "empty": false,
+    "keys": [
+      "id",
+      "tradingDate",
+      "ticket",
+      "closePrice",
+      "priceChange",
+      "perPriceChange",
+      "marketCap",
+      "totalTradedVol",
+      "listedShare",
+      "pe",
+      "pb",
+      "evEbitda",
+      "eps",
+      "bvps",
+      "ebitda",
+      "overview",
+      "updatedAt",
+      "colorId",
+      "website",
+      "cgtContents"
+    ],
+    "len.cgtContents": 0,
+    "ms": 1347
+  },
+  {
+    "sector": "securities",
+    "path": "enterprise/overview-dividend",
+    "params": {
+      "ticket": "SSI",
+      "year": "All"
+    },
+    "ok": false,
+    "status": null,
+    "error": "RuntimeError('Login failed 400: {\"statusCode\":400,\"message\":[\"email must be an email\",\"password must be longer than or equal to 8 characters\",\"password should not be empty\"],\"error\":\"Bad Request\"}')",
+    "ms": 4748
+  },
+  {
+    "sector": "securities",
+    "path": "enterprise/report-data-prediction",
+    "params": {
+      "ticket": "SSI"
+    },
+    "ok": true,
+    "status": 200,
+    "kind": "dict",
+    "n": 2,
+    "empty": false,
+    "keys": [
+      "realData",
+      "predictData"
+    ],
+    "len.realData": 747,
+    "ms": 1997
+  },
+  {
+    "sector": "securities",
+    "path": "enterprise/manufactoring-revenue",
+    "params": {
+      "ticket": "SSI",
+      "period": "quarter",
+      "year": "All"
+    },
+    "ok": false,
+    "status": null,
+    "error": "RuntimeError('Login failed 400: {\"statusCode\":400,\"message\":[\"email must be an email\",\"password must be longer than or equal to 8 characters\",\"password should not be empty\"],\"error\":\"Bad Request\"}')",
+    "ms": 6178
+  },
+  {
+    "sector": "securities",
+    "path": "enterprise/manufactoring-profit-after-tax",
+    "params": {
+      "ticket": "SSI",
+      "period": "quarter",
+      "year": "All"
+    },
+    "ok": false,
+    "status": null,
+    "error": "RuntimeError('Login failed 400: {\"statusCode\":400,\"message\":[\"email must be an email\",\"password must be longer than or equal to 8 characters\",\"password should not be empty\"],\"error\":\"Bad Request\"}')",
+    "ms": 4761
+  },
+  {
+    "sector": "food-beverage",
+    "path": "enterprise/corp-profile",
+    "params": {
+      "ticket": "VNM"
+    },
+    "ok": true,
+    "status": 200,
+    "kind": "dict",
+    "n": 20,
+    "empty": false,
+    "keys": [
+      "id",
+      "tradingDate",
+      "ticket",
+      "closePrice",
+      "priceChange",
+      "perPriceChange",
+      "marketCap",
+      "totalTradedVol",
+      "listedShare",
+      "pe",
+      "pb",
+      "evEbitda",
+      "eps",
+      "bvps",
+      "ebitda",
+      "overview",
+      "updatedAt",
+      "colorId",
+      "website",
+      "cgtContents"
+    ],
+    "len.cgtContents": 0,
+    "ms": 1283
+  },
+  {
+    "sector": "food-beverage",
+    "path": "enterprise/overview-dividend",
+    "params": {
+      "ticket": "VNM",
+      "year": "All"
+    },
+    "ok": false,
+    "status": null,
+    "error": "RuntimeError('Login failed 400: {\"statusCode\":400,\"message\":[\"email must be an email\",\"password must be longer than or equal to 8 characters\",\"password should not be empty\"],\"error\":\"Bad Request\"}')",
+    "ms": 6797
+  },
+  {
+    "sector": "food-beverage",
+    "path": "enterprise/report-data-prediction",
+    "params": {
+      "ticket": "VNM"
+    },
+    "ok": true,
+    "status": 200,
+    "kind": "dict",
+    "n": 2,
+    "empty": false,
+    "keys": [
+      "realData",
+      "predictData"
+    ],
+    "len.realData": 747,
+    "ms": 4779
+  },
+  {
+    "sector": "food-beverage",
+    "path": "enterprise/manufactoring-revenue",
+    "params": {
+      "ticket": "VNM",
+      "period": "quarter",
+      "year": "All"
+    },
+    "ok": false,
+    "status": null,
+    "error": "RuntimeError('Login failed 400: {\"statusCode\":400,\"message\":[\"email must be an email\",\"password must be longer than or equal to 8 characters\",\"password should not be empty\"],\"error\":\"Bad Request\"}')",
+    "ms": 4744
+  },
+  {
+    "sector": "food-beverage",
+    "path": "enterprise/manufactoring-profit-after-tax",
+    "params": {
+      "ticket": "VNM",
+      "period": "quarter",
+      "year": "All"
+    },
+    "ok": false,
+    "status": null,
+    "error": "RuntimeError('Login failed 400: {\"statusCode\":400,\"message\":[\"email must be an email\",\"password must be longer than or equal to 8 characters\",\"password should not be empty\"],\"error\":\"Bad Request\"}')",
+    "ms": 4195
+  },
+  {
+    "sector": "electricity",
+    "path": "enterprise/corp-profile",
+    "params": {
+      "ticket": "POW"
+    },
+    "ok": true,
+    "status": 200,
+    "kind": "dict",
+    "n": 20,
+    "empty": false,
+    "keys": [
+      "id",
+      "tradingDate",
+      "ticket",
+      "closePrice",
+      "priceChange",
+      "perPriceChange",
+      "marketCap",
+      "totalTradedVol",
+      "listedShare",
+      "pe",
+      "pb",
+      "evEbitda",
+      "eps",
+      "bvps",
+      "ebitda",
+      "overview",
+      "updatedAt",
+      "colorId",
+      "website",
+      "cgtContents"
+    ],
+    "len.cgtContents": 0,
+    "ms": 644
+  },
+  {
+    "sector": "electricity",
+    "path": "enterprise/overview-dividend",
+    "params": {
+      "ticket": "POW",
+      "year": "All"
+    },
+    "ok": false,
+    "status": null,
+    "error": "RuntimeError('Login failed 400: {\"statusCode\":400,\"message\":[\"email must be an email\",\"password must be longer than or equal to 8 characters\",\"password should not be empty\"],\"error\":\"Bad Request\"}')",
+    "ms": 3535
+  },
+  {
+    "sector": "electricity",
+    "path": "enterprise/report-data-prediction",
+    "params": {
+      "ticket": "POW"
+    },
+    "ok": true,
+    "status": 200,
+    "kind": "dict",
+    "n": 2,
+    "empty": false,
+    "keys": [
+      "realData",
+      "predictData"
+    ],
+    "len.realData": 747,
+    "ms": 1419
+  },
+  {
+    "sector": "electricity",
+    "path": "enterprise/manufactoring-revenue",
+    "params": {
+      "ticket": "POW",
+      "period": "quarter",
+      "year": "All"
+    },
+    "ok": false,
+    "status": null,
+    "error": "RuntimeError('Login failed 400: {\"statusCode\":400,\"message\":[\"email must be an email\",\"password must be longer than or equal to 8 characters\",\"password should not be empty\"],\"error\":\"Bad Request\"}')",
+    "ms": 3983
+  },
+  {
+    "sector": "electricity",
+    "path": "enterprise/manufactoring-profit-after-tax",
+    "params": {
+      "ticket": "POW",
+      "period": "quarter",
+      "year": "All"
+    },
+    "ok": false,
+    "status": null,
+    "error": "RuntimeError('Login failed 400: {\"statusCode\":400,\"message\":[\"email must be an email\",\"password must be longer than or equal to 8 characters\",\"password should not be empty\"],\"error\":\"Bad Request\"}')",
+    "ms": 3973
+  },
+  {
+    "sector": "plastics",
+    "path": "enterprise/corp-profile",
+    "params": {
+      "ticket": "BMP"
+    },
+    "ok": true,
+    "status": 200,
+    "kind": "dict",
+    "n": 20,
+    "empty": false,
+    "keys": [
+      "id",
+      "tradingDate",
+      "ticket",
+      "closePrice",
+      "priceChange",
+      "perPriceChange",
+      "marketCap",
+      "totalTradedVol",
+      "listedShare",
+      "pe",
+      "pb",
+      "evEbitda",
+      "eps",
+      "bvps",
+      "ebitda",
+      "overview",
+      "updatedAt",
+      "colorId",
+      "website",
+      "cgtContents"
+    ],
+    "len.cgtContents": 0,
+    "ms": 2026
+  },
+  {
+    "sector": "plastics",
+    "path": "enterprise/overview-dividend",
+    "params": {
+      "ticket": "BMP",
+      "year": "All"
+    },
+    "ok": false,
+    "status": null,
+    "error": "RuntimeError('Login failed 400: {\"statusCode\":400,\"message\":[\"email must be an email\",\"password must be longer than or equal to 8 characters\",\"password should not be empty\"],\"error\":\"Bad Request\"}')",
+    "ms": 3204
+  },
+  {
+    "sector": "plastics",
+    "path": "enterprise/report-data-prediction",
+    "params": {
+      "ticket": "BMP"
+    },
+    "ok": true,
+    "status": 200,
+    "kind": "dict",
+    "n": 2,
+    "empty": false,
+    "keys": [
+      "realData",
+      "predictData"
+    ],
+    "len.realData": 747,
+    "ms": 1942
+  },
+  {
+    "sector": "plastics",
+    "path": "enterprise/manufactoring-revenue",
+    "params": {
+      "ticket": "BMP",
+      "period": "quarter",
+      "year": "All"
+    },
+    "ok": false,
+    "status": null,
+    "error": "RuntimeError('Login failed 400: {\"statusCode\":400,\"message\":[\"email must be an email\",\"password must be longer than or equal to 8 characters\",\"password should not be empty\"],\"error\":\"Bad Request\"}')",
+    "ms": 3798
+  },
+  {
+    "sector": "plastics",
+    "path": "enterprise/manufactoring-profit-after-tax",
+    "params": {
+      "ticket": "BMP",
+      "period": "quarter",
+      "year": "All"
+    },
+    "ok": false,
+    "status": null,
+    "error": "RuntimeError('Login failed 400: {\"statusCode\":400,\"message\":[\"email must be an email\",\"password must be longer than or equal to 8 characters\",\"password should not be empty\"],\"error\":\"Bad Request\"}')",
+    "ms": 3797
+  },
+  {
+    "sector": "insurance",
+    "path": "enterprise/corp-profile",
+    "params": {
+      "ticket": "BVH"
+    },
+    "ok": true,
+    "status": 200,
+    "kind": "dict",
+    "n": 20,
+    "empty": false,
+    "keys": [
+      "id",
+      "tradingDate",
+      "ticket",
+      "closePrice",
+      "priceChange",
+      "perPriceChange",
+      "marketCap",
+      "totalTradedVol",
+      "listedShare",
+      "pe",
+      "pb",
+      "evEbitda",
+      "eps",
+      "bvps",
+      "ebitda",
+      "overview",
+      "updatedAt",
+      "colorId",
+      "website",
+      "cgtContents"
+    ],
+    "len.cgtContents": 0,
+    "ms": 1312
+  },
+  {
+    "sector": "insurance",
+    "path": "enterprise/overview-dividend",
+    "params": {
+      "ticket": "BVH",
+      "year": "All"
+    },
+    "ok": false,
+    "status": null,
+    "error": "RuntimeError('Login failed 400: {\"statusCode\":400,\"message\":[\"email must be an email\",\"password must be longer than or equal to 8 characters\",\"password should not be empty\"],\"error\":\"Bad Request\"}')",
+    "ms": 2571
+  },
+  {
+    "sector": "insurance",
+    "path": "enterprise/report-data-prediction",
+    "params": {
+      "ticket": "BVH"
+    },
+    "ok": true,
+    "status": 200,
+    "kind": "dict",
+    "n": 2,
+    "empty": false,
+    "keys": [
+      "realData",
+      "predictData"
+    ],
+    "len.realData": 747,
+    "ms": 638
+  },
+  {
+    "sector": "insurance",
+    "path": "enterprise/manufactoring-revenue",
+    "params": {
+      "ticket": "BVH",
+      "period": "quarter",
+      "year": "All"
+    },
+    "ok": false,
+    "status": null,
+    "error": "RuntimeError('Login failed 400: {\"statusCode\":400,\"message\":[\"email must be an email\",\"password must be longer than or equal to 8 characters\",\"password should not be empty\"],\"error\":\"Bad Request\"}')",
+    "ms": 1909
+  },
+  {
+    "sector": "insurance",
+    "path": "enterprise/manufactoring-profit-after-tax",
+    "params": {
+      "ticket": "BVH",
+      "period": "quarter",
+      "year": "All"
+    },
+    "ok": false,
+    "status": null,
+    "error": "RuntimeError('Login failed 400: {\"statusCode\":400,\"message\":[\"email must be an email\",\"password must be longer than or equal to 8 characters\",\"password should not be empty\"],\"error\":\"Bad Request\"}')",
+    "ms": 1287
+  },
+  {
+    "sector": "oilgas",
+    "path": "enterprise/corp-profile",
+    "params": {
+      "ticket": "GAS"
+    },
+    "ok": true,
+    "status": 200,
+    "kind": "dict",
+    "n": 20,
+    "empty": false,
+    "keys": [
+      "id",
+      "tradingDate",
+      "ticket",
+      "closePrice",
+      "priceChange",
+      "perPriceChange",
+      "marketCap",
+      "totalTradedVol",
+      "listedShare",
+      "pe",
+      "pb",
+      "evEbitda",
+      "eps",
+      "bvps",
+      "ebitda",
+      "overview",
+      "updatedAt",
+      "colorId",
+      "website",
+      "cgtContents"
+    ],
+    "len.cgtContents": 0,
+    "ms": 615
+  },
+  {
+    "sector": "oilgas",
+    "path": "enterprise/overview-dividend",
+    "params": {
+      "ticket": "GAS",
+      "year": "All"
+    },
+    "ok": false,
+    "status": null,
+    "error": "RuntimeError('Login failed 400: {\"statusCode\":400,\"message\":[\"email must be an email\",\"password must be longer than or equal to 8 characters\",\"password should not be empty\"],\"error\":\"Bad Request\"}')",
+    "ms": 3883
+  },
+  {
+    "sector": "oilgas",
+    "path": "enterprise/report-data-prediction",
+    "params": {
+      "ticket": "GAS"
+    },
+    "ok": true,
+    "status": 200,
+    "kind": "dict",
+    "n": 2,
+    "empty": false,
+    "keys": [
+      "realData",
+      "predictData"
+    ],
+    "len.realData": 747,
+    "ms": 1254
+  },
+  {
+    "sector": "oilgas",
+    "path": "enterprise/manufactoring-revenue",
+    "params": {
+      "ticket": "GAS",
+      "period": "quarter",
+      "year": "All"
+    },
+    "ok": false,
+    "status": null,
+    "error": "RuntimeError('Login failed 400: {\"statusCode\":400,\"message\":[\"email must be an email\",\"password must be longer than or equal to 8 characters\",\"password should not be empty\"],\"error\":\"Bad Request\"}')",
+    "ms": 6509
+  },
+  {
+    "sector": "oilgas",
+    "path": "enterprise/manufactoring-profit-after-tax",
+    "params": {
+      "ticket": "GAS",
+      "period": "quarter",
+      "year": "All"
+    },
+    "ok": false,
+    "status": null,
+    "error": "RuntimeError('Login failed 400: {\"statusCode\":400,\"message\":[\"email must be an email\",\"password must be longer than or equal to 8 characters\",\"password should not be empty\"],\"error\":\"Bad Request\"}')",
+    "ms": 4530
+  },
+  {
+    "sector": "gold",
+    "path": "enterprise/corp-profile",
+    "params": {
+      "ticket": "PNJ"
+    },
+    "ok": true,
+    "status": 200,
+    "kind": "dict",
+    "n": 20,
+    "empty": false,
+    "keys": [
+      "id",
+      "tradingDate",
+      "ticket",
+      "closePrice",
+      "priceChange",
+      "perPriceChange",
+      "marketCap",
+      "totalTradedVol",
+      "listedShare",
+      "pe",
+      "pb",
+      "evEbitda",
+      "eps",
+      "bvps",
+      "ebitda",
+      "overview",
+      "updatedAt",
+      "colorId",
+      "website",
+      "cgtContents"
+    ],
+    "len.cgtContents": 0,
+    "ms": 612
+  },
+  {
+    "sector": "gold",
+    "path": "enterprise/overview-dividend",
+    "params": {
+      "ticket": "PNJ",
+      "year": "All"
+    },
+    "ok": false,
+    "status": null,
+    "error": "RuntimeError('Login failed 400: {\"statusCode\":400,\"message\":[\"email must be an email\",\"password must be longer than or equal to 8 characters\",\"password should not be empty\"],\"error\":\"Bad Request\"}')",
+    "ms": 6508
+  },
+  {
+    "sector": "gold",
+    "path": "enterprise/report-data-prediction",
+    "params": {
+      "ticket": "PNJ"
+    },
+    "ok": true,
+    "status": 200,
+    "kind": "dict",
+    "n": 2,
+    "empty": false,
+    "keys": [
+      "realData",
+      "predictData"
+    ],
+    "len.realData": 747,
+    "ms": 3874
+  },
+  {
+    "sector": "gold",
+    "path": "enterprise/manufactoring-revenue",
+    "params": {
+      "ticket": "PNJ",
+      "period": "quarter",
+      "year": "All"
+    },
+    "ok": false,
+    "status": null,
+    "error": "RuntimeError('Login failed 400: {\"statusCode\":400,\"message\":[\"email must be an email\",\"password must be longer than or equal to 8 characters\",\"password should not be empty\"],\"error\":\"Bad Request\"}')",
+    "ms": 3937
+  },
+  {
+    "sector": "gold",
+    "path": "enterprise/manufactoring-profit-after-tax",
+    "params": {
+      "ticket": "PNJ",
+      "period": "quarter",
+      "year": "All"
+    },
+    "ok": false,
+    "status": null,
+    "error": "RuntimeError('Login failed 400: {\"statusCode\":400,\"message\":[\"email must be an email\",\"password must be longer than or equal to 8 characters\",\"password should not be empty\"],\"error\":\"Bad Request\"}')",
+    "ms": 3930
+  },
+  {
+    "sector": "coffee",
+    "path": "enterprise/corp-profile",
+    "params": {
+      "ticket": "VCF"
+    },
+    "ok": true,
+    "status": 200,
+    "kind": "dict",
+    "n": 20,
+    "empty": false,
+    "keys": [
+      "id",
+      "tradingDate",
+      "ticket",
+      "closePrice",
+      "priceChange",
+      "perPriceChange",
+      "marketCap",
+      "totalTradedVol",
+      "listedShare",
+      "pe",
+      "pb",
+      "evEbitda",
+      "eps",
+      "bvps",
+      "ebitda",
+      "overview",
+      "updatedAt",
+      "colorId",
+      "website",
+      "cgtContents"
+    ],
+    "len.cgtContents": 0,
+    "ms": 1308
+  },
+  {
+    "sector": "coffee",
+    "path": "enterprise/overview-dividend",
+    "params": {
+      "ticket": "VCF",
+      "year": "All"
+    },
+    "ok": false,
+    "status": null,
+    "error": "RuntimeError('Login failed 400: {\"statusCode\":400,\"message\":[\"email must be an email\",\"password must be longer than or equal to 8 characters\",\"password should not be empty\"],\"error\":\"Bad Request\"}')",
+    "ms": 3329
+  },
+  {
+    "sector": "coffee",
+    "path": "enterprise/report-data-prediction",
+    "params": {
+      "ticket": "VCF"
+    },
+    "ok": true,
+    "status": 200,
+    "kind": "dict",
+    "n": 2,
+    "empty": false,
+    "keys": [
+      "realData",
+      "predictData"
+    ],
+    "len.realData": 718,
+    "ms": 2644
+  },
+  {
+    "sector": "coffee",
+    "path": "enterprise/manufactoring-revenue",
+    "params": {
+      "ticket": "VCF",
+      "period": "quarter",
+      "year": "All"
+    },
+    "ok": false,
+    "status": null,
+    "error": "RuntimeError('Login failed 400: {\"statusCode\":400,\"message\":[\"email must be an email\",\"password must be longer than or equal to 8 characters\",\"password should not be empty\"],\"error\":\"Bad Request\"}')",
+    "ms": 3872
+  },
+  {
+    "sector": "coffee",
+    "path": "enterprise/manufactoring-profit-after-tax",
+    "params": {
+      "ticket": "VCF",
+      "period": "quarter",
+      "year": "All"
+    },
+    "ok": false,
+    "status": null,
+    "error": "RuntimeError('Login failed 400: {\"statusCode\":400,\"message\":[\"email must be an email\",\"password must be longer than or equal to 8 characters\",\"password should not be empty\"],\"error\":\"Bad Request\"}')",
+    "ms": 3870
+  },
+  {
+    "sector": "wood",
+    "path": "enterprise/corp-profile",
+    "params": {
+      "ticket": "PTB"
+    },
+    "ok": true,
+    "status": 200,
+    "kind": "dict",
+    "n": 20,
+    "empty": false,
+    "keys": [
+      "id",
+      "tradingDate",
+      "ticket",
+      "closePrice",
+      "priceChange",
+      "perPriceChange",
+      "marketCap",
+      "totalTradedVol",
+      "listedShare",
+      "pe",
+      "pb",
+      "evEbitda",
+      "eps",
+      "bvps",
+      "ebitda",
+      "overview",
+      "updatedAt",
+      "colorId",
+      "website",
+      "cgtContents"
+    ],
+    "len.cgtContents": 0,
+    "ms": 1962
+  },
+  {
+    "sector": "wood",
+    "path": "enterprise/overview-dividend",
+    "params": {
+      "ticket": "PTB",
+      "year": "All"
+    },
+    "ok": false,
+    "status": null,
+    "error": "RuntimeError('Login failed 400: {\"statusCode\":400,\"message\":[\"email must be an email\",\"password must be longer than or equal to 8 characters\",\"password should not be empty\"],\"error\":\"Bad Request\"}')",
+    "ms": 3848
+  },
+  {
+    "sector": "wood",
+    "path": "enterprise/report-data-prediction",
+    "params": {
+      "ticket": "PTB"
+    },
+    "ok": true,
+    "status": 200,
+    "kind": "dict",
+    "n": 2,
+    "empty": false,
+    "keys": [
+      "realData",
+      "predictData"
+    ],
+    "len.realData": 747,
+    "ms": 1884
+  },
+  {
+    "sector": "wood",
+    "path": "enterprise/manufactoring-revenue",
+    "params": {
+      "ticket": "PTB",
+      "period": "quarter",
+      "year": "All"
+    },
+    "ok": false,
+    "status": null,
+    "error": "RuntimeError('Login failed 400: {\"statusCode\":400,\"message\":[\"email must be an email\",\"password must be longer than or equal to 8 characters\",\"password should not be empty\"],\"error\":\"Bad Request\"}')",
+    "ms": 2517
+  },
+  {
+    "sector": "wood",
+    "path": "enterprise/manufactoring-profit-after-tax",
+    "params": {
+      "ticket": "PTB",
+      "period": "quarter",
+      "year": "All"
+    },
+    "ok": false,
+    "status": null,
+    "error": "RuntimeError('Login failed 400: {\"statusCode\":400,\"message\":[\"email must be an email\",\"password must be longer than or equal to 8 characters\",\"password should not be empty\"],\"error\":\"Bad Request\"}')",
+    "ms": 2513
+  },
+  {
+    "sector": "pharma",
+    "path": "enterprise/corp-profile",
+    "params": {
+      "ticket": "DHG"
+    },
+    "ok": true,
+    "status": 200,
+    "kind": "dict",
+    "n": 20,
+    "empty": false,
+    "keys": [
+      "id",
+      "tradingDate",
+      "ticket",
+      "closePrice",
+      "priceChange",
+      "perPriceChange",
+      "marketCap",
+      "totalTradedVol",
+      "listedShare",
+      "pe",
+      "pb",
+      "evEbitda",
+      "eps",
+      "bvps",
+      "ebitda",
+      "overview",
+      "updatedAt",
+      "colorId",
+      "website",
+      "cgtContents"
+    ],
+    "len.cgtContents": 0,
+    "ms": 1249
+  },
+  {
+    "sector": "pharma",
+    "path": "enterprise/overview-dividend",
+    "params": {
+      "ticket": "DHG",
+      "year": "All"
+    },
+    "ok": false,
+    "status": null,
+    "error": "RuntimeError('Login failed 400: {\"statusCode\":400,\"message\":[\"email must be an email\",\"password must be longer than or equal to 8 characters\",\"password should not be empty\"],\"error\":\"Bad Request\"}')",
+    "ms": 2498
+  },
+  {
+    "sector": "pharma",
+    "path": "enterprise/report-data-prediction",
+    "params": {
+      "ticket": "DHG"
+    },
+    "ok": true,
+    "status": 200,
+    "kind": "dict",
+    "n": 2,
+    "empty": false,
+    "keys": [
+      "realData",
+      "predictData"
+    ],
+    "len.realData": 747,
+    "ms": 635
+  },
+  {
+    "sector": "pharma",
+    "path": "enterprise/manufactoring-revenue",
+    "params": {
+      "ticket": "DHG",
+      "period": "quarter",
+      "year": "All"
+    },
+    "ok": false,
+    "status": null,
+    "error": "RuntimeError('Login failed 400: {\"statusCode\":400,\"message\":[\"email must be an email\",\"password must be longer than or equal to 8 characters\",\"password should not be empty\"],\"error\":\"Bad Request\"}')",
+    "ms": 651
+  },
+  {
+    "sector": "pharma",
+    "path": "enterprise/manufactoring-profit-after-tax",
+    "params": {
+      "ticket": "DHG",
+      "period": "quarter",
+      "year": "All"
+    },
+    "ok": false,
+    "status": null,
+    "error": "RuntimeError('Login failed 400: {\"statusCode\":400,\"message\":[\"email must be an email\",\"password must be longer than or equal to 8 characters\",\"password should not be empty\"],\"error\":\"Bad Request\"}')",
+    "ms": 4299
+  },
+  {
+    "sector": "logistics",
+    "path": "enterprise/corp-profile",
+    "params": {
+      "ticket": "GMD"
+    },
+    "ok": true,
+    "status": 200,
+    "kind": "dict",
+    "n": 20,
+    "empty": false,
+    "keys": [
+      "id",
+      "tradingDate",
+      "ticket",
+      "closePrice",
+      "priceChange",
+      "perPriceChange",
+      "marketCap",
+      "totalTradedVol",
+      "listedShare",
+      "pe",
+      "pb",
+      "evEbitda",
+      "eps",
+      "bvps",
+      "ebitda",
+      "overview",
+      "updatedAt",
+      "colorId",
+      "website",
+      "cgtContents"
+    ],
+    "len.cgtContents": 0,
+    "ms": 1825
+  },
+  {
+    "sector": "logistics",
+    "path": "enterprise/overview-dividend",
+    "params": {
+      "ticket": "GMD",
+      "year": "All"
+    },
+    "ok": false,
+    "status": null,
+    "error": "RuntimeError('Login failed 400: {\"statusCode\":400,\"message\":[\"email must be an email\",\"password must be longer than or equal to 8 characters\",\"password should not be empty\"],\"error\":\"Bad Request\"}')",
+    "ms": 4974
+  },
+  {
+    "sector": "logistics",
+    "path": "enterprise/report-data-prediction",
+    "params": {
+      "ticket": "GMD"
+    },
+    "ok": true,
+    "status": 200,
+    "kind": "dict",
+    "n": 2,
+    "empty": false,
+    "keys": [
+      "realData",
+      "predictData"
+    ],
+    "len.realData": 751,
+    "ms": 1862
+  },
+  {
+    "sector": "logistics",
+    "path": "enterprise/manufactoring-revenue",
+    "params": {
+      "ticket": "GMD",
+      "period": "quarter",
+      "year": "All"
+    },
+    "ok": false,
+    "status": null,
+    "error": "RuntimeError('Login failed 400: {\"statusCode\":400,\"message\":[\"email must be an email\",\"password must be longer than or equal to 8 characters\",\"password should not be empty\"],\"error\":\"Bad Request\"}')",
+    "ms": 3705
+  },
+  {
+    "sector": "logistics",
+    "path": "enterprise/manufactoring-profit-after-tax",
+    "params": {
+      "ticket": "GMD",
+      "period": "quarter",
+      "year": "All"
+    },
+    "ok": false,
+    "status": null,
+    "error": "RuntimeError('Login failed 400: {\"statusCode\":400,\"message\":[\"email must be an email\",\"password must be longer than or equal to 8 characters\",\"password should not be empty\"],\"error\":\"Bad Request\"}')",
+    "ms": 6220
+  },
+  {
+    "sector": "rice",
+    "path": "enterprise/corp-profile",
+    "params": {
+      "ticket": "LTG"
+    },
+    "ok": true,
+    "status": 200,
+    "kind": "dict",
+    "n": 20,
+    "empty": false,
+    "keys": [
+      "id",
+      "tradingDate",
+      "ticket",
+      "closePrice",
+      "priceChange",
+      "perPriceChange",
+      "marketCap",
+      "totalTradedVol",
+      "listedShare",
+      "pe",
+      "pb",
+      "evEbitda",
+      "eps",
+      "bvps",
+      "ebitda",
+      "overview",
+      "updatedAt",
+      "colorId",
+      "website",
+      "cgtContents"
+    ],
+    "len.cgtContents": 0,
+    "ms": 3696
+  },
+  {
+    "sector": "rice",
+    "path": "enterprise/overview-dividend",
+    "params": {
+      "ticket": "LTG",
+      "year": "All"
+    },
+    "ok": false,
+    "status": null,
+    "error": "RuntimeError('Login failed 400: {\"statusCode\":400,\"message\":[\"email must be an email\",\"password must be longer than or equal to 8 characters\",\"password should not be empty\"],\"error\":\"Bad Request\"}')",
+    "ms": 3704
+  },
+  {
+    "sector": "rice",
+    "path": "enterprise/report-data-prediction",
+    "params": {
+      "ticket": "LTG"
+    },
+    "ok": true,
+    "status": 200,
+    "kind": "dict",
+    "n": 2,
+    "empty": false,
+    "keys": [
+      "realData",
+      "predictData"
+    ],
+    "len.realData": 458,
+    "ms": 1262
+  },
+  {
+    "sector": "rice",
+    "path": "enterprise/manufactoring-revenue",
+    "params": {
+      "ticket": "LTG",
+      "period": "quarter",
+      "year": "All"
+    },
+    "ok": false,
+    "status": null,
+    "error": "RuntimeError('Login failed 400: {\"statusCode\":400,\"message\":[\"email must be an email\",\"password must be longer than or equal to 8 characters\",\"password should not be empty\"],\"error\":\"Bad Request\"}')",
+    "ms": 2449
+  },
+  {
+    "sector": "rice",
+    "path": "enterprise/manufactoring-profit-after-tax",
+    "params": {
+      "ticket": "LTG",
+      "period": "quarter",
+      "year": "All"
+    },
+    "ok": false,
+    "status": null,
+    "error": "RuntimeError('Login failed 400: {\"statusCode\":400,\"message\":[\"email must be an email\",\"password must be longer than or equal to 8 characters\",\"password should not be empty\"],\"error\":\"Bad Request\"}')",
+    "ms": 3133
+  },
+  {
+    "sector": "technology",
+    "path": "enterprise/corp-profile",
+    "params": {
+      "ticket": "FPT"
+    },
+    "ok": true,
+    "status": 200,
+    "kind": "dict",
+    "n": 20,
+    "empty": false,
+    "keys": [
+      "id",
+      "tradingDate",
+      "ticket",
+      "closePrice",
+      "priceChange",
+      "perPriceChange",
+      "marketCap",
+      "totalTradedVol",
+      "listedShare",
+      "pe",
+      "pb",
+      "evEbitda",
+      "eps",
+      "bvps",
+      "ebitda",
+      "overview",
+      "updatedAt",
+      "colorId",
+      "website",
+      "cgtContents"
+    ],
+    "len.cgtContents": 0,
+    "ms": 611
+  },
+  {
+    "sector": "technology",
+    "path": "enterprise/overview-dividend",
+    "params": {
+      "ticket": "FPT",
+      "year": "All"
+    },
+    "ok": false,
+    "status": null,
+    "error": "RuntimeError('Login failed 400: {\"statusCode\":400,\"message\":[\"email must be an email\",\"password must be longer than or equal to 8 characters\",\"password should not be empty\"],\"error\":\"Bad Request\"}')",
+    "ms": 1967
+  },
+  {
+    "sector": "technology",
+    "path": "enterprise/report-data-prediction",
+    "params": {
+      "ticket": "FPT"
+    },
+    "ok": true,
+    "status": 200,
+    "kind": "dict",
+    "n": 2,
+    "empty": false,
+    "keys": [
+      "realData",
+      "predictData"
+    ],
+    "len.realData": 747,
+    "ms": 1922
+  },
+  {
+    "sector": "technology",
+    "path": "enterprise/manufactoring-revenue",
+    "params": {
+      "ticket": "FPT",
+      "period": "quarter",
+      "year": "All"
+    },
+    "ok": false,
+    "status": null,
+    "error": "RuntimeError('Login failed 400: {\"statusCode\":400,\"message\":[\"email must be an email\",\"password must be longer than or equal to 8 characters\",\"password should not be empty\"],\"error\":\"Bad Request\"}')",
+    "ms": 1965
+  },
+  {
+    "sector": "technology",
+    "path": "enterprise/manufactoring-profit-after-tax",
+    "params": {
+      "ticket": "FPT",
+      "period": "quarter",
+      "year": "All"
+    },
+    "ok": false,
+    "status": null,
+    "error": "RuntimeError('Login failed 400: {\"statusCode\":400,\"message\":[\"email must be an email\",\"password must be longer than or equal to 8 characters\",\"password should not be empty\"],\"error\":\"Bad Request\"}')",
+    "ms": 1951
+  }
+]

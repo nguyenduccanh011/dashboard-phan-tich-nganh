@@ -10,12 +10,17 @@ WiChart:
   Base URL: https://api.wichart.vn/vietnambiz/vi-mo
   Params: key={KEY}, name={NAME}
 """
-import os, json, uuid, base64, asyncio
+import os, sys, json, uuid, base64, asyncio
 from pathlib import Path
 from datetime import datetime
 import httpx
 from Crypto.Cipher import AES
 from Crypto.Hash import MD5
+from dotenv import load_dotenv
+
+load_dotenv()
+if hasattr(sys.stdout, "reconfigure"):
+    sys.stdout.reconfigure(encoding="utf-8")
 
 CACHE_DIR = Path("cache")
 CACHE_DIR.mkdir(exist_ok=True)
@@ -24,6 +29,31 @@ SECRETS_DIR.mkdir(parents=True, exist_ok=True)
 
 FINDICATOR_BASE = "https://api.findicator.vn/api"
 WICHART_BASE = "https://api.wichart.vn/vietnambiz/vi-mo"
+
+# === HELPER: Transform snake_case → camelCase ===
+def snake_to_camel(s: str) -> str:
+  """name_id → nameId"""
+  parts = s.split('_')
+  return parts[0] + ''.join(word.capitalize() for word in parts[1:])
+
+def transform_keys(obj, depth=10, top_level=True):
+  """Recursively convert snake_case keys to camelCase (except top-level keys).
+
+  Why: API returns name_id, but JavaScript expects nameId.
+  Top-level block_a, block_b, etc. stay unchanged.
+  Only nested keys like name_id → nameId.
+  """
+  if depth <= 0 or obj is None:
+    return obj
+  if isinstance(obj, dict):
+    return {
+      (k if top_level and isinstance(k, str) else (snake_to_camel(k) if isinstance(k, str) else k)):
+      transform_keys(v, depth-1, top_level=False)
+      for k, v in obj.items()
+    }
+  if isinstance(obj, list):
+    return [transform_keys(item, depth-1, top_level=False) for item in obj]
+  return obj
 
 # AES secret — OpenSSL EVP_BytesToKey, MD5, AES-256-CBC
 _AES_SECRET = b"b6efdbe6b92fa5221531e85082aa015f3fe407538b7ed1b2f68d70519028a9d5"
@@ -208,18 +238,17 @@ class FindicatorClient:
         if path == "macro-data/macro-item-detail":
             return await self._get_macro_compat(params or {})
 
-        # Auto-inject period+date for finance-ticket-data if missing
         params = dict(params or {})
-        if path == "enterprise/v2/finance-ticket-data" and "date" not in params:
-            q_month = ((datetime.now().month - 1) // 3) * 3 + 1
-            params.setdefault("period", "quarter")
-            params["date"] = f"{q_month:02d}/01/{datetime.now().year}"
 
         headers = {}
         if self.access_token:
             headers["Authorization"] = f"Bearer {self.access_token}"
 
         async with httpx.AsyncClient(timeout=30) as client:
+            if path == "enterprise/v2/finance-ticket-data" and "date" not in params:
+                params.setdefault("period", "quarter")
+                await self._inject_latest_finance_date(params, client, headers)
+
             r = await client.get(f"{FINDICATOR_BASE}/{path}", headers=headers, params=params)
 
             if r.status_code == 401:
@@ -229,6 +258,52 @@ class FindicatorClient:
 
             r.raise_for_status()
             return _unwrap(r.json())
+
+    async def _inject_latest_finance_date(self, params: dict, client, headers: dict):
+        """Use Findicator's data range to avoid requesting an unpublished quarter."""
+        ticker = params.get("ticket")
+        if isinstance(ticker, str) and ticker.startswith("["):
+            try:
+                parsed = json.loads(ticker)
+                ticker = parsed[0] if parsed else None
+            except Exception:
+                ticker = None
+        if not ticker:
+            return
+
+        try:
+            r = await client.get(
+                f"{FINDICATOR_BASE}/enterprise/v2/finance-data-range",
+                headers=headers,
+                params={
+                    "period": params.get("period", "quarter"),
+                    "ticket": ticker,
+                    "tableName": params.get("tableName", "TRAILING"),
+                },
+            )
+            if r.status_code == 401:
+                await self.login()
+                headers["Authorization"] = f"Bearer {self.access_token}"
+                r = await client.get(
+                    f"{FINDICATOR_BASE}/enterprise/v2/finance-data-range",
+                    headers=headers,
+                    params={
+                        "period": params.get("period", "quarter"),
+                        "ticket": ticker,
+                        "tableName": params.get("tableName", "TRAILING"),
+                    },
+                )
+            r.raise_for_status()
+            data = _unwrap(r.json())
+            year = data.get("maxYear") if isinstance(data, dict) else None
+            quarter = data.get("maxQuarter") if isinstance(data, dict) else None
+            if year and quarter:
+                params["date"] = f"{(int(quarter) - 1) * 3 + 1:02d}/01/{int(year)}"
+        except Exception:
+            now = datetime.now()
+            quarter = ((now.month - 1) // 3) or 4
+            year = now.year if now.month > 3 else now.year - 1
+            params["date"] = f"{(quarter - 1) * 3 + 1:02d}/01/{year}"
 
     def save_cache(self, filename: str, data: dict):
         path = CACHE_DIR / filename

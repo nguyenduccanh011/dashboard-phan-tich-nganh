@@ -7,7 +7,7 @@ import asyncio
 import json
 from pathlib import Path
 from datetime import datetime, date
-from collectors.base import findicator, wichart
+from collectors.base import findicator, wichart, transform_keys
 
 def _quarters(n=8):
     """Trả n quý gần nhất dạng MM/DD/YYYY để dùng làm date param."""
@@ -52,6 +52,7 @@ async def collect():
             "block_g": block_g,
     }
 
+    cache = transform_keys(cache)
     CACHE_FILE.write_text(json.dumps(cache, ensure_ascii=False, indent=2), encoding="utf-8")
     print(f"[steel] cache saved -> {CACHE_FILE}")
     return cache

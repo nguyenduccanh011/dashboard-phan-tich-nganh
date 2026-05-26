@@ -44,9 +44,9 @@ function renderBlockA(blockA) {
 
   const card1 = container.lastElementChild;
   const fuelRows = Array.isArray(blockA.fuel_prices) ? blockA.fuel_prices : [];
-  const brentRows = fuelRows.filter(r => r.name_id === 65 || r.name_id === 65);
-  const jetV1Rows = fuelRows.filter(r => r.name_id === 623 || r.name_id === 623);
-  const jetV2Rows = fuelRows.filter(r => r.name_id === 627 || r.name_id === 627);
+  const brentRows = fuelRows.filter(r => r.nameId === 65 || r.nameId === 65);
+  const jetV1Rows = fuelRows.filter(r => r.nameId === 623 || r.nameId === 623);
+  const jetV2Rows = fuelRows.filter(r => r.nameId === 627 || r.nameId === 627);
 
   function renderFuel(year) {
     const cutoff = yearToCutoff(year);

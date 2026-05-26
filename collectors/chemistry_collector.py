@@ -7,7 +7,7 @@ import asyncio
 import json
 from pathlib import Path
 from datetime import datetime
-from collectors.base import findicator
+from collectors.base import findicator, wichart, transform_keys
 
 CACHE_FILE = Path("cache/sector_chemistry.json")
 TICKERS = ["DPM", "DCM", "LAS", "BFC", "DDV", "CSV"]
@@ -38,6 +38,7 @@ async def collect():
             "block_g": block_g,
     }
 
+    cache = transform_keys(cache)
     CACHE_FILE.write_text(json.dumps(cache, ensure_ascii=False, indent=2), encoding="utf-8")
     print(f"[chemistry] cache saved → {CACHE_FILE}")
     return cache

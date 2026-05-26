@@ -10,7 +10,7 @@ import asyncio
 import json
 from pathlib import Path
 from datetime import datetime
-from collectors.base import findicator, wichart
+from collectors.base import findicator, wichart, transform_keys
 
 CACHE_FILE = Path("cache/sector_pepper.json")
 TICKERS = ["HAL"]
@@ -38,6 +38,7 @@ async def collect():
         "block_f": block_f,
             "block_g": block_g,
     }
+    cache = transform_keys(cache)
     CACHE_FILE.write_text(json.dumps(cache, ensure_ascii=False, indent=2), encoding="utf-8")
     print(f"[pepper] cache saved → {CACHE_FILE}")
     return cache
@@ -80,16 +81,22 @@ async def _block_b():
 async def _block_e():
     results = {}
     for ticker in TICKERS:
-        trailing = await findicator.get(
-            "enterprise/v2/finance-ticket-data",
-            params={
-                "tableName": "TRAILING",
-                "corpType": 4,
-                "ticket": f'["{ticker}"]',
-                "accountIds": TRAILING_ACCOUNT_IDS,
-            }
-        )
-        analyst = await findicator.get("enterprise/report-analysis", params={"ticket": ticker})
+        try:
+            trailing = await findicator.get(
+                "enterprise/v2/finance-ticket-data",
+                params={
+                    "tableName": "TRAILING",
+                    "corpType": 4,
+                    "ticket": f'["{ticker}"]',
+                    "accountIds": TRAILING_ACCOUNT_IDS,
+                }
+            )
+        except Exception as e:
+            trailing = {"stale": True, "stale_reason": str(e)}
+        try:
+            analyst = await findicator.get("enterprise/report-analysis", params={"ticket": ticker})
+        except Exception as e:
+            analyst = {"stale": True, "stale_reason": str(e)}
         results[ticker] = {"trailing": trailing, "analyst": analyst}
     return results
 
@@ -97,16 +104,19 @@ async def _block_e():
 async def _block_f():
     results = {}
     for ticker in TICKERS:
-        ts = await findicator.get(
-            "enterprise/v2/finance-ticket-data",
-            params={
-                "tableName": "INCOME_STATEMENT",
-                "corpType": 4,
-                "ticket": f'["{ticker}"]',
-                "accountIds": IS_ACCOUNT_IDS,
-                "period": "quarter",
-            }
-        )
+        try:
+            ts = await findicator.get(
+                "enterprise/v2/finance-ticket-data",
+                params={
+                    "tableName": "INCOME_STATEMENT",
+                    "corpType": 4,
+                    "ticket": f'["{ticker}"]',
+                    "accountIds": IS_ACCOUNT_IDS,
+                    "period": "quarter",
+                }
+            )
+        except Exception as e:
+            ts = {"stale": True, "stale_reason": str(e)}
         results[ticker] = ts
     return results
 

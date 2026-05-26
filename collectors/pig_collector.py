@@ -9,7 +9,7 @@ import asyncio
 import json
 from pathlib import Path
 from datetime import datetime
-from collectors.base import findicator, wichart
+from collectors.base import findicator, wichart, transform_keys
 
 CACHE_FILE = Path("cache/sector_pig.json")
 TICKERS = ["DBC", "BAF", "MML"]
@@ -38,6 +38,7 @@ async def collect():
             "block_g": block_g,
     }
 
+    cache = transform_keys(cache)
     CACHE_FILE.write_text(json.dumps(cache, ensure_ascii=False, indent=2), encoding="utf-8")
     print(f"[pig] cache saved → {CACHE_FILE}")
     return cache

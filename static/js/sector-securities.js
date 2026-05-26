@@ -240,8 +240,8 @@ function renderBlockC(blockC) {
   `);
   const mfRows = Array.isArray(moneyFlow) ? moneyFlow : (moneyFlow?.data || []);
   if (mfRows.length) {
-    const nid1 = mfRows.filter(r => r.name_id === 1 || r.name_id === 1);
-    const nid2 = mfRows.filter(r => r.name_id === 2 || r.name_id === 2);
+    const nid1 = mfRows.filter(r => r.nameId === 1 || r.nameId === 1);
+    const nid2 = mfRows.filter(r => r.nameId === 2 || r.nameId === 2);
     const toTs = rows => rows.map(r => [
       new Date(r.start_date || r.date || r.month).getTime(),
       r.value ?? null,
