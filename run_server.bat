@@ -1,28 +1,12 @@
 @echo off
-chcp 65001 > nul
-title Dashboard Phân Tích Ngành - Server
-
-REM Check if venv exists and activate it
-if exist venv\Scripts\activate.bat (
-    echo Activating virtual environment...
-    call venv\Scripts\activate.bat
-) else (
-    echo Virtual environment not found. Using system Python.
+REM Kill any existing Python processes running on port 8000
+for /f "tokens=5" %%a in ('netstat -ano 2^>/dev/null ^| find ":8000"') do (
+    taskkill /F /PID %%a >/dev/null 2>&1
 )
 
-echo.
-echo ===================================
-echo Starting FastAPI Server...
-echo ===================================
-echo.
-echo Server will run at: http://localhost:8000
-echo API Docs:         http://localhost:8000/docs
-echo ReDoc:            http://localhost:8000/redoc
-echo.
-echo Press Ctrl+C to stop the server
-echo.
+REM Wait a moment for processes to die
+timeout /t 1 /nobreak >/dev/null 2>&1
 
-REM Start the server
-uvicorn app:app --reload --host 0.0.0.0 --port 8000
-
-pause
+REM Start the server with uvicorn
+echo [+] Starting Sector Hub server on http://localhost:8000
+uvicorn app:app --host 0.0.0.0 --port 8000 --reload

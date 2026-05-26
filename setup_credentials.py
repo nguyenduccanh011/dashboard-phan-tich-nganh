@@ -22,7 +22,7 @@ def get_or_generate_device_id():
     load_dotenv()
     env_device_id = os.getenv("FINDICATOR_DEVICE_ID", "").strip()
     if env_device_id:
-        print(f"✓ Using FINDICATOR_DEVICE_ID from .env: {env_device_id[:8]}...")
+        print(f"[+] Using FINDICATOR_DEVICE_ID from .env: {env_device_id[:8]}...")
         return env_device_id
 
     # 2. Check creds file
@@ -31,14 +31,14 @@ def get_or_generate_device_id():
             creds = json.loads(CREDS_FILE.read_text(encoding="utf-8"))
             device_id = creds.get("deviceId")
             if device_id:
-                print(f"✓ Found FINDICATOR_DEVICE_ID in {CREDS_FILE}: {device_id[:8]}...")
+                print(f"[+] Found FINDICATOR_DEVICE_ID in {CREDS_FILE}: {device_id[:8]}...")
                 return device_id
         except Exception as e:
-            print(f"⚠ Could not read creds file: {e}")
+            print(f"[!] Could not read creds file: {e}")
 
     # 3. Generate new
     device_id = str(uuid.uuid4())
-    print(f"✓ Generated new FINDICATOR_DEVICE_ID: {device_id}")
+    print(f"[+] Generated new FINDICATOR_DEVICE_ID: {device_id}")
     return device_id
 
 
@@ -78,7 +78,7 @@ def create_env_file():
         for key, value in new_env.items():
             f.write(f"{key}={value}\n")
 
-    print(f"\n✓ .env file created/updated")
+    print(f"\n[+] .env file created/updated")
     print(f"  - Email: {email}")
     print(f"  - Device ID: {device_id[:8]}... (saved to {CREDS_FILE} after first login)")
     print(f"  - WiChart Secret: {'***' if wichart_secret else 'Not set'}")
@@ -96,7 +96,7 @@ def verify_credentials():
     device_id = os.getenv("FINDICATOR_DEVICE_ID")
 
     if not (email and password):
-        print("✗ FINDICATOR_EMAIL and FINDICATOR_PASSWORD not set in .env")
+        print("[-] FINDICATOR_EMAIL and FINDICATOR_PASSWORD not set in .env")
         return False
 
     print(f"Email: {email}")
@@ -113,12 +113,12 @@ if __name__ == "__main__":
 
         verify_credentials()
 
-        print("\n✓ Setup complete!")
+        print("\n[+] Setup complete!")
         print("Run: python app.py")
 
     except KeyboardInterrupt:
-        print("\n✗ Setup cancelled")
+        print("\n[-] Setup cancelled")
         exit(1)
     except Exception as e:
-        print(f"\n✗ Error: {e}")
+        print(f"\n[-] Error: {e}")
         exit(1)
